@@ -1,24 +1,18 @@
-import { StatusBar } from "expo-status-bar";
+import * as eva from "@eva-design/eva";
+import { ApplicationProvider } from "@ui-kitten/components";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-
+import { MainBottom } from "./src/Routes/MainBottom";
+/**
+ *
+ * @author andr30z
+ **/
 export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <StatusBar style="auto" />
-      </View>
+      <ApplicationProvider {...eva} theme={eva.dark}>
+        <MainBottom />
+      </ApplicationProvider>
     </GestureHandlerRootView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
