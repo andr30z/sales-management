@@ -2,15 +2,22 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const initialUserState = { fetchedUser: false, user: {} };
 
-interface Sales {
+export enum SalesTypes {
+  JEWELRY,
+  BIJOU,
+  OTHERS,
+}
+export interface Sales {
   name: string;
   description: string;
   value: string;
   date: string;
   clientId: string;
+  types: Array<SalesTypes>;
+  quantity: number;
 }
 
-interface Client {
+export interface Client {
   id: string;
   name: string;
   observation: string;
@@ -42,14 +49,18 @@ const updateStorage = (state: SalesManagementState) => {
   return state;
 };
 const addToStateArray = (
-  key: string,
+  key: keyof SalesManagementState,
   state: SalesManagementState,
   payload: any
 ): SalesManagementState => {
   return updateStorage({ ...state, [key]: [...state[key], payload] });
 };
 
-const deleteItem = (key: string, state: SalesManagementState, payload: any) => {
+const deleteItem = (
+  key: keyof SalesManagementState,
+  state: SalesManagementState,
+  payload: any
+) => {
   const array = [...state[key]];
   array.splice(payload as number, 1);
   return updateStorage({ ...state, [key]: array });
@@ -59,7 +70,10 @@ export const INITIAL_STATE: SalesManagementState = {
   clients: [],
   sales: [],
 };
-export const reducer = (state: SalesManagementState, action: Action):SalesManagementState => {
+export const reducer = (
+  state: SalesManagementState,
+  action: Action
+): SalesManagementState => {
   const { payload, type } = action;
   switch (type) {
     case ActionsTypes.SET_CURRENT_STATE_WITH_STORAGE:
