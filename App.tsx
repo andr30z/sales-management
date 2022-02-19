@@ -4,6 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { SalesInfo } from "./src/Context/SalesInfo";
 import { MainBottom } from "./src/Routes/MainBottom";
 import { default as theme } from "./theme.json";
 /**
@@ -14,9 +15,11 @@ export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
-        <SafeAreaView style={{ flex: 1 }}>
-          <MainBottom />
-        </SafeAreaView>
+        <SalesInfo>
+          <SafeAreaView style={{ flex: 1 }}>
+            <MainBottom />
+          </SafeAreaView>
+        </SalesInfo>
       </ApplicationProvider>
     </GestureHandlerRootView>
   );
