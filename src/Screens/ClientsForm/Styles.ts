@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
     width: "100%",
   },
   marginY: {
-    marginTop: 15,
+    marginVertical: 15,
   },
   inputValueText: { textAlign: "left", marginRight: 6 },
   scrollContainer: {

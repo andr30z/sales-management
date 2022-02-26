@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
+import { ClientsForm } from "../../Screens/ClientsForm";
 import { SalesForm } from "../../Screens/SalesForm";
 import { MainBottom } from "../MainBottom";
 import { MainStackRoutesTypes, MAIN_STACK_ROUTES } from "./Types";
@@ -22,6 +23,10 @@ export const MainStack: React.FC = () => {
         <Stack.Screen
           name={MAIN_STACK_ROUTES.SALES_FORM}
           component={SalesForm}
+        />
+          <Stack.Screen
+          name={MAIN_STACK_ROUTES.CLIENTS_FORM}
+          component={ClientsForm}
         />
       </Stack.Navigator>
     </NavigationContainer>

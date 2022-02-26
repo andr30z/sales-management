@@ -7,9 +7,15 @@ export const globalStyles = StyleSheet.create({
   },
   textArea: {
     width: "100%",
-    height: 60,
+    height: 100,
   },
   textCenter: {
     textAlign: "center",
+  },
+  scrollContentContainer: {
+    paddingBottom: 80,
+  },
+  backdrop: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
 });

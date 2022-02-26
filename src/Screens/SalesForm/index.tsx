@@ -14,6 +14,7 @@ import { globalStyles } from "../../GlobalStyles";
 import { Container } from "../../Components/Container";
 import { KittenSelect } from "../../Components/KittenSelect";
 import { styles } from "./Styles";
+import { SelectClient } from "../../Components/SelectClient";
 
 const validationSchema = Yup.object().shape({
   date: Yup.date().required("A data da venda é requerida."),
@@ -41,7 +42,7 @@ export const SalesForm: React.FC = () => {
         style={{ flex: 1, backgroundColor: "white" }}
         contentContainerStyle={styles.scrollContainer}
       >
-        <Formik<Sales>
+        <Formik<Omit<Sales, "id" | "createdAt">>
           onSubmit={(values) => {
             console.log(dispatcher);
             dispatcher({ type: ActionsTypes.ADD_SALES, payload: values });
@@ -58,20 +59,27 @@ export const SalesForm: React.FC = () => {
           }}
         >
           {({
-            values: { name, date, types, value, description, quantity },
+            values: {
+              name,
+              date,
+              types,
+              value,
+              description,
+              quantity,
+              clientId,
+            },
             handleSubmit,
             handleChange,
             setFieldValue,
           }) => (
             <Container
-              borderRadius={10}
               backgroundColor="#fff"
               width="100%"
-              padding={15}
+              paddingHorizontal={15}
               justifyContent="center"
               flexDirection="column"
             >
-              <Container center>
+              <Container center minHeight={100} flex={null as any}>
                 <Text
                   category="h2"
                   status="primary"
@@ -111,7 +119,7 @@ export const SalesForm: React.FC = () => {
                 />
               </Container>
               <KittenSelect
-                selectStyle={[globalStyles.input, { marginVertical: 10 }]}
+                selectStyle={[globalStyles.input, { marginVertical: 15 }]}
                 value={types}
                 placeholder="Selecione o tipo de venda"
                 multiSelect
@@ -125,11 +133,16 @@ export const SalesForm: React.FC = () => {
                 }}
                 options={["Bijou", "Joia", "Outros"]}
               />
+              <SelectClient
+                value={clientId}
+                marginY={15}
+                onChange={handleChange("clientId")}
+              />
               <Datepicker
-                style={[styles.calendar, styles.marginY]}
+                style={[styles.calendar, styles.marginY, ]}
                 dateService={dateFnsService as any}
                 date={date}
-                onSelect={handleChange("date")}
+                onSelect={(value) => setFieldValue("date", value)}
               />
               <Input
                 style={[globalStyles.textArea, styles.marginY]}

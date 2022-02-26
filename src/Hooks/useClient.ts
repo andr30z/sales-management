@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { useSalesInfoContext } from "../Context/SalesInfo";
-import { Client } from "../Context/SalesInfo/Reducer";
 
 /**
  *

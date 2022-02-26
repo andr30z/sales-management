@@ -24,11 +24,20 @@ export const SalesInfo: React.FC = ({ children }) => {
     try {
       const value = await AsyncStorage.getItem(STORAGE_KEY);
       if (value !== null) {
-        dispatcher({
+        return dispatcher({
           type: ActionsTypes.SET_CURRENT_STATE_WITH_STORAGE,
           payload: JSON.parse(value),
         });
       }
+      const initialData = {
+        sales: [],
+        clients: [],
+      };
+      dispatcher({
+        type: ActionsTypes.SET_CURRENT_STATE_WITH_STORAGE,
+        payload: initialData,
+      });
+      AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(initialData));
     } catch (e) {
       // error reading value
     }

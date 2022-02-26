@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import uuid from "react-native-uuid";
 export const initialUserState = { fetchedUser: false, user: {} };
 
 export enum SalesTypes {
@@ -9,12 +9,14 @@ export enum SalesTypes {
 }
 export interface Sales {
   name: string;
+  id: string;
   description: string;
   value: string;
   date: string;
   clientId: string;
   types: Array<SalesTypes>;
   quantity: number;
+  createdAt: string;
 }
 
 export interface Client {
@@ -22,6 +24,7 @@ export interface Client {
   name: string;
   observation: string;
   phoneNumber: string;
+  createdAt: string;
 }
 export interface SalesManagementState {
   sales: Array<Sales>;
@@ -44,6 +47,10 @@ export interface Action {
 
 export const STORAGE_KEY = "@sales-management-state";
 
+function uuidv4(): string {
+  return uuid.v4().toString();
+}
+
 const updateStorage = (state: SalesManagementState) => {
   AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   return state;
@@ -53,7 +60,13 @@ const addToStateArray = (
   state: SalesManagementState,
   payload: any
 ): SalesManagementState => {
-  return updateStorage({ ...state, [key]: [...state[key], payload] });
+  return updateStorage({
+    ...state,
+    [key]: [
+      ...state[key],
+      { ...payload, id: uuidv4(), createdAt: new Date().toUTCString() },
+    ],
+  });
 };
 
 const deleteItem = (
