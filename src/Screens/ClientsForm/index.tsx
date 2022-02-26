@@ -56,6 +56,7 @@ export const ClientsForm: React.FC<
               navigation.navigate(routeOnSubmit as any, {
                 selectCreatedClient: values,
               });
+            else navigation.goBack();
           }}
           validationSchema={validationSchema}
           initialValues={{

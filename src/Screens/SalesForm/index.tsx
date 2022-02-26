@@ -15,6 +15,11 @@ import { Container } from "../../Components/Container";
 import { KittenSelect } from "../../Components/KittenSelect";
 import { styles } from "./Styles";
 import { SelectClient } from "../../Components/SelectClient";
+import { StackScreenProps } from "@react-navigation/stack";
+import {
+  MainStackRoutesTypes,
+  MAIN_STACK_ROUTES,
+} from "../../Routes/MainStack/Types";
 
 const validationSchema = Yup.object().shape({
   date: Yup.date().required("A data da venda é requerida."),
@@ -31,8 +36,14 @@ const dateFnsService = new DateFnsService();
  *
  * @author andr30z
  **/
-export const SalesForm: React.FC = () => {
-  const { dispatcher } = useSalesInfoContext();
+export const SalesForm: React.FC<
+  StackScreenProps<MainStackRoutesTypes, MAIN_STACK_ROUTES.SALES_FORM>
+> = ({ navigation }) => {
+  const {
+    dispatcher,
+    salesInfo: { sales },
+  } = useSalesInfoContext();
+  console.log(sales);
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -44,8 +55,8 @@ export const SalesForm: React.FC = () => {
       >
         <Formik<Omit<Sales, "id" | "createdAt">>
           onSubmit={(values) => {
-            console.log(dispatcher);
             dispatcher({ type: ActionsTypes.ADD_SALES, payload: values });
+            navigation.goBack();
           }}
           validationSchema={validationSchema}
           initialValues={{
@@ -79,7 +90,7 @@ export const SalesForm: React.FC = () => {
               justifyContent="center"
               flexDirection="column"
             >
-              <Container center minHeight={100} flex={null as any}>
+              <Container center minHeight={100}>
                 <Text
                   category="h2"
                   status="primary"
@@ -97,15 +108,16 @@ export const SalesForm: React.FC = () => {
               <Input
                 style={[globalStyles.textArea, styles.marginY]}
                 value={description}
+                multiline
+                numberOfLines={4}
                 placeholder="Descrição"
-                onChangeText={handleChange("name")}
+                onChangeText={handleChange("description")}
               />
               <Container
                 {...globalStyles.input}
-                marginBottom={15}
+                {...styles.marginY}
                 flexDirection="row"
                 alignItems="center"
-                flex={null as any}
               >
                 <Text style={styles.inputValueText} category="h4" status="info">
                   R$
@@ -119,8 +131,8 @@ export const SalesForm: React.FC = () => {
                 />
               </Container>
               <KittenSelect
-                selectStyle={[globalStyles.input, { marginVertical: 15 }]}
                 value={types}
+                selectStyle={[globalStyles.input, styles.marginY]}
                 placeholder="Selecione o tipo de venda"
                 multiSelect
                 onChange={(index) => {
@@ -135,11 +147,11 @@ export const SalesForm: React.FC = () => {
               />
               <SelectClient
                 value={clientId}
-                marginY={15}
+                marginY={styles.marginY.marginTop}
                 onChange={handleChange("clientId")}
               />
               <Datepicker
-                style={[styles.calendar, styles.marginY, ]}
+                style={[styles.calendar, styles.marginY]}
                 dateService={dateFnsService as any}
                 date={date}
                 onSelect={(value) => setFieldValue("date", value)}
@@ -151,7 +163,9 @@ export const SalesForm: React.FC = () => {
                 placeholder="Quantidade de itens vendidos"
                 onChangeText={handleChange("quantity")}
               />
-              <Button onPress={() => handleSubmit()}>Cadastrar</Button>
+              <Button style={styles.marginY} onPress={() => handleSubmit()}>
+                Cadastrar
+              </Button>
             </Container>
           )}
         </Formik>

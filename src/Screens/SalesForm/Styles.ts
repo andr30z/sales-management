@@ -10,6 +10,5 @@ export const styles = StyleSheet.create({
   inputValueText: { textAlign: "left", marginRight: 6 },
   scrollContainer: {
     paddingBottom: 40,
-    flex:1
   },
 });

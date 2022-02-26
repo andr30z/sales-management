@@ -11,17 +11,22 @@ import {
 } from "@ui-kitten/components";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-import React, { useEffect } from "react";
-import { ScrollView } from "react-native";
+import React, { useEffect, useMemo, useState } from "react";
+import {
+  KeyboardAvoidingView,
+  ScrollView,
+  useWindowDimensions,
+} from "react-native";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
 import { globalStyles } from "../../GlobalStyles";
-import { useBoolean } from "../../Hooks/useBoolean";
 import {
   MainStackRoutesTypes,
   MAIN_STACK_ROUTES,
 } from "../../Routes/MainStack/Types";
 import { Container } from "../Container";
 import { styles } from "./Styles";
+import { SelectClientHeader } from "../SelectClientHeader";
+import { useClient, useKeyboardVisibility, useBoolean } from "../../Hooks";
 
 interface SelectClientProps {
   value: string;
@@ -42,6 +47,7 @@ export const SelectClient: React.FC<SelectClientProps> = ({
     useRoute<RouteProp<MainStackRoutesTypes, MAIN_STACK_ROUTES.SALES_FORM>>();
 
   const { value: isShowing, setTrue, setFalse } = useBoolean();
+  const [clientName, setClientName] = useState("");
 
   const {
     salesInfo: { clients },
@@ -51,17 +57,32 @@ export const SelectClient: React.FC<SelectClientProps> = ({
     if (params?.selectCreatedClient) setTrue();
   }, [params?.selectCreatedClient]);
 
+  const { client } = useClient(value);
+  const data = useMemo(
+    () =>
+      clients.filter((c) =>
+        c.name.toLowerCase().includes(clientName.toLowerCase())
+      ),
+    [clientName, clients]
+  );
+  const isVisible = useKeyboardVisibility();
+
   const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
+  const { height } = useWindowDimensions();
   return (
     <Container
       marginTop={marginY}
       // center
-      flex={null as any}
       flexDirection="row"
       justifyContent="center"
       alignItems="center"
     >
-      <Input value={value} disabled style={styles.input} />
+      <Input
+        value={client?.name || ""}
+        style={styles.input}
+        disabled
+        placeholder="Selecione o cliente"
+      />
       <Button
         size="medium"
         onPress={setTrue}
@@ -73,59 +94,51 @@ export const SelectClient: React.FC<SelectClientProps> = ({
       <Modal
         style={{
           width: "95%",
-          height: "80%",
+          height: isVisible && isShowing ? height * 0.9 : "80%",
         }}
         backdropStyle={globalStyles.backdrop}
         onBackdropPress={setFalse}
         visible={isShowing}
       >
-        <List
-          style={styles.list}
-          ListHeaderComponent={() => (
-            <Container
-              width="100%"
-              flexDirection="row"
-              padding={15}
-              justifyContent="space-evenly"
-              alignItems="center"
-            >
-              <Text category="h5" status="success">
-                Selecione o cliente
-              </Text>
-              <Button
-                size="small"
-                status="success"
-                style={styles.btnAddPerson}
-                onPress={() => {
-                  setFalse();
-                  navigation.navigate(MAIN_STACK_ROUTES.CLIENTS_FORM, {
-                    routeOnSubmit: MAIN_STACK_ROUTES.SALES_FORM,
-                  });
-                }}
+        <KeyboardAvoidingView style={{ flex: 1 }}>
+          <List
+            style={styles.list}
+            ListHeaderComponent={
+              <SelectClientHeader
+                navigation={navigation}
+                clientName={clientName}
+                setClientName={setClientName}
+                setFalse={setFalse}
+              />
+            }
+            data={data}
+            renderItem={({ item }) => (
+              <ListItem
+                title={`${item.name} - ${item.phoneNumber}`}
+                description={item.observation}
                 accessoryLeft={() => (
-                  <Ionicons name="person-add-sharp" size={18} color="#fff" />
+                  <Ionicons
+                    style={{ marginHorizontal: 7 }}
+                    size={18}
+                    name="person"
+                  />
+                )}
+                accessoryRight={() => (
+                  <Button
+                    onPress={() => {
+                      setFalse();
+                      onChange(item.id);
+                    }}
+                    size="small"
+                    status="warning"
+                  >
+                    SELECIONAR
+                  </Button>
                 )}
               />
-            </Container>
-          )}
-          data={clients}
-          renderItem={({ item }) => (
-            <ListItem
-              title={`${item.name} - ${item.phoneNumber}`}
-              description={item.observation}
-              accessoryLeft={(props) => <Ionicons size={18} name="person" />}
-              accessoryRight={() => (
-                <Button
-                  onPress={() => onChange(item.id)}
-                  size="tiny"
-                  status="success"
-                >
-                  SELECIONAR
-                </Button>
-              )}
-            />
-          )}
-        />
+            )}
+          />
+        </KeyboardAvoidingView>
       </Modal>
     </Container>
   );

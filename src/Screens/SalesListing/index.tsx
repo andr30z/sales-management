@@ -25,7 +25,9 @@ export const SalesListing: React.FC = () => {
             style={{ borderRadius: 34 }}
             status="primary"
             size="small"
-            onPress={() => navigation.navigate(MAIN_STACK_ROUTES.SALES_FORM)}
+            onPress={() =>
+              navigation.navigate(MAIN_STACK_ROUTES.SALES_FORM, {})
+            }
             accessoryLeft={() => (
               <AntDesign name="plus" size={25} color="#fff" />
             )}
