@@ -1,13 +1,11 @@
-import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
-import { MainBottomRoutesTypes, MAIN_BOTTOM_ROUTES } from "./Types";
+import React from "react";
 import { SalesListing } from "../../Screens/SalesListing";
+import { MainBottomRoutesTypes, MAIN_BOTTOM_ROUTES } from "./Types";
 const Bottom = createBottomTabNavigator<MainBottomRoutesTypes>();
 
 export const MainBottom: React.FC = () => {
   return (
-    <NavigationContainer>
       <Bottom.Navigator
         screenOptions={{
           headerShown: false,
@@ -18,6 +16,5 @@ export const MainBottom: React.FC = () => {
           component={SalesListing}
         />
       </Bottom.Navigator>
-    </NavigationContainer>
   );
 };

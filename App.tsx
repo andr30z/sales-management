@@ -4,7 +4,7 @@ import React from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SalesInfo } from "./src/Context/SalesInfo";
-import { MainBottom } from "./src/Routes/MainBottom";
+import { MainStack } from "./src/Routes/MainStack";
 import { default as theme } from "./theme.json";
 /**
  *
@@ -16,7 +16,7 @@ export default function App() {
       <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
         <SalesInfo>
           <SafeAreaView style={{ flex: 1 }}>
-            <MainBottom />
+            <MainStack />
           </SafeAreaView>
         </SalesInfo>
       </ApplicationProvider>

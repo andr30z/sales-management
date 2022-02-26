@@ -1,12 +1,15 @@
-import { Button, Layout, Modal, Text } from "@ui-kitten/components";
+import { AntDesign } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { Button, Layout, Text } from "@ui-kitten/components";
 import React from "react";
 import { Container } from "../../Components/Container";
-import { AntDesign } from "@expo/vector-icons";
-import { useBoolean } from "../../Hooks/useBoolean";
-import { SalesForm } from "../../Components/SalesForm";
-import { styles } from "./Styles";
+import {
+  MainStackRoutesTypes,
+  MAIN_STACK_ROUTES,
+} from "../../Routes/MainStack/Types";
 export const SalesListing: React.FC = () => {
-  const { value: showCreateSale, setTrue, setFalse } = useBoolean();
+  const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
   return (
     <Container flexDirection="column">
       <Layout style={{ flex: 1 }}>
@@ -22,20 +25,12 @@ export const SalesListing: React.FC = () => {
             style={{ borderRadius: 34 }}
             status="primary"
             size="small"
-            onPress={setTrue}
+            onPress={() => navigation.navigate(MAIN_STACK_ROUTES.SALES_FORM)}
             accessoryLeft={() => (
               <AntDesign name="plus" size={25} color="#fff" />
             )}
           />
         </Container>
-        <Modal
-          visible={showCreateSale}
-          backdropStyle={styles.backdrop}
-          onBackdropPress={setFalse}
-          style={{ width: "95%", height: "80%" }}
-        >
-          <SalesForm />
-        </Modal>
       </Layout>
     </Container>
   );

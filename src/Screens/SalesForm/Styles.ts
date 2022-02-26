@@ -8,4 +8,8 @@ export const styles = StyleSheet.create({
     marginVertical: 15,
   },
   inputValueText: { textAlign: "left", marginRight: 6 },
+  scrollContainer: {
+    paddingBottom: 40,
+    flex:1
+  },
 });
