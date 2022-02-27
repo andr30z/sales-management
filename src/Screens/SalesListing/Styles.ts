@@ -2,17 +2,21 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   card: {
-    flexDirection: "column",
+    flexDirection: "row",
     alignItems: "center",
-    width: "45%",
-    height: 200,
-    elevation: 3,
+    width: "100%",
+    height: 65,
+    marginTop: 30,
+    borderRadius: 30,
   },
   list: {
-    paddingHorizontal: 7,
+    flex: 1,
+    backgroundColor: "white",
+    borderTopLeftRadius: 60,
+    width: "100%",
+    paddingHorizontal: 15,
   },
-  contentWrapper: {
-    justifyContent: "space-around",
-    alignItems: "center",
+  contentContainerStyle: {
+    paddingBottom: 20000,
   },
 });
