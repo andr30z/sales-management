@@ -20,6 +20,7 @@ import {
   MainStackRoutesTypes,
   MAIN_STACK_ROUTES,
 } from "../../Routes/MainStack/Types";
+import { brazilianDateService } from "../../Utils";
 
 const validationSchema = Yup.object().shape({
   date: Yup.date().required("A data da venda é requerida."),
@@ -31,7 +32,6 @@ const validationSchema = Yup.object().shape({
   quantity: Yup.number().min(1),
 });
 
-const dateFnsService = new DateFnsService();
 /**
  *
  * @author andr30z
@@ -152,8 +152,9 @@ export const SalesForm: React.FC<
               />
               <Datepicker
                 style={[styles.calendar, styles.marginY]}
-                dateService={dateFnsService as any}
+                dateService={brazilianDateService as any}
                 date={date}
+                placeholder="Data da venda"
                 onSelect={(value) => setFieldValue("date", value)}
               />
               <Input

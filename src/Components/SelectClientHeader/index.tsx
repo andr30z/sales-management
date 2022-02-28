@@ -19,7 +19,6 @@ export const SelectClientHeader = React.memo<{
     keyof MainStackRoutesTypes
   >;
 }>(({ clientName, setClientName, setFalse, navigation }) => {
-  useEffect(() => console.log("AAAA"), []);
   return (
     <Container
       flexDirection="column"

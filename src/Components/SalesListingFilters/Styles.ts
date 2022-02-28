@@ -4,13 +4,14 @@ export const styles = StyleSheet.create({
   toggleContainer: {
     width: "100%",
     flexDirection: "column",
-    overflow: "hidden"
+    overflow: "hidden",
   },
 
   calendarInput: {
     width: "49%",
   },
   input: {
-    marginTop: 15,
+    marginTop: 10,
   },
+  btns: { width: "49%", height: 40, marginBottom: 5 },
 });

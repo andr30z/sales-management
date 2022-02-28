@@ -13,11 +13,14 @@ import { MotiView, useAnimationState } from "moti";
 import { styles } from "./Styles";
 import { DateFnsService } from "@ui-kitten/date-fns";
 import { FilterFields } from "../../Interfaces/FilterFields";
+import { brazilianDateService } from "../../Utils";
 
-const dateFnsService = new DateFnsService();
+
 interface SalesListingFiltersProps {
+  onFilter: () => void;
   filterFields: FilterFields;
   setFilterFields: Dispatch<SetStateAction<FilterFields>>;
+  onReset: () => void;
 }
 /**
  *
@@ -26,6 +29,8 @@ interface SalesListingFiltersProps {
 export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
   filterFields,
   setFilterFields,
+  onFilter,
+  onReset,
 }) => {
   const theme = useTheme();
   const toggleAnimationState = useAnimationState({
@@ -34,7 +39,7 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
       height: 45,
     },
     open: {
-      height: 230,
+      height: 270,
     },
   });
 
@@ -45,11 +50,16 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
   };
   const onChange = (key: string) => (value: string) =>
     setFilterFields((past) => ({ ...past, [key]: value }));
-  const { clientName, finalDate, initialDate } = filterFields;
+  const { clientName, finalDate, initialDate, saleName } = filterFields;
   return (
     <Container marginTop={30} width="100%">
       <MotiView style={styles.toggleContainer} state={toggleAnimationState}>
-        <Container justifyContent="center" flex={null as any} alignItems="center" flexDirection="row">
+        <Container
+          justifyContent="center"
+          flex={null as any}
+          alignItems="center"
+          flexDirection="row"
+        >
           <Text style={{ textAlign: "center" }} category="h4" status="primary">
             Filtros
           </Text>
@@ -61,6 +71,12 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
             size={34}
           />
         </Container>
+        <Input
+          style={styles.input}
+          placeholder="Nome da venda"
+          value={saleName}
+          onChangeText={onChange("saleName")}
+        />
         <Input
           style={styles.input}
           placeholder="Nome do cliente"
@@ -75,21 +91,34 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
         >
           <Datepicker
             style={styles.calendarInput}
-            dateService={dateFnsService as any}
+            dateService={brazilianDateService as any}
             date={initialDate}
             placeholder="Data inicial"
             onSelect={onChange("initialDate")}
           />
           <Datepicker
             style={styles.calendarInput}
-            dateService={dateFnsService as any}
+            dateService={brazilianDateService as any}
             date={finalDate}
             placeholder="Data final"
             onSelect={onChange("finalDate")}
           />
         </Container>
-        <Button style={{ width: "100%", marginBottom: 10 }}>Filtrar</Button>
-        <Divider style={{ backgroundColor: theme["color-primary-default"] }} />
+
+        <Container flexDirection="row" justifyContent="space-between">
+          <Button size="small" style={styles.btns} onPress={onFilter}>
+            Filtrar
+          </Button>
+          <Button
+            onPress={onReset}
+            size="small"
+            appearance="outline"
+            style={styles.btns}
+          >
+            Resetar
+          </Button>
+        </Container>
+        <Divider />
       </MotiView>
     </Container>
   );
