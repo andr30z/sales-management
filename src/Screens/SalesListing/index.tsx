@@ -2,13 +2,15 @@ import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Button, Text, useTheme } from "@ui-kitten/components";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { FlatList, View } from "react-native";
+import React, { useState } from "react";
+import { View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import { Container } from "../../Components/Container";
 import { SalesListingFilters } from "../../Components/SalesListingFilters";
 import { SalesListingItem } from "../../Components/SalesListingItem";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
 import { useBoolean } from "../../Hooks";
+import { FilterFields } from "../../Interfaces/FilterFields";
 import {
   MainStackRoutesTypes,
   MAIN_STACK_ROUTES,
@@ -25,9 +27,14 @@ export const SalesListing: React.FC = () => {
   } = useSalesInfoContext();
   const { value: isInLongPressMode, setTrue } = useBoolean();
   const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
-  console.log(isInLongPressMode);
   const theme = useTheme();
   const primaryTheme = theme["color-primary-default"];
+  const [filterFields, setFilterFields] = useState<FilterFields>({
+    clientName: "",
+    initialDate: "",
+    finalDate: "",
+  });
+
   return (
     <View
       style={{
@@ -73,7 +80,12 @@ export const SalesListing: React.FC = () => {
         renderItem={(props) => (
           <SalesListingItem onLongPress={setTrue} {...props} />
         )}
-        ListHeaderComponent={<SalesListingFilters />}
+        ListHeaderComponent={
+          <SalesListingFilters
+            filterFields={filterFields}
+            setFilterFields={setFilterFields}
+          />
+        }
       />
     </View>
   );
