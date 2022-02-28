@@ -5,6 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { FlatList, View } from "react-native";
 import { Container } from "../../Components/Container";
+import { SalesListingFilters } from "../../Components/SalesListingFilters";
 import { SalesListingItem } from "../../Components/SalesListingItem";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
 import { useBoolean } from "../../Hooks";
@@ -26,17 +27,18 @@ export const SalesListing: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
   console.log(isInLongPressMode);
   const theme = useTheme();
+  const primaryTheme = theme["color-primary-default"];
   return (
     <View
       style={{
-        backgroundColor: theme["color-primary-default"],
+        backgroundColor: primaryTheme,
         flex: 1,
         flexDirection: "column",
       }}
     >
-      <StatusBar translucent backgroundColor={theme["color-primary-active"]} />
+      <StatusBar translucent backgroundColor={primaryTheme} />
       <Container
-        backgroundColor={theme["color-primary-default"]}
+        backgroundColor={primaryTheme}
         minHeight={130}
         flex={null as any}
         width="100%"
@@ -71,7 +73,7 @@ export const SalesListing: React.FC = () => {
         renderItem={(props) => (
           <SalesListingItem onLongPress={setTrue} {...props} />
         )}
-        ListHeaderComponent={<View style={{ marginTop: 30 }} />}
+        ListHeaderComponent={<SalesListingFilters />}
       />
     </View>
   );

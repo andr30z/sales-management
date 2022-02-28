@@ -44,7 +44,7 @@ export const SalesListingItem: React.FC<SalesListingItemProps> = ({
       <TouchableOpacity
         onPress={() => null}
         onLongPress={onLongPress}
-        delayLongPress={1000}
+        delayLongPress={800}
         style={styles.touchable}
       >
         <Container height="100%" width="100%" flexDirection="column">
