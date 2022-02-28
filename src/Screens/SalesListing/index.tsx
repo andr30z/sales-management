@@ -1,23 +1,30 @@
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Button, Card, Text, useTheme } from "@ui-kitten/components";
-import { formatRelative } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { Button, Text, useTheme } from "@ui-kitten/components";
+import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { FlatList, View } from "react-native";
 import { Container } from "../../Components/Container";
+import { SalesListingItem } from "../../Components/SalesListingItem";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
+import { useBoolean } from "../../Hooks";
 import {
   MainStackRoutesTypes,
   MAIN_STACK_ROUTES,
 } from "../../Routes/MainStack/Types";
 import { styles } from "./Styles";
+
+/**
+ *
+ * @author andr30z
+ **/
 export const SalesListing: React.FC = () => {
   const {
     salesInfo: { sales },
   } = useSalesInfoContext();
+  const { value: isInLongPressMode, setTrue } = useBoolean();
   const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
-  console.log(sales);
+  console.log(isInLongPressMode);
   const theme = useTheme();
   return (
     <View
@@ -27,6 +34,7 @@ export const SalesListing: React.FC = () => {
         flexDirection: "column",
       }}
     >
+      <StatusBar translucent backgroundColor={theme["color-primary-active"]} />
       <Container
         backgroundColor={theme["color-primary-default"]}
         minHeight={130}
@@ -60,34 +68,9 @@ export const SalesListing: React.FC = () => {
         style={styles.list}
         contentContainerStyle={styles.contentContainerStyle}
         indicatorStyle="black"
-        renderItem={({ index, item: { name, date } }) => {
-          const isEven = (index + 1) % 2 === 0;
-          return (
-            <Card
-              appearance="outline"
-              style={[
-                styles.card,
-                isEven && {
-                  borderColor: theme["color-primary-default"],
-                },
-              ]}
-            >
-              <Container
-                height="100%"
-                width="100%"
-                justifyContent="center"
-                flexDirection="column"
-              >
-                <Text category="s1">{name}</Text>
-                <Text category="s2">
-                  {formatRelative(new Date(date), new Date(), {
-                    locale: ptBR,
-                  })}
-                </Text>
-              </Container>
-            </Card>
-          );
-        }}
+        renderItem={(props) => (
+          <SalesListingItem onLongPress={setTrue} {...props} />
+        )}
         ListHeaderComponent={<View style={{ marginTop: 30 }} />}
       />
     </View>
