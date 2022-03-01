@@ -38,6 +38,7 @@ export enum ActionsTypes {
   ADD_CLIENT,
   DELETE_CLIENT,
   EDIT_CLIENT,
+  DELETE_MANY_SALES,
 }
 
 export interface Action {
@@ -79,6 +80,18 @@ const deleteItem = (
   return updateStorage({ ...state, [key]: array });
 };
 
+const deleteMany = (
+  key: keyof SalesManagementState,
+  state: SalesManagementState,
+  payload: Array<string>
+) => {
+  const array = [...state[key]];
+  return updateStorage({
+    ...state,
+    [key]: array.filter((x) => !payload.includes(x.id)),
+  });
+};
+
 export const INITIAL_STATE: SalesManagementState = {
   clients: [],
   sales: [],
@@ -97,6 +110,8 @@ export const reducer = (
       return addToStateArray("sales", state, payload);
     case ActionsTypes.DELETE_SALES:
       return deleteItem("sales", state, payload);
+    case ActionsTypes.DELETE_MANY_SALES:
+      return deleteMany("sales", state, payload);
     default:
       return state;
   }

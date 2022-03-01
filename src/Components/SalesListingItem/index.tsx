@@ -1,7 +1,7 @@
 import { Card, Text, useTheme } from "@ui-kitten/components";
 import { formatRelative } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { useMemo } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Sales } from "../../Context/SalesInfo/Reducer";
@@ -9,10 +9,14 @@ import { useClient } from "../../Hooks/useClient";
 import { Container } from "../Container";
 import { styles } from "./Styles";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useCommonThemeColors } from "../../Hooks/useCommonThemeColors";
 interface SalesListingItemProps {
   item: Sales;
   index: number;
   onLongPress: () => void;
+  selectedItems: Array<string>;
+  setSelectedItems: Dispatch<SetStateAction<Array<string>>>;
+  isInDeleteMode: boolean;
 }
 
 /**
@@ -21,13 +25,20 @@ interface SalesListingItemProps {
  **/
 export const SalesListingItem: React.FC<SalesListingItemProps> = ({
   item,
-  index,
+  // index,
   onLongPress,
+  selectedItems,
+  isInDeleteMode,
+  setSelectedItems,
 }) => {
   const { client } = useClient(item.clientId);
+  const selectedPos = useMemo(
+    () => selectedItems.findIndex((id) => id === item.id),
+    [selectedItems]
+  );
+  const isSelected = selectedPos > -1;
   const { name } = item;
-  const theme = useTheme();
-  const isEven = (index + 1) % 2 === 0;
+  const { dangerColor, theme } = useCommonThemeColors();
   const date = useMemo(
     () =>
       formatRelative(new Date(item.date), new Date(), {
@@ -36,19 +47,32 @@ export const SalesListingItem: React.FC<SalesListingItemProps> = ({
     [item.date]
   );
 
+  const onPressDeleteMode = () => {
+    if (!isSelected) return setSelectedItems((past) => [...past, item.id]);
+    setSelectedItems((past) => {
+      const list = [...past];
+      list.splice(selectedPos, 1);
+      return list;
+    });
+  };
+
+  const onPress = () => {};
+  const resolveTextColor = (optionalTextColor="basic")=>isSelected?"control":optionalTextColor;
+
   return (
     <Container
       {...styles.card}
-      borderColor={isEven ? theme["color-primary-default"] : "#c3c3c3"}
+      backgroundColor={isSelected ? theme["color-danger-400"] : undefined}
+      borderColor={"#c3c3c3"}
     >
       <TouchableOpacity
-        onPress={() => null}
+        onPress={isInDeleteMode ? onPressDeleteMode : onPress}
         onLongPress={onLongPress}
-        delayLongPress={800}
+        delayLongPress={400}
         style={styles.touchable}
       >
         <Container height="100%" width="100%" flexDirection="column">
-          <Text numberOfLines={1} status="primary" category="s1">
+          <Text numberOfLines={1} status={resolveTextColor("primary")} category="s1">
             {name}
           </Text>
           <Container
@@ -57,17 +81,27 @@ export const SalesListingItem: React.FC<SalesListingItemProps> = ({
             flexDirection="row"
             alignItems="baseline"
           >
-            <Text numberOfLines={1} style={styles.textItem} category="c2">
+            <Text
+              status={resolveTextColor()}
+              numberOfLines={1}
+              style={styles.textItem}
+              category="c2"
+            >
               {date}
             </Text>
-            <Text numberOfLines={1} style={styles.textItem} category="c1">
+            <Text
+              status={resolveTextColor()}
+              numberOfLines={1}
+              style={styles.textItem}
+              category="c1"
+            >
               R$: {item.value}
             </Text>
             <Text
               numberOfLines={1}
               style={styles.textItem}
               category="c1"
-              status="primary"
+              status={resolveTextColor("primary")}
             >
               {client?.name || ""}
             </Text>

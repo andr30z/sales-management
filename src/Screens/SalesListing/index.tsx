@@ -1,6 +1,7 @@
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Button, Text, useTheme } from "@ui-kitten/components";
+import { Button, Text } from "@ui-kitten/components";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
@@ -9,8 +10,9 @@ import { Container } from "../../Components/Container";
 import { SalesListingFilters } from "../../Components/SalesListingFilters";
 import { SalesListingItem } from "../../Components/SalesListingItem";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
-import { Sales } from "../../Context/SalesInfo/Reducer";
+import { ActionsTypes } from "../../Context/SalesInfo/Reducer";
 import { getClient, useBoolean } from "../../Hooks";
+import { useCommonThemeColors } from "../../Hooks/useCommonThemeColors";
 import { FilterFields } from "../../Interfaces/FilterFields";
 import {
   MainStackRoutesTypes,
@@ -31,20 +33,32 @@ const filterInitialState = {
 export const SalesListing: React.FC = () => {
   const {
     salesInfo: { sales, clients },
+    dispatcher,
   } = useSalesInfoContext();
-  const { value: isInLongPressMode, setTrue } = useBoolean();
+  const { value: isInLongPressMode, setTrue, setFalse } = useBoolean();
+  const [selectedItems, setSelectedItems] = useState<Array<string>>([]);
   const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
-  const theme = useTheme();
-  const primaryTheme = theme["color-primary-default"];
+  const {
+    primaryColor: primaryTheme,
+    dangerColor,
+    warningColor,
+  } = useCommonThemeColors();
   const [filterFields, setFilterFields] =
     useState<FilterFields>(filterInitialState);
+  const [filteredSales, setFilteredSales] = useState(sales);
   useEffect(() => {
     onFilter();
   }, [sales]);
+  useEffect(() => {
+    if (!isInLongPressMode) clearSelected();
+  }, [isInLongPressMode]);
+  const clearSelected = () => {
+    setSelectedItems([]);
+  };
 
-  const [filteredSales, setFilteredSales] = useState(sales);
   const { clientName, finalDate, initialDate, saleName } = filterFields;
   const onFilter = () => {
+    clearSelected();
     setFilteredSales(
       sales.filter(({ name, clientId, date }) => {
         let checkDate =
@@ -63,8 +77,21 @@ export const SalesListing: React.FC = () => {
     );
   };
   const onReset = () => {
+    clearSelected();
     setFilterFields(filterInitialState);
     setFilteredSales(sales);
+  };
+
+  const onSelectAll = () => {
+    setSelectedItems(filteredSales.map(({ id }) => id));
+  };
+
+  const onDelete = () => {
+    setFalse();
+    dispatcher({
+      payload: selectedItems,
+      type: ActionsTypes.DELETE_MANY_SALES,
+    });
   };
   return (
     <View
@@ -109,15 +136,56 @@ export const SalesListing: React.FC = () => {
         contentContainerStyle={styles.contentContainerStyle}
         indicatorStyle="black"
         renderItem={(props) => (
-          <SalesListingItem onLongPress={setTrue} {...props} />
+          <SalesListingItem
+            isInDeleteMode={isInLongPressMode}
+            selectedItems={selectedItems}
+            setSelectedItems={setSelectedItems}
+            onLongPress={setTrue}
+            {...props}
+          />
         )}
         ListHeaderComponent={
-          <SalesListingFilters
-            filterFields={filterFields}
-            setFilterFields={setFilterFields}
-            onFilter={onFilter}
-            onReset={onReset}
-          />
+          <>
+            <SalesListingFilters
+              filterFields={filterFields}
+              setFilterFields={setFilterFields}
+              onFilter={onFilter}
+              onReset={onReset}
+            />
+            {isInLongPressMode && (
+              <Container
+                flexDirection="row"
+                justifyContent="space-around"
+                width="100%"
+                marginTop={10}
+              >
+                <AntDesign
+                  name="close"
+                  size={30}
+                  color={primaryTheme}
+                  onPress={setFalse}
+                />
+                <AntDesign
+                  onPress={onDelete}
+                  name="delete"
+                  size={30}
+                  color={dangerColor}
+                />
+                <MaterialIcons
+                  name="check-box"
+                  size={32}
+                  onPress={onSelectAll}
+                  color={warningColor}
+                />
+                <MaterialIcons
+                  name="check-box-outline-blank"
+                  size={32}
+                  onPress={clearSelected}
+                  color={warningColor}
+                />
+              </Container>
+            )}
+          </>
         }
       />
     </View>

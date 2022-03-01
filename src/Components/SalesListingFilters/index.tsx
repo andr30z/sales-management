@@ -14,7 +14,7 @@ import { styles } from "./Styles";
 import { DateFnsService } from "@ui-kitten/date-fns";
 import { FilterFields } from "../../Interfaces/FilterFields";
 import { brazilianDateService } from "../../Utils";
-
+import { Pressable } from "react-native";
 
 interface SalesListingFiltersProps {
   onFilter: () => void;
@@ -63,13 +63,14 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
           <Text style={{ textAlign: "center" }} category="h4" status="primary">
             Filtros
           </Text>
-          <AntDesign
-            name="eye"
-            style={{ marginLeft: 10 }}
-            color={theme["color-primary-default"]}
-            onPress={onToggle}
-            size={34}
-          />
+          <Pressable onPress={onToggle}>
+            <AntDesign
+              name="eye"
+              style={{ marginLeft: 10 }}
+              color={theme["color-primary-default"]}
+              size={34}
+            />
+          </Pressable>
         </Container>
         <Input
           style={styles.input}
