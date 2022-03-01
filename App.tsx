@@ -1,24 +1,25 @@
-import { StatusBar } from "expo-status-bar";
+import * as eva from "@eva-design/eva";
+import { ApplicationProvider } from "@ui-kitten/components";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-
+import { SafeAreaView } from "react-native-safe-area-context";
+import { SalesInfo } from "./src/Context/SalesInfo";
+import { MainStack } from "./src/Routes/MainStack";
+import { default as theme } from "./theme.json";
+/**
+ *
+ * @author andr30z
+ **/
 export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <StatusBar style="auto" />
-      </View>
+      <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
+        <SalesInfo>
+          <SafeAreaView style={{ flex: 1 }}>
+            <MainStack />
+          </SafeAreaView>
+        </SalesInfo>
+      </ApplicationProvider>
     </GestureHandlerRootView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
