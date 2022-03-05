@@ -49,8 +49,6 @@ export const ClientsForm: React.FC<
       >
         <Formik<Omit<Client, "id" | "createdAt">>
           onSubmit={(values) => {
-            console.log(values);
-            console.log(routeOnSubmit, values);
             dispatcher({ type: ActionsTypes.ADD_CLIENT, payload: values });
             if (routeOnSubmit)
               navigation.navigate(routeOnSubmit as any, {
@@ -69,6 +67,7 @@ export const ClientsForm: React.FC<
             values: { name, observation, phoneNumber },
             handleSubmit,
             handleChange,
+            setFieldValue,
           }) => (
             <Container
               backgroundColor="#fff"
@@ -89,16 +88,25 @@ export const ClientsForm: React.FC<
               <Input
                 style={[globalStyles.input, styles.marginY]}
                 value={name}
-                placeholder="Nome do cliente"
+                label="Nome do cliente"
+                placeholder="Ex: Zezinho 123"
                 onChangeText={handleChange("name")}
               />
               <Input
+                label="Telefone"
                 style={[globalStyles.input, styles.marginY]}
                 value={phoneNumber}
-                placeholder="Telefone do cliente"
-                onChangeText={handleChange("phoneNumber")}
+                keyboardType="number-pad"
+                placeholder="5561999999999"
+                onChangeText={(text) =>
+                  setFieldValue(
+                    "phoneNumber",
+                    text.startsWith("55") ? text : "55" + text
+                  )
+                }
               />
               <Input
+                label="Observação"
                 style={[globalStyles.textArea, styles.marginY]}
                 value={observation}
                 numberOfLines={4}

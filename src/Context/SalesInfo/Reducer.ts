@@ -7,7 +7,21 @@ export enum SalesTypes {
   BIJOU,
   OTHERS,
 }
-export interface Sales {
+
+export enum SaleStatusType {
+  PAID,
+  UNPAID,
+  OVERDUE_PAYMENT,
+  CANCELED,
+  REFOUNDED,
+}
+
+export const reversedSalesTypes = {
+  [SalesTypes.BIJOU]: "Bijou",
+  [SalesTypes.JEWELRY]: "Joias",
+  [SalesTypes.OTHERS]: "Outros",
+};
+export interface Sale {
   name: string;
   id: string;
   description: string;
@@ -16,6 +30,7 @@ export interface Sales {
   clientId: string;
   types: Array<SalesTypes>;
   quantity: number;
+  status: SaleStatusType;
   createdAt: string;
 }
 
@@ -27,7 +42,7 @@ export interface Client {
   createdAt: string;
 }
 export interface SalesManagementState {
-  sales: Array<Sales>;
+  sales: Array<Sale>;
   clients: Array<Client>;
 }
 
@@ -38,6 +53,7 @@ export enum ActionsTypes {
   ADD_CLIENT,
   DELETE_CLIENT,
   EDIT_CLIENT,
+  EDIT_SALE,
   DELETE_MANY_SALES,
 }
 
@@ -70,13 +86,28 @@ const addToStateArray = (
   });
 };
 
+const editItemInArray = (
+  key: keyof SalesManagementState,
+  state: SalesManagementState,
+  payload: any
+) => {
+  const array = [...state[key]];
+  const position = array.findIndex((x) => x.id === payload.id);
+  array[position] = payload;
+  return updateStorage({
+    ...state,
+    [key]: array,
+  });
+};
+
 const deleteItem = (
   key: keyof SalesManagementState,
   state: SalesManagementState,
   payload: any
 ) => {
   const array = [...state[key]];
-  array.splice(payload as number, 1);
+  const pos = array.findIndex((x) => x.id === payload);
+  array.splice(pos, 1);
   return updateStorage({ ...state, [key]: array });
 };
 
@@ -106,6 +137,10 @@ export const reducer = (
       return payload;
     case ActionsTypes.ADD_CLIENT:
       return addToStateArray("clients", state, payload);
+    case ActionsTypes.EDIT_CLIENT:
+      return editItemInArray("clients", state, payload);
+    case ActionsTypes.EDIT_SALE:
+      return editItemInArray("sales", state, payload);
     case ActionsTypes.ADD_SALES:
       return addToStateArray("sales", state, payload);
     case ActionsTypes.DELETE_SALES:

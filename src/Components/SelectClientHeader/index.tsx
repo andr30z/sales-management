@@ -1,8 +1,9 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Button, Input, Text } from "@ui-kitten/components";
 import React, { Dispatch, SetStateAction, useEffect } from "react";
+import { useCommonThemeColors } from "../../Hooks";
 import {
   MainStackRoutesTypes,
   MAIN_STACK_ROUTES,
@@ -19,6 +20,7 @@ export const SelectClientHeader = React.memo<{
     keyof MainStackRoutesTypes
   >;
 }>(({ clientName, setClientName, setFalse, navigation }) => {
+  const { warningColor } = useCommonThemeColors();
   return (
     <Container
       flexDirection="column"
@@ -33,6 +35,12 @@ export const SelectClientHeader = React.memo<{
         justifyContent="space-evenly"
         alignItems="center"
       >
+        <AntDesign
+          onPress={setFalse}
+          name="closecircle"
+          size={35}
+          color={warningColor}
+        />
         <Text category="h5" status="warning">
           Selecione o cliente
         </Text>

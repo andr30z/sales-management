@@ -4,14 +4,21 @@ import { ptBR } from "date-fns/locale";
 import React, { Dispatch, SetStateAction } from "react";
 import { useMemo } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Sales } from "../../Context/SalesInfo/Reducer";
+import { Sale } from "../../Context/SalesInfo/Reducer";
 import { useClient } from "../../Hooks/useClient";
 import { Container } from "../Container";
 import { styles } from "./Styles";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useCommonThemeColors } from "../../Hooks/useCommonThemeColors";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import {
+  MainStackRoutesTypes,
+  MAIN_STACK_ROUTES,
+} from "../../Routes/MainStack/Types";
+import { useFormatRelativeDate } from "../../Hooks";
 interface SalesListingItemProps {
-  item: Sales;
+  item: Sale;
   index: number;
   onLongPress: () => void;
   selectedItems: Array<string>;
@@ -36,16 +43,11 @@ export const SalesListingItem: React.FC<SalesListingItemProps> = ({
     () => selectedItems.findIndex((id) => id === item.id),
     [selectedItems]
   );
+  const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
   const isSelected = selectedPos > -1;
   const { name } = item;
-  const { dangerColor, theme } = useCommonThemeColors();
-  const date = useMemo(
-    () =>
-      formatRelative(new Date(item.date), new Date(), {
-        locale: ptBR,
-      }),
-    [item.date]
-  );
+  const { theme } = useCommonThemeColors();
+  const date = useFormatRelativeDate(item.date);
 
   const onPressDeleteMode = () => {
     if (!isSelected) return setSelectedItems((past) => [...past, item.id]);
@@ -56,8 +58,13 @@ export const SalesListingItem: React.FC<SalesListingItemProps> = ({
     });
   };
 
-  const onPress = () => {};
-  const resolveTextColor = (optionalTextColor="basic")=>isSelected?"control":optionalTextColor;
+  const onPress = () => {
+    navigation.navigate(MAIN_STACK_ROUTES.SALES_DETAILS, {
+      saleId: item.id,
+    });
+  };
+  const resolveTextColor = (optionalTextColor = "basic") =>
+    isSelected ? "control" : optionalTextColor;
 
   return (
     <Container
@@ -72,7 +79,11 @@ export const SalesListingItem: React.FC<SalesListingItemProps> = ({
         style={styles.touchable}
       >
         <Container height="100%" width="100%" flexDirection="column">
-          <Text numberOfLines={1} status={resolveTextColor("primary")} category="s1">
+          <Text
+            numberOfLines={1}
+            status={resolveTextColor("primary")}
+            category="s1"
+          >
             {name}
           </Text>
           <Container
