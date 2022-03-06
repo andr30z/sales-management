@@ -3,7 +3,6 @@ import {
   Datepicker,
   Divider,
   Input,
-  Text,
   useTheme,
 } from "@ui-kitten/components";
 import React, { Dispatch, SetStateAction } from "react";
@@ -16,6 +15,7 @@ import { FilterFields } from "../../Interfaces/FilterFields";
 import { brazilianDateService } from "../../Utils";
 import { Pressable } from "react-native";
 import { KittenSelect } from "../KittenSelect";
+import { Text } from "../Text";
 
 interface SalesListingFiltersProps {
   onFilter: () => void;
@@ -62,7 +62,12 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
           alignItems="center"
           flexDirection="row"
         >
-          <Text style={{ textAlign: "center" }} category="h4" status="primary">
+          <Text
+            style={{ textAlign: "center" }}
+            fontFamily="subtitles"
+            category="h5"
+            status="primary"
+          >
             Filtros
           </Text>
           <Pressable onPress={onToggle}>
@@ -100,7 +105,7 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
             "Reembolsada",
           ]}
           onChange={(index) => {
-            console.log(index)
+            console.log(index);
             if (Array.isArray(index)) return;
             setFilterFields((past) => ({ ...past, saleStatus: index.row }));
           }}

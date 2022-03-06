@@ -1,5 +1,4 @@
-import { Button, Datepicker, Input, Text } from "@ui-kitten/components";
-import { DateFnsService } from "@ui-kitten/date-fns";
+import { Button, Datepicker, Input } from "@ui-kitten/components";
 import { Formik } from "formik";
 import React from "react";
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
@@ -25,6 +24,7 @@ import { brazilianDateService } from "../../Utils";
 import { StatusBar } from "expo-status-bar";
 import { useCommonThemeColors } from "../../Hooks";
 import { useToast } from "react-native-toast-notifications";
+import { Text } from "../../Components/Text";
 
 const validationSchema = Yup.object().shape({
   date: Yup.date().required("A data da venda é requerida."),
@@ -32,7 +32,7 @@ const validationSchema = Yup.object().shape({
   types: Yup.array(Yup.mixed().oneOf(Object.values(SalesTypes))),
   description: Yup.string(),
   clientId: Yup.string().required(),
-  value: Yup.number(),
+  value: Yup.number().required(),
   quantity: Yup.number().min(1),
 });
 
@@ -63,6 +63,7 @@ export const SalesForm: React.FC<
       >
         <Formik<Omit<Sale, "id" | "createdAt">>
           onSubmit={(values) => {
+            console.log(formValues)
             dispatcher({
               type: formValues?.id
                 ? ActionsTypes.EDIT_SALE
@@ -102,6 +103,7 @@ export const SalesForm: React.FC<
             handleSubmit,
             handleChange,
             setFieldValue,
+            errors,
           }) => (
             <Container
               backgroundColor="#fff"
@@ -110,10 +112,12 @@ export const SalesForm: React.FC<
               justifyContent="center"
               flexDirection="column"
             >
+              {console.log(errors)}
               <Container center minHeight={100}>
                 <Text
-                  category="h2"
+                  category="h1"
                   status="primary"
+                  fontFamily="heading"
                   style={globalStyles.textCenter}
                 >
                   Cadastro de Vendas

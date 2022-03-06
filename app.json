@@ -15,8 +15,7 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffff"
-      },
-      "package": "com.max.management"
+      }
     },
     "assetBundlePatterns": ["**/*"]
   }

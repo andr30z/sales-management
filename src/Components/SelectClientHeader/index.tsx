@@ -19,54 +19,64 @@ export const SelectClientHeader = React.memo<{
     MainStackRoutesTypes,
     keyof MainStackRoutesTypes
   >;
-}>(({ clientName, setClientName, setFalse, navigation }) => {
-  const { warningColor } = useCommonThemeColors();
-  return (
-    <Container
-      flexDirection="column"
-      justifyContent="center"
-      marginBottom={15}
-      paddingHorizontal={15}
-    >
+  propsOnNavigateBack?: any;
+}>(
+  ({
+    clientName,
+    setClientName,
+    setFalse,
+    navigation,
+    propsOnNavigateBack,
+  }) => {
+    const { warningColor } = useCommonThemeColors();
+    return (
       <Container
-        width="100%"
-        flexDirection="row"
-        padding={15}
-        justifyContent="space-evenly"
-        alignItems="center"
+        flexDirection="column"
+        justifyContent="center"
+        marginBottom={15}
+        paddingHorizontal={15}
       >
-        <AntDesign
-          onPress={setFalse}
-          name="closecircle"
-          size={35}
-          color={warningColor}
-        />
-        <Text category="h5" status="warning">
-          Selecione o cliente
-        </Text>
-        <Button
+        <Container
+          width="100%"
+          flexDirection="row"
+          padding={15}
+          justifyContent="space-evenly"
+          alignItems="center"
+        >
+          <AntDesign
+            onPress={setFalse}
+            name="closecircle"
+            size={35}
+            color={warningColor}
+          />
+          <Text category="h5" status="warning">
+            Selecione o cliente
+          </Text>
+          <Button
+            size="medium"
+            status="warning"
+            style={styles.btnAddPerson}
+            onPress={() => {
+              setFalse();
+              navigation.navigate(MAIN_STACK_ROUTES.CLIENTS_FORM, {
+                routeOnSubmit: MAIN_STACK_ROUTES.SALES_FORM,
+                propsOnNavigateBack,
+              });
+            }}
+            accessoryLeft={() => (
+              <Ionicons name="person-add-sharp" size={18} color="#fff" />
+            )}
+          />
+        </Container>
+        <Input
+          style={{ backgroundColor: "#fff" }}
+          placeholder="Pesquisar por nome"
+          value={clientName}
+          onChangeText={(text) => setClientName(text)}
           size="medium"
           status="warning"
-          style={styles.btnAddPerson}
-          onPress={() => {
-            setFalse();
-            navigation.navigate(MAIN_STACK_ROUTES.CLIENTS_FORM, {
-              routeOnSubmit: MAIN_STACK_ROUTES.SALES_FORM,
-            });
-          }}
-          accessoryLeft={() => (
-            <Ionicons name="person-add-sharp" size={18} color="#fff" />
-          )}
         />
       </Container>
-      <Input
-        style={{ backgroundColor: "#fff" }}
-        placeholder="Pesquisar por nome"
-        value={clientName}
-        onChangeText={(text) => setClientName(text)}
-        size="medium"
-        status="warning"
-      />
-    </Container>
-  );
-});
+    );
+  }
+);

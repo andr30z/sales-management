@@ -81,7 +81,7 @@ export const SelectClient: React.FC<SelectClientProps> = ({
         value={client?.name || ""}
         style={styles.input}
         disabled
-        textStyle={{color:"black"}}
+        textStyle={{ color: "black" }}
         size="small"
         placeholder="Selecione o cliente"
         accessoryRight={
@@ -112,6 +112,7 @@ export const SelectClient: React.FC<SelectClientProps> = ({
                 clientName={clientName}
                 setClientName={setClientName}
                 setFalse={setFalse}
+                propsOnNavigateBack={params.formValues}
               />
             }
             data={data}

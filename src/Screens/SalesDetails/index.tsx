@@ -1,6 +1,5 @@
 import { Feather, FontAwesome, Entypo, Ionicons } from "@expo/vector-icons";
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack";
-import { Text } from "@ui-kitten/components";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { Linking, Pressable } from "react-native";
@@ -30,6 +29,7 @@ import { ConfirmActionModal } from "../../Components/ConfirmActionModal";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
 import { useToast } from "react-native-toast-notifications";
 import { format } from "date-fns";
+import { Text } from "../../Components/Text";
 
 export const SalesDetails: React.FC<
   StackScreenProps<MainStackRoutesTypes, MAIN_STACK_ROUTES.SALES_DETAILS>
@@ -131,8 +131,9 @@ export const SalesDetails: React.FC<
               numberOfLines={2}
               status="warning"
               ellipsizeMode="tail"
+              fontFamily="heading"
               style={{ textAlign: "center" }}
-              category="h4"
+              category="h1"
             >
               {name}
             </Text>
@@ -155,16 +156,16 @@ export const SalesDetails: React.FC<
         end={[1, 0]}
       >
         <Container width="100%" flexDirection="column" flex={1}>
-          <Text ellipsizeMode="tail" category="h5" status="control">
+          <Text ellipsizeMode="tail" category="h6" status="control">
             Cliente: {client.name}
           </Text>
           <Pressable onPress={copyToClipboard}>
             <Text
               style={styles.linearGradientPhoneNumber}
-              category="h6"
+              category="p2"
               status="control"
             >
-              {clientNumber} <Feather name="copy" size={16} color="#fff" />
+              +{clientNumber} <Feather name="copy" size={16} color="#fff" />
             </Text>
           </Pressable>
         </Container>
