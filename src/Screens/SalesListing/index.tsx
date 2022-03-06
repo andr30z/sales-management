@@ -1,7 +1,7 @@
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Button, Text } from "@ui-kitten/components";
+import { Button } from "@ui-kitten/components";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
@@ -9,6 +9,7 @@ import { FlatList } from "react-native-gesture-handler";
 import { Container } from "../../Components/Container";
 import { SalesListingFilters } from "../../Components/SalesListingFilters";
 import { SalesListingItem } from "../../Components/SalesListingItem";
+import { Text } from "../../Components/Text";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
 import { ActionsTypes } from "../../Context/SalesInfo/Reducer";
 import { getClient, useBoolean } from "../../Hooks";
@@ -19,12 +20,14 @@ import {
   MAIN_STACK_ROUTES,
 } from "../../Routes/MainStack/Types";
 import { filterByName, isDateInRange } from "../../Utils";
+import EmptyImage from "../../Illustrations/Empty-bro.svg";
 import { styles } from "./Styles";
 const filterInitialState = {
   clientName: "",
   initialDate: "",
   finalDate: "",
   saleName: "",
+  saleStatus: "" as any,
 };
 /**
  *
@@ -56,22 +59,29 @@ export const SalesListing: React.FC = () => {
     setSelectedItems([]);
   };
 
-  const { clientName, finalDate, initialDate, saleName } = filterFields;
+  const { clientName, finalDate, initialDate, saleName, saleStatus } =
+    filterFields;
   const onFilter = () => {
     clearSelected();
     setFilteredSales(
-      sales.filter(({ name, clientId, date }) => {
+      sales.filter(({ name, clientId, date, status }) => {
         let checkDate =
           finalDate && initialDate
             ? isDateInRange(initialDate, finalDate, date)
             : true;
+        console.log(saleStatus);
+        const currentStatus =
+          saleStatus === 0 || saleStatus === ("" as any)
+            ? true
+            : status === saleStatus - 1;
         return (
           filterByName(name, saleName) &&
           filterByName(
             getClient(clients || [], clientId)?.name || "",
             clientName
           ) &&
-          checkDate
+          checkDate &&
+          currentStatus
         );
       })
     );
@@ -114,7 +124,7 @@ export const SalesListing: React.FC = () => {
           alignItems="center"
           justifyContent="space-evenly"
         >
-          <Text category={"h1"} status="control">
+          <Text fontFamily="heading" style={{ fontSize: 50 }} status="control">
             Vendas
           </Text>
           <Button
@@ -126,7 +136,11 @@ export const SalesListing: React.FC = () => {
               navigation.navigate(MAIN_STACK_ROUTES.SALES_FORM, {})
             }
           >
-            Adicionar
+            {(props) => (
+              <Text {...props} style={undefined} category="h6" status="control">
+                Adicionar
+              </Text>
+            )}
           </Button>
         </Container>
       </Container>
@@ -144,48 +158,67 @@ export const SalesListing: React.FC = () => {
             {...props}
           />
         )}
+        ListEmptyComponent={
+          <Container
+            flexDirection="column"
+            alignItems="center"
+            flex={null as any}
+          >
+            <EmptyImage height="450" width="100%" />
+            <Text
+              fontFamily="subtitles"
+              category="p1"
+              status="primary"
+              style={{ textAlign: "center" }}
+            >
+              Nenhuma venda cadastrada.
+            </Text>
+          </Container>
+        }
         ListHeaderComponent={
-          <>
-            <SalesListingFilters
-              filterFields={filterFields}
-              setFilterFields={setFilterFields}
-              onFilter={onFilter}
-              onReset={onReset}
-            />
-            {isInLongPressMode && (
-              <Container
-                flexDirection="row"
-                justifyContent="space-around"
-                width="100%"
-                marginTop={10}
-              >
-                <AntDesign
-                  name="close"
-                  size={30}
-                  color={primaryTheme}
-                  onPress={setFalse}
-                />
-                <AntDesign
-                  onPress={onDelete}
-                  name="delete"
-                  size={30}
-                  color={dangerColor}
-                />
-                <MaterialIcons
-                  name="check-box"
-                  size={32}
-                  onPress={onSelectAll}
-                  color={warningColor}
-                />
-                <MaterialIcons
-                  name="check-box-outline-blank"
-                  size={32}
-                  onPress={clearSelected}
-                  color={warningColor}
-                />
-              </Container>
-            )}
-          </>
+          sales.length === 0 ? null : (
+            <>
+              <SalesListingFilters
+                filterFields={filterFields}
+                setFilterFields={setFilterFields}
+                onFilter={onFilter}
+                onReset={onReset}
+              />
+              {isInLongPressMode && (
+                <Container
+                  flexDirection="row"
+                  justifyContent="space-around"
+                  width="100%"
+                  marginTop={10}
+                >
+                  <AntDesign
+                    name="close"
+                    size={30}
+                    color={primaryTheme}
+                    onPress={setFalse}
+                  />
+                  <AntDesign
+                    onPress={onDelete}
+                    name="delete"
+                    size={30}
+                    color={dangerColor}
+                  />
+                  <MaterialIcons
+                    name="check-box"
+                    size={32}
+                    onPress={onSelectAll}
+                    color={warningColor}
+                  />
+                  <MaterialIcons
+                    name="check-box-outline-blank"
+                    size={32}
+                    onPress={clearSelected}
+                    color={warningColor}
+                  />
+                </Container>
+              )}
+            </>
+          )
         }
       />
     </View>

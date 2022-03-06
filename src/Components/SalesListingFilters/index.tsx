@@ -3,7 +3,6 @@ import {
   Datepicker,
   Divider,
   Input,
-  Text,
   useTheme,
 } from "@ui-kitten/components";
 import React, { Dispatch, SetStateAction } from "react";
@@ -15,6 +14,8 @@ import { DateFnsService } from "@ui-kitten/date-fns";
 import { FilterFields } from "../../Interfaces/FilterFields";
 import { brazilianDateService } from "../../Utils";
 import { Pressable } from "react-native";
+import { KittenSelect } from "../KittenSelect";
+import { Text } from "../Text";
 
 interface SalesListingFiltersProps {
   onFilter: () => void;
@@ -39,7 +40,7 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
       height: 45,
     },
     open: {
-      height: 270,
+      height: 300,
     },
   });
 
@@ -50,7 +51,8 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
   };
   const onChange = (key: string) => (value: string) =>
     setFilterFields((past) => ({ ...past, [key]: value }));
-  const { clientName, finalDate, initialDate, saleName } = filterFields;
+  const { clientName, finalDate, initialDate, saleName, saleStatus } =
+    filterFields;
   return (
     <Container marginTop={30} width="100%">
       <MotiView style={styles.toggleContainer} state={toggleAnimationState}>
@@ -60,7 +62,12 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
           alignItems="center"
           flexDirection="row"
         >
-          <Text style={{ textAlign: "center" }} category="h4" status="primary">
+          <Text
+            style={{ textAlign: "center" }}
+            fontFamily="subtitles"
+            category="h5"
+            status="primary"
+          >
             Filtros
           </Text>
           <Pressable onPress={onToggle}>
@@ -83,6 +90,25 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
           placeholder="Nome do cliente"
           value={clientName}
           onChangeText={onChange("clientName")}
+        />
+        <KittenSelect
+          multiSelect={false}
+          selectStyle={styles.input}
+          value={saleStatus}
+          placeholder="Status da venda"
+          options={[
+            "Todos",
+            "Paga",
+            "Não paga",
+            "Em atraso",
+            "Cancelada",
+            "Reembolsada",
+          ]}
+          onChange={(index) => {
+            console.log(index);
+            if (Array.isArray(index)) return;
+            setFilterFields((past) => ({ ...past, saleStatus: index.row }));
+          }}
         />
         <Container
           width="100%"

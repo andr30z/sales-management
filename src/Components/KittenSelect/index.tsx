@@ -10,6 +10,7 @@ interface KittenSelectProps {
   selectStyle?: StyleProp<ViewStyle> | Array<StyleProp<ViewStyle>>;
   multiSelect?: boolean;
   placeholder?: string;
+  label?: string;
 }
 
 /**
@@ -23,12 +24,13 @@ export const KittenSelect: React.FC<KittenSelectProps> = ({
   selectStyle,
   multiSelect = false,
   placeholder = "Selecione",
+  label,
 }) => {
   const index = useMemo(
     () =>
       Array.isArray(value)
         ? value.map((x) => new IndexPath(x))
-        : !value
+        : value === undefined || value === ("" as any)
         ? undefined
         : new IndexPath(value),
     [value]
@@ -37,6 +39,7 @@ export const KittenSelect: React.FC<KittenSelectProps> = ({
     Array.isArray(index) ? index.length === 0 : index === undefined;
   return (
     <Select
+      label={label}
       placeholder={placeholder}
       multiSelect={multiSelect}
       value={
@@ -50,7 +53,9 @@ export const KittenSelect: React.FC<KittenSelectProps> = ({
                   )}
                 </Text>
               ) : (
-                <Text>{!index?.row ? "" : options[index.row]}</Text>
+                <Text>
+                  {index?.row === undefined ? "" : options[index.row]}
+                </Text>
               )
       }
       style={selectStyle}

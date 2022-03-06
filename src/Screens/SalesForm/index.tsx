@@ -1,5 +1,4 @@
-import { Button, Datepicker, Input, Text } from "@ui-kitten/components";
-import { DateFnsService } from "@ui-kitten/date-fns";
+import { Button, Datepicker, Input } from "@ui-kitten/components";
 import { Formik } from "formik";
 import React from "react";
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
@@ -7,7 +6,8 @@ import * as Yup from "yup";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
 import {
   ActionsTypes,
-  Sales,
+  Sale,
+  SaleStatusType,
   SalesTypes,
 } from "../../Context/SalesInfo/Reducer";
 import { globalStyles } from "../../GlobalStyles";
@@ -21,6 +21,10 @@ import {
   MAIN_STACK_ROUTES,
 } from "../../Routes/MainStack/Types";
 import { brazilianDateService } from "../../Utils";
+import { StatusBar } from "expo-status-bar";
+import { useCommonThemeColors } from "../../Hooks";
+import { useToast } from "react-native-toast-notifications";
+import { Text } from "../../Components/Text";
 
 const validationSchema = Yup.object().shape({
   date: Yup.date().required("A data da venda é requerida."),
@@ -28,7 +32,7 @@ const validationSchema = Yup.object().shape({
   types: Yup.array(Yup.mixed().oneOf(Object.values(SalesTypes))),
   description: Yup.string(),
   clientId: Yup.string().required(),
-  value: Yup.number(),
+  value: Yup.number().required(),
   quantity: Yup.number().min(1),
 });
 
@@ -38,36 +42,52 @@ const validationSchema = Yup.object().shape({
  **/
 export const SalesForm: React.FC<
   StackScreenProps<MainStackRoutesTypes, MAIN_STACK_ROUTES.SALES_FORM>
-> = ({ navigation }) => {
-  const {
-    dispatcher,
-    salesInfo: { sales },
-  } = useSalesInfoContext();
-  console.log(sales);
+> = ({
+  navigation,
+  route: {
+    params: { formValues },
+  },
+}) => {
+  const { dispatcher } = useSalesInfoContext();
+  const { primaryColor } = useCommonThemeColors();
+  const toast = useToast();
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
     >
+      <StatusBar backgroundColor={primaryColor} />
       <ScrollView
         style={{ flex: 1, backgroundColor: "white" }}
         contentContainerStyle={styles.scrollContainer}
       >
-        <Formik<Omit<Sales, "id" | "createdAt">>
+        <Formik<Omit<Sale, "id" | "createdAt">>
           onSubmit={(values) => {
-            dispatcher({ type: ActionsTypes.ADD_SALES, payload: values });
+            console.log(formValues)
+            dispatcher({
+              type: formValues?.id
+                ? ActionsTypes.EDIT_SALE
+                : ActionsTypes.ADD_SALES,
+              payload: values,
+            });
+            toast.show("Registro salvo com sucesso", {
+              type: "success",
+            });
             navigation.goBack();
           }}
           validationSchema={validationSchema}
-          initialValues={{
-            date: "",
-            name: "",
-            types: [],
-            description: "",
-            clientId: "",
-            value: "",
-            quantity: 1,
-          }}
+          initialValues={
+            formValues || {
+              date: "",
+              name: "",
+              types: [],
+              description: "",
+              clientId: "",
+              value: "",
+              quantity: 1 as any,
+              status: SaleStatusType.UNPAID,
+            }
+          }
         >
           {({
             values: {
@@ -78,10 +98,12 @@ export const SalesForm: React.FC<
               description,
               quantity,
               clientId,
+              status,
             },
             handleSubmit,
             handleChange,
             setFieldValue,
+            errors,
           }) => (
             <Container
               backgroundColor="#fff"
@@ -90,16 +112,19 @@ export const SalesForm: React.FC<
               justifyContent="center"
               flexDirection="column"
             >
+              {console.log(errors)}
               <Container center minHeight={100}>
                 <Text
-                  category="h2"
+                  category="h1"
                   status="primary"
+                  fontFamily="heading"
                   style={globalStyles.textCenter}
                 >
                   Cadastro de Vendas
                 </Text>
               </Container>
               <Input
+                label="Nome da venda"
                 style={[globalStyles.input, styles.marginY]}
                 value={name}
                 placeholder="Nome da venda"
@@ -109,6 +134,7 @@ export const SalesForm: React.FC<
                 style={[globalStyles.textArea, styles.marginY]}
                 value={description}
                 multiline
+                label="Descrição"
                 numberOfLines={4}
                 placeholder="Descrição"
                 onChangeText={handleChange("description")}
@@ -119,10 +145,17 @@ export const SalesForm: React.FC<
                 flexDirection="row"
                 alignItems="center"
               >
-                <Text style={styles.inputValueText} category="h4" status="info">
-                  R$
-                </Text>
                 <Input
+                  label="Valor"
+                  accessoryLeft={() => (
+                    <Text
+                      style={styles.inputValueText}
+                      category="s1"
+                      status="info"
+                    >
+                      R$
+                    </Text>
+                  )}
                   style={{ flex: 5 }}
                   value={String(value)}
                   keyboardType="numeric"
@@ -131,6 +164,7 @@ export const SalesForm: React.FC<
                 />
               </Container>
               <KittenSelect
+                label="Tipo(s) de venda"
                 value={types}
                 selectStyle={[globalStyles.input, styles.marginY]}
                 placeholder="Selecione o tipo de venda"
@@ -143,7 +177,24 @@ export const SalesForm: React.FC<
                     );
                   }
                 }}
-                options={["Bijou", "Joia", "Outros"]}
+                options={["Bijou", "Joia", "Enxoval", "Outros"]}
+              />
+              <KittenSelect
+                label="Status da venda"
+                value={status}
+                selectStyle={[globalStyles.input, styles.marginY]}
+                placeholder="Selecione o status de venda"
+                onChange={(index) => {
+                  if (Array.isArray(index)) return;
+                  setFieldValue("status", index.row);
+                }}
+                options={[
+                  "Paga",
+                  "Não paga",
+                  "Em atraso",
+                  "Cancelada",
+                  "Reembolsada",
+                ]}
               />
               <SelectClient
                 value={clientId}
@@ -151,13 +202,15 @@ export const SalesForm: React.FC<
                 onChange={handleChange("clientId")}
               />
               <Datepicker
+                label="Data da venda"
                 style={[styles.calendar, styles.marginY]}
                 dateService={brazilianDateService as any}
-                date={date}
+                date={date ? new Date(date) : date}
                 placeholder="Data da venda"
                 onSelect={(value) => setFieldValue("date", value)}
               />
               <Input
+                label="Quantidade de itens"
                 style={[globalStyles.textArea, styles.marginY]}
                 value={String(quantity)}
                 keyboardType="number-pad"
@@ -165,7 +218,7 @@ export const SalesForm: React.FC<
                 onChangeText={handleChange("quantity")}
               />
               <Button style={styles.marginY} onPress={() => handleSubmit()}>
-                Cadastrar
+                {formValues?.id ? "Salvar Edição" : "Cadastrar"}
               </Button>
             </Container>
           )}

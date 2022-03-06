@@ -1,17 +1,21 @@
-import { Card, Text, useTheme } from "@ui-kitten/components";
-import { formatRelative } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import React, { Dispatch, SetStateAction } from "react";
-import { useMemo } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { format } from "date-fns";
+import React, { Dispatch, SetStateAction, useMemo } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Sales } from "../../Context/SalesInfo/Reducer";
+import { Sale } from "../../Context/SalesInfo/Reducer";
+import { useFormatRelativeDate } from "../../Hooks";
 import { useClient } from "../../Hooks/useClient";
-import { Container } from "../Container";
-import { styles } from "./Styles";
-import { MaterialIcons } from "@expo/vector-icons";
 import { useCommonThemeColors } from "../../Hooks/useCommonThemeColors";
+import {
+  MainStackRoutesTypes,
+  MAIN_STACK_ROUTES,
+} from "../../Routes/MainStack/Types";
+import { Container } from "../Container";
+import { Text } from "../Text";
+import { styles } from "./Styles";
 interface SalesListingItemProps {
-  item: Sales;
+  item: Sale;
   index: number;
   onLongPress: () => void;
   selectedItems: Array<string>;
@@ -36,16 +40,10 @@ export const SalesListingItem: React.FC<SalesListingItemProps> = ({
     () => selectedItems.findIndex((id) => id === item.id),
     [selectedItems]
   );
+  const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
   const isSelected = selectedPos > -1;
   const { name } = item;
-  const { dangerColor, theme } = useCommonThemeColors();
-  const date = useMemo(
-    () =>
-      formatRelative(new Date(item.date), new Date(), {
-        locale: ptBR,
-      }),
-    [item.date]
-  );
+  const { theme } = useCommonThemeColors();
 
   const onPressDeleteMode = () => {
     if (!isSelected) return setSelectedItems((past) => [...past, item.id]);
@@ -56,9 +54,14 @@ export const SalesListingItem: React.FC<SalesListingItemProps> = ({
     });
   };
 
-  const onPress = () => {};
-  const resolveTextColor = (optionalTextColor="basic")=>isSelected?"control":optionalTextColor;
-
+  const onPress = () => {
+    navigation.navigate(MAIN_STACK_ROUTES.SALES_DETAILS, {
+      saleId: item.id,
+    });
+  };
+  const resolveTextColor = (optionalTextColor = "basic") =>
+    isSelected ? "control" : optionalTextColor;
+  const date = useMemo(() => format(new Date(item.date), "dd/MM/yyyy"), [item.date])
   return (
     <Container
       {...styles.card}
@@ -72,7 +75,7 @@ export const SalesListingItem: React.FC<SalesListingItemProps> = ({
         style={styles.touchable}
       >
         <Container height="100%" width="100%" flexDirection="column">
-          <Text numberOfLines={1} status={resolveTextColor("primary")} category="s1">
+          <Text numberOfLines={1} status={resolveTextColor("primary")}>
             {name}
           </Text>
           <Container
@@ -84,7 +87,7 @@ export const SalesListingItem: React.FC<SalesListingItemProps> = ({
             <Text
               status={resolveTextColor()}
               numberOfLines={1}
-              style={styles.textItem}
+              style={[styles.textItem]}
               category="c2"
             >
               {date}

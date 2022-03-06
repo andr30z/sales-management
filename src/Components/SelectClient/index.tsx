@@ -72,23 +72,26 @@ export const SelectClient: React.FC<SelectClientProps> = ({
   return (
     <Container
       marginTop={marginY}
-      // center
       flexDirection="row"
       justifyContent="center"
       alignItems="center"
     >
       <Input
+        label="Cliente"
         value={client?.name || ""}
         style={styles.input}
         disabled
+        textStyle={{ color: "black" }}
+        size="small"
         placeholder="Selecione o cliente"
-      />
-      <Button
-        size="medium"
-        onPress={setTrue}
-        accessoryRight={() => (
-          <AntDesign size={16} name="search1" color="#fff" />
-        )}
+        accessoryRight={
+          <Button
+            onPress={setTrue}
+            accessoryRight={() => (
+              <AntDesign size={15} name="search1" color="#fff" />
+            )}
+          />
+        }
       />
 
       <Modal
@@ -109,6 +112,7 @@ export const SelectClient: React.FC<SelectClientProps> = ({
                 clientName={clientName}
                 setClientName={setClientName}
                 setFalse={setFalse}
+                propsOnNavigateBack={params.formValues}
               />
             }
             data={data}
