@@ -30,7 +30,7 @@ export const KittenSelect: React.FC<KittenSelectProps> = ({
     () =>
       Array.isArray(value)
         ? value.map((x) => new IndexPath(x))
-        : value === undefined
+        : value === undefined || value === ("" as any)
         ? undefined
         : new IndexPath(value),
     [value]

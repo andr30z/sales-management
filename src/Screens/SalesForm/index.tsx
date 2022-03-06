@@ -173,7 +173,7 @@ export const SalesForm: React.FC<
                     );
                   }
                 }}
-                options={["Bijou", "Joia", "Outros"]}
+                options={["Bijou", "Joia", "Enxoval", "Outros"]}
               />
               <KittenSelect
                 label="Status da venda"

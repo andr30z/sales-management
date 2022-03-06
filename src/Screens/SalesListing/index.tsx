@@ -25,6 +25,7 @@ const filterInitialState = {
   initialDate: "",
   finalDate: "",
   saleName: "",
+  saleStatus: "" as any,
 };
 /**
  *
@@ -56,22 +57,29 @@ export const SalesListing: React.FC = () => {
     setSelectedItems([]);
   };
 
-  const { clientName, finalDate, initialDate, saleName } = filterFields;
+  const { clientName, finalDate, initialDate, saleName, saleStatus } =
+    filterFields;
   const onFilter = () => {
     clearSelected();
     setFilteredSales(
-      sales.filter(({ name, clientId, date }) => {
+      sales.filter(({ name, clientId, date, status }) => {
         let checkDate =
           finalDate && initialDate
             ? isDateInRange(initialDate, finalDate, date)
             : true;
+        console.log(saleStatus);
+        const currentStatus =
+          saleStatus === 0 || saleStatus === ("" as any)
+            ? true
+            : status === saleStatus - 1;
         return (
           filterByName(name, saleName) &&
           filterByName(
             getClient(clients || [], clientId)?.name || "",
             clientName
           ) &&
-          checkDate
+          checkDate &&
+          currentStatus
         );
       })
     );

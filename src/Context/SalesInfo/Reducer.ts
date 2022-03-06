@@ -5,6 +5,7 @@ export const initialUserState = { fetchedUser: false, user: {} };
 export enum SalesTypes {
   JEWELRY,
   BIJOU,
+  TROUSSEAU,
   OTHERS,
 }
 
@@ -16,9 +17,17 @@ export enum SaleStatusType {
   REFOUNDED,
 }
 
+export const reversedSalesStatus = {
+  [SaleStatusType.PAID]: "Paga",
+  [SaleStatusType.UNPAID]: "Não paga",
+  [SaleStatusType.CANCELED]: "Cancelada",
+  [SaleStatusType.OVERDUE_PAYMENT]: "Em atraso",
+  [SaleStatusType.REFOUNDED]: "Reembolsada",
+};
 export const reversedSalesTypes = {
   [SalesTypes.BIJOU]: "Bijou",
   [SalesTypes.JEWELRY]: "Joias",
+  [SalesTypes.TROUSSEAU]: "Enxoval",
   [SalesTypes.OTHERS]: "Outros",
 };
 export interface Sale {

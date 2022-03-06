@@ -98,6 +98,7 @@ export const ClientsForm: React.FC<
                 value={phoneNumber}
                 keyboardType="number-pad"
                 placeholder="5561999999999"
+                maxLength={14}
                 onChangeText={(text) =>
                   setFieldValue(
                     "phoneNumber",

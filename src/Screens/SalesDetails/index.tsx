@@ -23,6 +23,7 @@ import { SaleInfoListItem } from "../../Components/SaleInfoListItem";
 import { useNavigation } from "@react-navigation/native";
 import {
   ActionsTypes,
+  reversedSalesStatus,
   reversedSalesTypes,
 } from "../../Context/SalesInfo/Reducer";
 import { ConfirmActionModal } from "../../Components/ConfirmActionModal";
@@ -50,7 +51,7 @@ export const SalesDetails: React.FC<
   const saleCreatedAt = useFormatRelativeDate(sale?.createdAt);
   const toast = useToast();
   if (!sale || !client) return null;
-  const { name, value, types, description, date, quantity } = sale;
+  const { name, value, types, description, date, quantity, status } = sale;
   const copyToClipboard = () => {
     Clipboard.setString(client.phoneNumber);
   };
@@ -212,16 +213,20 @@ export const SalesDetails: React.FC<
         >
           <SaleInfoListItem label="ID:" value={sale.id} valueNumLines={3} />
           <SaleInfoListItem label="Valor (R$):" value={value} />
-          <SaleInfoListItem label="Quantidade de produtos:" value={quantity} />
-          <SaleInfoListItem
-            label="Tipo(s) de venda:"
-            value={types.map((x) => reversedSalesTypes[x]).join(", ")}
-          />
           <SaleInfoListItem
             label="Descrição:"
             value={description}
             valueNumLines={5}
             valueTextLimit="60%"
+          />
+          <SaleInfoListItem label="Quantidade de produtos:" value={quantity} />
+          <SaleInfoListItem
+            label="Status de pagamento:"
+            value={reversedSalesStatus[status]}
+          />
+          <SaleInfoListItem
+            label="Tipo(s) de venda:"
+            value={types.map((x) => reversedSalesTypes[x]).join(", ")}
           />
           <SaleInfoListItem
             label="Registrado em:"
