@@ -1,39 +1,38 @@
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
   Button,
-  Card,
   Input,
   List,
   ListItem,
   Modal,
   Text,
 } from "@ui-kitten/components";
-import { Ionicons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   KeyboardAvoidingView,
-  ScrollView,
+  ListRenderItem,
   useWindowDimensions,
 } from "react-native";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
+import { Client } from "../../Context/SalesInfo/Reducer";
 import { globalStyles } from "../../GlobalStyles";
+import { useBoolean, useClient, useKeyboardVisibility } from "../../Hooks";
 import {
   MainStackRoutesTypes,
   MAIN_STACK_ROUTES,
 } from "../../Routes/MainStack/Types";
 import { Container } from "../Container";
-import { styles } from "./Styles";
 import { SelectClientHeader } from "../SelectClientHeader";
-import { useClient, useKeyboardVisibility, useBoolean } from "../../Hooks";
+import { styles } from "./Styles";
 
 interface SelectClientProps {
   value: string;
   onChange: (value: string) => void;
   marginY?: string | number;
 }
-
+const ITEM_HEIGHT = 100;
 /**
  *
  * @author andr30z
@@ -69,6 +68,42 @@ export const SelectClient: React.FC<SelectClientProps> = ({
 
   const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
   const { height } = useWindowDimensions();
+  const renderListItem: ListRenderItem<Client> = useCallback(
+    ({ item }) => (
+      <ListItem
+        style={{ height: ITEM_HEIGHT }}
+        title={`${item.name} - ${item.phoneNumber}`}
+        description={item.observation}
+        accessoryLeft={
+          <Ionicons style={{ marginHorizontal: 7 }} size={18} name="person" />
+        }
+        accessoryRight={() => (
+          <Button
+            onPress={() => {
+              setFalse();
+              onChange(item.id);
+            }}
+            size="small"
+            status="warning"
+          >
+            <Text category="h5" status="control">
+              SELECIONAR
+            </Text>
+          </Button>
+        )}
+      />
+    ),
+    []
+  );
+const getLayout = useCallback(
+  (_:any, index:number) => ({
+    length: ITEM_HEIGHT,
+    offset: ITEM_HEIGHT * index,
+    index,
+  }),
+  [ITEM_HEIGHT],
+)
+
   return (
     <Container
       marginTop={marginY}
@@ -106,6 +141,7 @@ export const SelectClient: React.FC<SelectClientProps> = ({
         <KeyboardAvoidingView style={{ flex: 1 }}>
           <List
             style={styles.list}
+            getItemLayout={getLayout}
             ListHeaderComponent={
               <SelectClientHeader
                 navigation={navigation}
@@ -116,31 +152,11 @@ export const SelectClient: React.FC<SelectClientProps> = ({
               />
             }
             data={data}
-            renderItem={({ item }) => (
-              <ListItem
-                title={`${item.name} - ${item.phoneNumber}`}
-                description={item.observation}
-                accessoryLeft={() => (
-                  <Ionicons
-                    style={{ marginHorizontal: 7 }}
-                    size={18}
-                    name="person"
-                  />
-                )}
-                accessoryRight={() => (
-                  <Button
-                    onPress={() => {
-                      setFalse();
-                      onChange(item.id);
-                    }}
-                    size="small"
-                    status="warning"
-                  >
-                    SELECIONAR
-                  </Button>
-                )}
-              />
-            )}
+            removeClippedSubviews
+            initialNumToRender={10}
+            maxToRenderPerBatch={9}
+            renderItem={renderListItem}
+            
           />
         </KeyboardAvoidingView>
       </Modal>
