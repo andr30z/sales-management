@@ -53,6 +53,7 @@ export interface Client {
 export interface SalesManagementState {
   sales: Array<Sale>;
   clients: Array<Client>;
+  hasSyncedContacts: boolean;
 }
 
 export enum ActionsTypes {
@@ -64,6 +65,7 @@ export enum ActionsTypes {
   EDIT_CLIENT,
   EDIT_SALE,
   DELETE_MANY_SALES,
+  SYNC_CLIENTS_WITH_CONTACTS,
 }
 
 export interface Action {
@@ -73,7 +75,7 @@ export interface Action {
 
 export const STORAGE_KEY = "@sales-management-state";
 
-function uuidv4(): string {
+export function uuidv4(): string {
   return uuid.v4().toString();
 }
 
@@ -86,11 +88,12 @@ const addToStateArray = (
   state: SalesManagementState,
   payload: any
 ): SalesManagementState => {
+  const stateArray = state[key] as any;
   return updateStorage({
     ...state,
     [key]: [
-      ...state[key],
-      { ...payload, id: uuidv4(), createdAt: new Date().toUTCString() },
+      ...stateArray,
+      { ...payload, id: uuidv4(), createdAt: new Date().toISOString() },
     ],
   });
 };
@@ -100,7 +103,7 @@ const editItemInArray = (
   state: SalesManagementState,
   payload: any
 ) => {
-  const array = [...state[key]];
+  const array = [...(state[key] as any)];
   const position = array.findIndex((x) => x.id === payload.id);
   array[position] = payload;
   return updateStorage({
@@ -114,7 +117,7 @@ const deleteItem = (
   state: SalesManagementState,
   payload: any
 ) => {
-  const array = [...state[key]];
+  const array = [...(state[key] as any)];
   const pos = array.findIndex((x) => x.id === payload);
   array.splice(pos, 1);
   return updateStorage({ ...state, [key]: array });
@@ -125,7 +128,7 @@ const deleteMany = (
   state: SalesManagementState,
   payload: Array<string>
 ) => {
-  const array = [...state[key]];
+  const array = [...(state[key] as any)];
   return updateStorage({
     ...state,
     [key]: array.filter((x) => !payload.includes(x.id)),
@@ -135,6 +138,7 @@ const deleteMany = (
 export const INITIAL_STATE: SalesManagementState = {
   clients: [],
   sales: [],
+  hasSyncedContacts: false,
 };
 export const reducer = (
   state: SalesManagementState,
@@ -156,6 +160,12 @@ export const reducer = (
       return deleteItem("sales", state, payload);
     case ActionsTypes.DELETE_MANY_SALES:
       return deleteMany("sales", state, payload);
+    case ActionsTypes.SYNC_CLIENTS_WITH_CONTACTS:
+      return updateStorage({
+        ...state,
+        clients: payload,
+        hasSyncedContacts: true,
+      });
     default:
       return state;
   }
