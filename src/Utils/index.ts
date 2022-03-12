@@ -62,4 +62,3 @@ export const brazilianDateService = new DateFnsService("pt-BR", {
 });
 
 export const minDate = new Date("01/01/1969");
-minDate.setHours(0, 0, 0, 0);

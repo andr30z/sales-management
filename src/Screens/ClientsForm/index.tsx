@@ -1,10 +1,12 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { Button, Input, Text } from "@ui-kitten/components";
+import { Button, Input } from "@ui-kitten/components";
 import { Formik } from "formik";
 import React from "react";
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import * as Yup from "yup";
 import { Container } from "../../Components/Container";
+import { FormErrorDisplayer } from "../../Components/FormErrorDisplayer";
+import { Text } from "../../Components/Text";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
 import {
   ActionsTypes,
@@ -21,7 +23,11 @@ import { styles } from "./Styles";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("O nome da venda é requerido."),
-  phoneNumber: Yup.number().required("O número de telefone é obrigatório."),
+  phoneNumber: Yup.string().test(
+    "len",
+    "O número de telefone deve ter mais de 12 dígitos.",
+    (val) => (val ? val.length >= 13 : false)
+  ),
   observation: Yup.string(),
 });
 
@@ -65,6 +71,7 @@ export const ClientsForm: React.FC<
         >
           {({
             values: { name, observation, phoneNumber },
+            errors,
             handleSubmit,
             handleChange,
             setFieldValue,
@@ -80,6 +87,7 @@ export const ClientsForm: React.FC<
                 <Text
                   category="h2"
                   status="primary"
+                  fontFamily="heading"
                   style={globalStyles.textCenter}
                 >
                   Cadastro de Clientes
@@ -88,6 +96,7 @@ export const ClientsForm: React.FC<
               <Input
                 style={[globalStyles.input, styles.marginY]}
                 value={name}
+                caption={<FormErrorDisplayer text={errors["name"]} />}
                 label="Nome do cliente"
                 placeholder="Ex: Zezinho 123"
                 onChangeText={handleChange("name")}
@@ -99,6 +108,7 @@ export const ClientsForm: React.FC<
                 keyboardType="number-pad"
                 placeholder="5561999999999"
                 maxLength={14}
+                caption={<FormErrorDisplayer text={errors["phoneNumber"]} />}
                 onChangeText={(text) =>
                   setFieldValue(
                     "phoneNumber",
@@ -112,6 +122,7 @@ export const ClientsForm: React.FC<
                 value={observation}
                 numberOfLines={4}
                 multiline
+                caption={<FormErrorDisplayer text={errors["observation"]} />}
                 placeholder="Observação sobre o cliente. Ex: 'Fulano é Caloteiro.'"
                 onChangeText={handleChange("observation")}
               />

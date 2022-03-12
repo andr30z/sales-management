@@ -1,8 +1,16 @@
+import { StackScreenProps } from "@react-navigation/stack";
 import { Button, Datepicker, Input } from "@ui-kitten/components";
+import { StatusBar } from "expo-status-bar";
 import { Formik } from "formik";
 import React from "react";
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import { useToast } from "react-native-toast-notifications";
 import * as Yup from "yup";
+import { Container } from "../../Components/Container";
+import { FormErrorDisplayer } from "../../Components/FormErrorDisplayer";
+import { KittenSelect } from "../../Components/KittenSelect";
+import { SelectClient } from "../../Components/SelectClient";
+import { Text } from "../../Components/Text";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
 import {
   ActionsTypes,
@@ -11,29 +19,33 @@ import {
   SalesTypes,
 } from "../../Context/SalesInfo/Reducer";
 import { globalStyles } from "../../GlobalStyles";
-import { Container } from "../../Components/Container";
-import { KittenSelect } from "../../Components/KittenSelect";
-import { styles } from "./Styles";
-import { SelectClient } from "../../Components/SelectClient";
-import { StackScreenProps } from "@react-navigation/stack";
 import {
   MainStackRoutesTypes,
   MAIN_STACK_ROUTES,
 } from "../../Routes/MainStack/Types";
 import { brazilianDateService, minDate } from "../../Utils";
-import { StatusBar } from "expo-status-bar";
-import { useCommonThemeColors } from "../../Hooks";
-import { useToast } from "react-native-toast-notifications";
-import { Text } from "../../Components/Text";
+import { styles } from "./Styles";
 
 const validationSchema = Yup.object().shape({
   date: Yup.date().required("A data da venda é requerida."),
   name: Yup.string().required("O nome da venda é requerido."),
-  types: Yup.array(Yup.mixed().oneOf(Object.values(SalesTypes))),
+  types: Yup.array(
+    Yup.mixed()
+      .oneOf(Object.values(SalesTypes))
+      .required("O tipo da venda é um campo requerido.")
+  )
+    .min(1, "Selecione pelo menos um tipo de venda.")
+    .required("O tipo da venda é um campo requerido."),
   description: Yup.string(),
-  clientId: Yup.string().required(),
-  value: Yup.number().required(),
-  quantity: Yup.number().min(1),
+  clientId: Yup.string().required("O cliente é um campo requerido."),
+  value: Yup.number()
+    .typeError(
+      "Verifique se o valor informado possui virgulas, somente pontos e numeros são aceitos."
+    )
+    .required("O valor da compra é requerido."),
+  quantity: Yup.number()
+    .min(1, "O número deve ser no mínimo 1.")
+    .required("A quantidade é requerida."),
 });
 
 /**
@@ -49,14 +61,13 @@ export const SalesForm: React.FC<
   },
 }) => {
   const { dispatcher } = useSalesInfoContext();
-  const { primaryColor } = useCommonThemeColors();
   const toast = useToast();
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
     >
-      <StatusBar backgroundColor={primaryColor} />
+      <StatusBar backgroundColor={"#fff"} />
       <ScrollView
         style={{ flex: 1, backgroundColor: "white" }}
         contentContainerStyle={styles.scrollContainer}
@@ -112,7 +123,6 @@ export const SalesForm: React.FC<
               justifyContent="center"
               flexDirection="column"
             >
-              {console.log(errors)}
               <Container center minHeight={100}>
                 <Text
                   category="h1"
@@ -127,6 +137,7 @@ export const SalesForm: React.FC<
                 label="Nome da venda"
                 style={[globalStyles.input, styles.marginY]}
                 value={name}
+                caption={<FormErrorDisplayer text={errors["name"]} />}
                 placeholder="Nome da venda"
                 onChangeText={handleChange("name")}
               />
@@ -156,6 +167,7 @@ export const SalesForm: React.FC<
                       R$
                     </Text>
                   )}
+                  caption={<FormErrorDisplayer text={errors["value"]} />}
                   style={{ flex: 5 }}
                   value={String(value)}
                   keyboardType="numeric"
@@ -169,6 +181,7 @@ export const SalesForm: React.FC<
                 selectStyle={[globalStyles.input, styles.marginY]}
                 placeholder="Selecione o tipo de venda"
                 multiSelect
+                error={errors["types"] as any}
                 onChange={(index) => {
                   if (Array.isArray(index)) {
                     setFieldValue(
@@ -188,6 +201,7 @@ export const SalesForm: React.FC<
                   if (Array.isArray(index)) return;
                   setFieldValue("status", index.row);
                 }}
+                error={errors["status"]}
                 options={[
                   "Paga",
                   "Não paga",
@@ -200,8 +214,10 @@ export const SalesForm: React.FC<
                 value={clientId}
                 marginY={styles.marginY.marginTop}
                 onChange={handleChange("clientId")}
+                error={errors["clientId"]}
               />
               <Datepicker
+                caption={<FormErrorDisplayer text={errors["date"]} />}
                 min={minDate}
                 label="Data da venda"
                 style={[styles.calendar, styles.marginY]}
@@ -212,6 +228,7 @@ export const SalesForm: React.FC<
                 onSelect={(value) => setFieldValue("date", value)}
               />
               <Input
+                caption={<FormErrorDisplayer text={errors["quantity"]} />}
                 label="Quantidade de itens"
                 style={[globalStyles.textArea, styles.marginY]}
                 value={String(quantity)}

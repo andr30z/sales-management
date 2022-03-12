@@ -2,6 +2,7 @@ import { IndexPath, Select, SelectItem, Text } from "@ui-kitten/components";
 import React from "react";
 import { useMemo } from "react";
 import { StyleProp, ViewStyle } from "react-native";
+import { FormErrorDisplayer } from "../FormErrorDisplayer";
 
 interface KittenSelectProps {
   value: number | Array<number>;
@@ -11,6 +12,7 @@ interface KittenSelectProps {
   multiSelect?: boolean;
   placeholder?: string;
   label?: string;
+  error?:string;
 }
 
 /**
@@ -25,6 +27,7 @@ export const KittenSelect: React.FC<KittenSelectProps> = ({
   multiSelect = false,
   placeholder = "Selecione",
   label,
+  error
 }) => {
   const index = useMemo(
     () =>
@@ -42,6 +45,7 @@ export const KittenSelect: React.FC<KittenSelectProps> = ({
       label={label}
       placeholder={placeholder}
       multiSelect={multiSelect}
+      caption={<FormErrorDisplayer text={error} />}
       value={
         isEmpty()
           ? undefined

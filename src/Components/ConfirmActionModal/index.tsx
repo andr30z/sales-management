@@ -24,7 +24,7 @@ export const ConfirmActionModal: React.FC<ConfirmActionModalProps> = ({
     <Modal
       style={{
         width: "95%",
-        height: "30%",
+        height: "32%",
       }}
       backdropStyle={globalStyles.backdrop}
       onBackdropPress={close}
@@ -37,7 +37,7 @@ export const ConfirmActionModal: React.FC<ConfirmActionModalProps> = ({
         backgroundColor="#fff"
         padding={10}
       >
-        <Container justifyContent="center" flex={3}>
+        <Container justifyContent="center" paddingLeft={5} flex={3}>
           <Text style={{ textAlign: "left" }} category="h5">
             {confirmText}
           </Text>

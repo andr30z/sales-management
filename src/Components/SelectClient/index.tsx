@@ -15,6 +15,7 @@ import {
   MAIN_STACK_ROUTES
 } from "../../Routes/MainStack/Types";
 import { Container } from "../Container";
+import { FormErrorDisplayer } from "../FormErrorDisplayer";
 import { SelectClientHeader } from "../SelectClientHeader";
 import { styles } from "./Styles";
 
@@ -22,6 +23,7 @@ interface SelectClientProps {
   value: string;
   onChange: (value: string) => void;
   marginY?: string | number;
+  error?:string;
 }
 
 const ITEM_HEIGHT = 100;
@@ -33,6 +35,7 @@ export const SelectClient: React.FC<SelectClientProps> = ({
   value,
   onChange,
   marginY = 0,
+  error
 }) => {
   const { params } =
     useRoute<RouteProp<MainStackRoutesTypes, MAIN_STACK_ROUTES.SALES_FORM>>();
@@ -66,6 +69,7 @@ export const SelectClient: React.FC<SelectClientProps> = ({
       style={{ flex:1 }}
       title={`${data.name} - ${data.phoneNumber}`}
       description={data.observation}
+      
       accessoryLeft={
         <Ionicons style={{ marginHorizontal: 7 }} size={18} name="person" />
       }
@@ -117,6 +121,7 @@ export const SelectClient: React.FC<SelectClientProps> = ({
             )}
           />
         }
+        caption={<FormErrorDisplayer text={error} />}
       />
 
       <Modal
