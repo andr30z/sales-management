@@ -12,7 +12,7 @@ import { MotiView, useAnimationState } from "moti";
 import { styles } from "./Styles";
 import { DateFnsService } from "@ui-kitten/date-fns";
 import { FilterFields } from "../../Interfaces/FilterFields";
-import { brazilianDateService } from "../../Utils";
+import { brazilianDateService, minDate } from "../../Utils";
 import { Pressable } from "react-native";
 import { KittenSelect } from "../KittenSelect";
 import { Text } from "../Text";
@@ -119,6 +119,7 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
           <Datepicker
             style={styles.calendarInput}
             dateService={brazilianDateService as any}
+            min={minDate as any}
             date={initialDate}
             placeholder="Data inicial"
             onSelect={onChange("initialDate")}
@@ -128,6 +129,7 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
             dateService={brazilianDateService as any}
             date={finalDate}
             placeholder="Data final"
+            min={minDate as any}
             onSelect={onChange("finalDate")}
           />
         </Container>
