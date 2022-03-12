@@ -42,7 +42,6 @@ export const SalesInfo: React.FC = ({ children }) => {
     if (status !== "granted") return;
     const { data } = await Contacts.getContactsAsync();
     const convertedData: SalesManagementState = JSON.parse(asyncStorageData);
-    console.log("AAAS", convertedData);
     const notSyncedContacts: Array<Client> = data
       .filter(
         ({ phoneNumbers }) =>

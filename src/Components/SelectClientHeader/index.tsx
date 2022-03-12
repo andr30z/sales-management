@@ -33,8 +33,13 @@ export const SelectClientHeader = React.memo<{
       <Container
         flexDirection="column"
         justifyContent="center"
-        marginBottom={15}
+        height={150}
+        borderTopRightRadius={15}
+        borderTopLeftRadius={15}
+        flex={null as any}
+        backgroundColor={"#fff"}
         paddingHorizontal={15}
+        paddingBottom={20}
       >
         <Container
           width="100%"

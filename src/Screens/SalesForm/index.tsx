@@ -20,7 +20,7 @@ import {
   MainStackRoutesTypes,
   MAIN_STACK_ROUTES,
 } from "../../Routes/MainStack/Types";
-import { brazilianDateService } from "../../Utils";
+import { brazilianDateService, minDate } from "../../Utils";
 import { StatusBar } from "expo-status-bar";
 import { useCommonThemeColors } from "../../Hooks";
 import { useToast } from "react-native-toast-notifications";
@@ -63,7 +63,7 @@ export const SalesForm: React.FC<
       >
         <Formik<Omit<Sale, "id" | "createdAt">>
           onSubmit={(values) => {
-            console.log(formValues)
+            console.log(formValues);
             dispatcher({
               type: formValues?.id
                 ? ActionsTypes.EDIT_SALE
@@ -202,9 +202,11 @@ export const SalesForm: React.FC<
                 onChange={handleChange("clientId")}
               />
               <Datepicker
+                min={minDate}
                 label="Data da venda"
                 style={[styles.calendar, styles.marginY]}
-                dateService={brazilianDateService as any}
+                dateService={brazilianDateService}
+                boundingMonth
                 date={date ? new Date(date) : date}
                 placeholder="Data da venda"
                 onSelect={(value) => setFieldValue("date", value)}

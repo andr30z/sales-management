@@ -1,27 +1,18 @@
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { Button, Input, ListItem, Modal, Text } from "@ui-kitten/components";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-  Button,
-  Input,
-  List,
-  ListItem,
-  Modal,
-  Text,
-} from "@ui-kitten/components";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  KeyboardAvoidingView,
-  ListRenderItem,
-  useWindowDimensions,
+  KeyboardAvoidingView, useWindowDimensions
 } from "react-native";
+import { DataProvider, LayoutProvider, RecyclerListView } from "recyclerlistview";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
-import { Client } from "../../Context/SalesInfo/Reducer";
 import { globalStyles } from "../../GlobalStyles";
 import { useBoolean, useClient, useKeyboardVisibility } from "../../Hooks";
 import {
   MainStackRoutesTypes,
-  MAIN_STACK_ROUTES,
+  MAIN_STACK_ROUTES
 } from "../../Routes/MainStack/Types";
 import { Container } from "../Container";
 import { SelectClientHeader } from "../SelectClientHeader";
@@ -32,6 +23,7 @@ interface SelectClientProps {
   onChange: (value: string) => void;
   marginY?: string | number;
 }
+
 const ITEM_HEIGHT = 100;
 /**
  *
@@ -59,50 +51,48 @@ export const SelectClient: React.FC<SelectClientProps> = ({
   const { client } = useClient(value);
   const data = useMemo(
     () =>
-      clients.filter((c) =>
+    new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(clients.filter((c) =>
         c.name.toLowerCase().includes(clientName.toLowerCase())
-      ),
+      )),
     [clientName, clients]
   );
   const isVisible = useKeyboardVisibility();
 
   const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
   const { height } = useWindowDimensions();
-  const renderListItem: ListRenderItem<Client> = useCallback(
-    ({ item }) => (
+  const renderListItem = useCallback(
+    ((type: string | number, data: any, index: number, extendedState?: object | undefined) => (
       <ListItem
-        style={{ height: ITEM_HEIGHT }}
-        title={`${item.name} - ${item.phoneNumber}`}
-        description={item.observation}
-        accessoryLeft={
-          <Ionicons style={{ marginHorizontal: 7 }} size={18} name="person" />
-        }
-        accessoryRight={() => (
-          <Button
-            onPress={() => {
-              setFalse();
-              onChange(item.id);
-            }}
-            size="small"
-            status="warning"
-          >
-            <Text category="h5" status="control">
-              SELECIONAR
-            </Text>
-          </Button>
-        )}
-      />
+      style={{ flex:1 }}
+      title={`${data.name} - ${data.phoneNumber}`}
+      description={data.observation}
+      accessoryLeft={
+        <Ionicons style={{ marginHorizontal: 7 }} size={18} name="person" />
+      }
+      accessoryRight={() => (
+        <Button
+          onPress={() => {
+            setFalse();
+            onChange(data.id);
+          }}
+          size="small"
+          status="warning"
+        >
+          <Text category="h5" status="control">
+            SELECIONAR
+          </Text>
+        </Button>
+      )}
+    />)
     ),
     []
   );
-const getLayout = useCallback(
-  (_:any, index:number) => ({
-    length: ITEM_HEIGHT,
-    offset: ITEM_HEIGHT * index,
-    index,
-  }),
-  [ITEM_HEIGHT],
-)
+  const {width}=useWindowDimensions();
+  const layoutProvider = useRef(new LayoutProvider(()=> 0,  (_type, dim) => {
+        dim.width = width;
+        dim.height = 100;
+    })).current;
+
 
   return (
     <Container
@@ -138,25 +128,19 @@ const getLayout = useCallback(
         onBackdropPress={setFalse}
         visible={isShowing}
       >
-        <KeyboardAvoidingView style={{ flex: 1 }}>
-          <List
+        <KeyboardAvoidingView style={{ flex: 1, flexDirection:"column" }}>
+          <SelectClientHeader
+            navigation={navigation}
+            clientName={clientName}
+            setClientName={setClientName}
+            setFalse={setFalse}
+            propsOnNavigateBack={params.formValues}
+          />
+          <RecyclerListView
             style={styles.list}
-            getItemLayout={getLayout}
-            ListHeaderComponent={
-              <SelectClientHeader
-                navigation={navigation}
-                clientName={clientName}
-                setClientName={setClientName}
-                setFalse={setFalse}
-                propsOnNavigateBack={params.formValues}
-              />
-            }
-            data={data}
-            removeClippedSubviews
-            initialNumToRender={10}
-            maxToRenderPerBatch={9}
-            renderItem={renderListItem}
-            
+            layoutProvider={layoutProvider}
+            dataProvider={data}
+            rowRenderer={renderListItem}
           />
         </KeyboardAvoidingView>
       </Modal>
