@@ -25,9 +25,24 @@ export const brazilianDateService = new DateFnsService("pt-BR", {
         "Sexta-Feira",
         "Sábado",
       ],
+
       short: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
     },
     monthNames: {
+      short: [
+        "Jan",
+        "Fev",
+        "Mar",
+        "Abril",
+        "Maio",
+        "Jun",
+        "Jul",
+        "Ago",
+        "Set",
+        "Out",
+        "Nov",
+        "Dez",
+      ],
       long: [
         "Janeiro",
         "Fevereiro",
@@ -45,3 +60,6 @@ export const brazilianDateService = new DateFnsService("pt-BR", {
     },
   },
 });
+
+export const minDate = new Date("01/01/1969");
+minDate.setHours(0, 0, 0, 0);
