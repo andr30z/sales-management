@@ -5,6 +5,7 @@ import { Button, Input, ListItem, Modal, Text } from "@ui-kitten/components";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { KeyboardAvoidingView, useWindowDimensions } from "react-native";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
+import { Client } from "../../Context/SalesInfo/Reducer";
 import { globalStyles } from "../../GlobalStyles";
 import { useBoolean, useClient, useKeyboardVisibility } from "../../Hooks";
 import {
@@ -13,7 +14,7 @@ import {
 } from "../../Routes/MainStack/Types";
 import { Container } from "../Container";
 import { FormErrorDisplayer } from "../FormErrorDisplayer";
-import { PerformaticList } from "../PerformaticList";
+import { PerformaticList, RenderPerformaticItem } from "../PerformaticList";
 import { SelectClientHeader } from "../SelectClientHeader";
 import { styles } from "./Styles";
 
@@ -61,12 +62,12 @@ export const SelectClient: React.FC<SelectClientProps> = ({
 
   const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
   const { height } = useWindowDimensions();
-  const renderListItem = useCallback(
+  const renderListItem:RenderPerformaticItem<Client> = useCallback(
     (
-      _type: string | number,
-      data: any,
-      _index: number,
-      _extendedState?: object | undefined
+      _type,
+      data,
+      _index,
+      _extendedState
     ) => (
       <ListItem
         style={{ flex: 1 }}
@@ -137,7 +138,7 @@ export const SelectClient: React.FC<SelectClientProps> = ({
             setFalse={setFalse}
             propsOnNavigateBack={params.formValues}
           />
-          <PerformaticList style={styles.list} data={data}>
+          <PerformaticList<Client> style={styles.list} data={data}>
             {renderListItem}
           </PerformaticList>
         </KeyboardAvoidingView>

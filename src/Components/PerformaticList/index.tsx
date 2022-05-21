@@ -6,30 +6,35 @@ import {
   RecyclerListView,
 } from "recyclerlistview";
 
-interface PerfomaticListProps<D = any> {
+export type RenderPerformaticItem<D = {}> = (
+  type: string | number,
+  data: D,
+  index: number,
+  extendedState?: object
+) => JSX.Element | JSX.Element[] | null;
+
+interface PerfomaticListProps<D = {}> {
   itemWidth?: number;
   itemHeight?: number;
   data: Array<D>;
   style?: object | number;
-  children: (
-    type: string | number,
-    data: any,
-    index: number,
-    extendedState?: object
-  ) => JSX.Element | JSX.Element[] | null;
+  emptyComponent?: JSX.Element;
+  children: RenderPerformaticItem<D>;
+  isHorizontal?: boolean;
 }
 
-
 /**
-* 
-* @author andr30z
-**/
+ *
+ * @author andr30z
+ **/
 export const PerformaticList = <D,>({
   itemWidth,
   itemHeight = 100,
   data,
   children,
   style,
+  emptyComponent = <></>,
+  isHorizontal = false,
 }: PerfomaticListProps<D>) => {
   const { width } = useWindowDimensions();
 
@@ -46,11 +51,14 @@ export const PerformaticList = <D,>({
       }
     )
   ).current;
-  return (
+  return data.length === 0 ? (
+    emptyComponent
+  ) : (
     <RecyclerListView
       style={style}
       layoutProvider={layoutProvider}
       dataProvider={listData}
+      isHorizontal={isHorizontal}
       rowRenderer={children}
     />
   );

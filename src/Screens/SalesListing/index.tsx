@@ -22,6 +22,7 @@ import {
 import { filterByName, isDateInRange } from "../../Utils";
 import EmptyImage from "../../Illustrations/Empty-bro.svg";
 import { styles } from "./Styles";
+import { PerformaticList } from "../../Components/PerformaticList";
 const filterInitialState = {
   clientName: "",
   initialDate: "",
@@ -144,21 +145,53 @@ export const SalesListing: React.FC = () => {
           </Button>
         </Container>
       </Container>
-      <FlatList
+      {sales.length === 0 ? null : (
+        <>
+          <SalesListingFilters
+            filterFields={filterFields}
+            setFilterFields={setFilterFields}
+            onFilter={onFilter}
+            onReset={onReset}
+          />
+          {isInLongPressMode && (
+            <Container
+              flexDirection="row"
+              justifyContent="space-around"
+              width="100%"
+              marginTop={10}
+            >
+              <AntDesign
+                name="close"
+                size={30}
+                color={primaryTheme}
+                onPress={setFalse}
+              />
+              <AntDesign
+                onPress={onDelete}
+                name="delete"
+                size={30}
+                color={dangerColor}
+              />
+              <MaterialIcons
+                name="check-box"
+                size={32}
+                onPress={onSelectAll}
+                color={warningColor}
+              />
+              <MaterialIcons
+                name="check-box-outline-blank"
+                size={32}
+                onPress={clearSelected}
+                color={warningColor}
+              />
+            </Container>
+          )}
+        </>
+      )}
+      <PerformaticList
         data={filteredSales}
         style={styles.list}
-        contentContainerStyle={styles.contentContainerStyle}
-        indicatorStyle="black"
-        renderItem={(props) => (
-          <SalesListingItem
-            isInDeleteMode={isInLongPressMode}
-            selectedItems={selectedItems}
-            setSelectedItems={setSelectedItems}
-            onLongPress={setTrue}
-            {...props}
-          />
-        )}
-        ListEmptyComponent={
+        emptyComponent={
           <Container
             flexDirection="column"
             alignItems="center"
@@ -175,52 +208,18 @@ export const SalesListing: React.FC = () => {
             </Text>
           </Container>
         }
-        ListHeaderComponent={
-          sales.length === 0 ? null : (
-            <>
-              <SalesListingFilters
-                filterFields={filterFields}
-                setFilterFields={setFilterFields}
-                onFilter={onFilter}
-                onReset={onReset}
-              />
-              {isInLongPressMode && (
-                <Container
-                  flexDirection="row"
-                  justifyContent="space-around"
-                  width="100%"
-                  marginTop={10}
-                >
-                  <AntDesign
-                    name="close"
-                    size={30}
-                    color={primaryTheme}
-                    onPress={setFalse}
-                  />
-                  <AntDesign
-                    onPress={onDelete}
-                    name="delete"
-                    size={30}
-                    color={dangerColor}
-                  />
-                  <MaterialIcons
-                    name="check-box"
-                    size={32}
-                    onPress={onSelectAll}
-                    color={warningColor}
-                  />
-                  <MaterialIcons
-                    name="check-box-outline-blank"
-                    size={32}
-                    onPress={clearSelected}
-                    color={warningColor}
-                  />
-                </Container>
-              )}
-            </>
-          )
-        }
-      />
+      >
+        {(_type, item, index) => (
+          <SalesListingItem
+            isInDeleteMode={isInLongPressMode}
+            selectedItems={selectedItems}
+            setSelectedItems={setSelectedItems}
+            onLongPress={setTrue}
+            index={index}
+            item={item}
+          />
+        )}
+      </PerformaticList>
     </View>
   );
 };
