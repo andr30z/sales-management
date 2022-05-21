@@ -60,6 +60,7 @@ export const PerformaticList = <D,>({
       dataProvider={listData}
       isHorizontal={isHorizontal}
       rowRenderer={children}
+      
     />
   );
 };

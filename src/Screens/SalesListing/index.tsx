@@ -11,7 +11,7 @@ import { SalesListingFilters } from "../../Components/SalesListingFilters";
 import { SalesListingItem } from "../../Components/SalesListingItem";
 import { Text } from "../../Components/Text";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
-import { ActionsTypes } from "../../Context/SalesInfo/Reducer";
+import { ActionsTypes, Sale } from "../../Context/SalesInfo/Reducer";
 import { getClient, useBoolean } from "../../Hooks";
 import { useCommonThemeColors } from "../../Hooks/useCommonThemeColors";
 import { FilterFields } from "../../Interfaces/FilterFields";
@@ -145,81 +145,85 @@ export const SalesListing: React.FC = () => {
           </Button>
         </Container>
       </Container>
-      {sales.length === 0 ? null : (
-        <>
-          <SalesListingFilters
-            filterFields={filterFields}
-            setFilterFields={setFilterFields}
-            onFilter={onFilter}
-            onReset={onReset}
-          />
-          {isInLongPressMode && (
-            <Container
-              flexDirection="row"
-              justifyContent="space-around"
-              width="100%"
-              marginTop={10}
-            >
-              <AntDesign
-                name="close"
-                size={30}
-                color={primaryTheme}
-                onPress={setFalse}
+      <Container {...styles.listContainer}>
+        {sales.length === 0 ? null : (
+          <>
+            {!isInLongPressMode && (
+              <SalesListingFilters
+                filterFields={filterFields}
+                setFilterFields={setFilterFields}
+                onFilter={onFilter}
+                onReset={onReset}
               />
-              <AntDesign
-                onPress={onDelete}
-                name="delete"
-                size={30}
-                color={dangerColor}
-              />
-              <MaterialIcons
-                name="check-box"
-                size={32}
-                onPress={onSelectAll}
-                color={warningColor}
-              />
-              <MaterialIcons
-                name="check-box-outline-blank"
-                size={32}
-                onPress={clearSelected}
-                color={warningColor}
-              />
-            </Container>
-          )}
-        </>
-      )}
-      <PerformaticList
-        data={filteredSales}
-        style={styles.list}
-        emptyComponent={
-          <Container
-            flexDirection="column"
-            alignItems="center"
-            flex={null as any}
-          >
-            <EmptyImage height="450" width="100%" />
-            <Text
-              fontFamily="subtitles"
-              category="p1"
-              status="primary"
-              style={{ textAlign: "center" }}
-            >
-              Nenhuma venda cadastrada.
-            </Text>
-          </Container>
-        }
-      >
-        {(_type, item, index) => (
-          <SalesListingItem
-            isInDeleteMode={isInLongPressMode}
-            selectedItems={selectedItems}
-            setSelectedItems={setSelectedItems}
-            onLongPress={setTrue}
-            index={index}
-            item={item}
-          />
+            )}
+            {isInLongPressMode && (
+              <Container
+                flexDirection="row"
+                justifyContent="space-around"
+                width="100%"
+                marginTop={30}
+              >
+                <AntDesign
+                  name="close"
+                  size={30}
+                  color={primaryTheme}
+                  onPress={setFalse}
+                />
+                <AntDesign
+                  onPress={onDelete}
+                  name="delete"
+                  size={30}
+                  color={dangerColor}
+                />
+                <MaterialIcons
+                  name="check-box"
+                  size={32}
+                  onPress={onSelectAll}
+                  color={warningColor}
+                />
+                <MaterialIcons
+                  name="check-box-outline-blank"
+                  size={32}
+                  onPress={clearSelected}
+                  color={warningColor}
+                />
+              </Container>
+            )}
+          </>
         )}
-      </PerformaticList>
+        <PerformaticList<Sale>
+          data={filteredSales}
+          style={styles.list}
+          emptyComponent={
+            <Container
+              flexDirection="column"
+              alignItems="center"
+              flex={null as any}
+            >
+              <EmptyImage height="450" width="100%" />
+              <Text
+                fontFamily="subtitles"
+                category="p1"
+                status="primary"
+                style={{ textAlign: "center" }}
+              >
+                Nenhuma venda cadastrada.
+              </Text>
+            </Container>
+          }
+        >
+          {(_type, item, index) => (
+            <SalesListingItem
+              isInDeleteMode={isInLongPressMode}
+              selectedItems={selectedItems}
+              setSelectedItems={setSelectedItems}
+              onLongPress={setTrue}
+              index={index}
+              item={item}
+            />
+          )}
+        </PerformaticList>
+      </Container>
     </View>
   );
 };

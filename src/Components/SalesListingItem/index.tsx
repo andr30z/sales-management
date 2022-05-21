@@ -61,7 +61,10 @@ export const SalesListingItem: React.FC<SalesListingItemProps> = ({
   };
   const resolveTextColor = (optionalTextColor = "basic") =>
     isSelected ? "control" : optionalTextColor;
-  const date = useMemo(() => format(new Date(item.date), "dd/MM/yyyy"), [item.date])
+  const date = useMemo(
+    () => format(new Date(item.date), "dd/MM/yyyy"),
+    [item.date]
+  );
   return (
     <Container
       {...styles.card}
@@ -70,7 +73,10 @@ export const SalesListingItem: React.FC<SalesListingItemProps> = ({
     >
       <TouchableOpacity
         onPress={isInDeleteMode ? onPressDeleteMode : onPress}
-        onLongPress={onLongPress}
+        onLongPress={() => {
+          onLongPress();
+          onPressDeleteMode();
+        }}
         delayLongPress={400}
         style={styles.touchable}
       >
