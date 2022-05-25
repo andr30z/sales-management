@@ -1,12 +1,8 @@
-import { AntDesign, MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { Button } from "@ui-kitten/components";
-import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { View } from "react-native";
 import { Container } from "../../Components/Container";
 import { ListActions } from "../../Components/ListActions";
+import { ListingScreenHeader } from "../../Components/ListingScreenHeader";
 import { PerformaticList } from "../../Components/PerformaticList";
 import { SalesListingFilters } from "../../Components/SalesListingFilters";
 import { SalesListingItem } from "../../Components/SalesListingItem";
@@ -17,10 +13,7 @@ import { getClient } from "../../Hooks";
 import { useCommonThemeColors } from "../../Hooks/useCommonThemeColors";
 import { useListingScreenLogic } from "../../Hooks/useListingScreenLogic";
 import EmptyImage from "../../Illustrations/Empty-bro.svg";
-import {
-  MainStackRoutesTypes,
-  MAIN_STACK_ROUTES,
-} from "../../Routes/MainStack/Types";
+import { MAIN_STACK_ROUTES } from "../../Routes/MainStack/Types";
 import { filterByName, isDateInRange } from "../../Utils";
 import { styles } from "./Styles";
 const initialFilterState = {
@@ -90,7 +83,6 @@ export const SalesListing: React.FC = () => {
         );
       }),
   });
-  const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
 
   return (
     <View
@@ -100,39 +92,10 @@ export const SalesListing: React.FC = () => {
         flexDirection: "column",
       }}
     >
-      <StatusBar translucent backgroundColor={primaryTheme} />
-      <Container
-        backgroundColor={primaryTheme}
-        minHeight={130}
-        flex={null as any}
-        width="100%"
-        flexDirection="column"
-      >
-        <Container
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="space-evenly"
-        >
-          <Text fontFamily="heading" style={{ fontSize: 50 }} status="control">
-            Vendas
-          </Text>
-          <Button
-            style={{ borderRadius: 34 }}
-            appearance="outline"
-            size="small"
-            status="control"
-            onPress={() =>
-              navigation.navigate(MAIN_STACK_ROUTES.SALES_FORM, {})
-            }
-          >
-            {(props) => (
-              <Text {...props} style={undefined} category="h6" status="control">
-                Adicionar
-              </Text>
-            )}
-          </Button>
-        </Container>
-      </Container>
+      <ListingScreenHeader
+        addEntityScreen={MAIN_STACK_ROUTES.SALES_FORM}
+        headerTitle="Vendas"
+      />
       <Container {...styles.listContainer}>
         {sales.length === 0 ? null : (
           <>
@@ -144,20 +107,19 @@ export const SalesListing: React.FC = () => {
                 onReset={onReset}
               />
             )}
-            {isInLongPressMode && (
-              <ListActions
-                iconsColors={{
-                  clearAll: warningColor,
-                  selectAll: warningColor,
-                  close: primaryTheme,
-                  deleteItems: dangerColor,
-                }}
-                onClearAll={clearSelected}
-                onClose={setIsInLongPressModeFalse}
-                onDelete={onDelete}
-                onSelectAll={onSelectAll}
-              />
-            )}
+            <ListActions
+              show={isInLongPressMode}
+              iconsColors={{
+                clearAll: warningColor,
+                selectAll: warningColor,
+                close: primaryTheme,
+                deleteItems: dangerColor,
+              }}
+              onClearAll={clearSelected}
+              onClose={setIsInLongPressModeFalse}
+              onDelete={onDelete}
+              onSelectAll={onSelectAll}
+            />
           </>
         )}
         <PerformaticList<Sale>

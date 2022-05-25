@@ -12,6 +12,7 @@ interface ListActionsProps {
   onSelectAll: () => void;
   onClearAll: () => void;
   onClose: () => void;
+  show: boolean;
 }
 /**
  *
@@ -23,8 +24,9 @@ export const ListActions: React.FC<ListActionsProps> = ({
   onDelete,
   onSelectAll,
   onClose,
+  show,
 }) => {
-  return (
+  return !show ? null : (
     <Container
       flexDirection="row"
       justifyContent="space-around"
