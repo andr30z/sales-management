@@ -3,27 +3,27 @@ import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Button } from "@ui-kitten/components";
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { View } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
 import { Container } from "../../Components/Container";
+import { ListActions } from "../../Components/ListActions";
+import { PerformaticList } from "../../Components/PerformaticList";
 import { SalesListingFilters } from "../../Components/SalesListingFilters";
 import { SalesListingItem } from "../../Components/SalesListingItem";
 import { Text } from "../../Components/Text";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
 import { ActionsTypes, Sale } from "../../Context/SalesInfo/Reducer";
-import { getClient, useBoolean } from "../../Hooks";
+import { getClient } from "../../Hooks";
 import { useCommonThemeColors } from "../../Hooks/useCommonThemeColors";
-import { FilterFields } from "../../Interfaces/FilterFields";
+import { useListingScreenLogic } from "../../Hooks/useListingScreenLogic";
+import EmptyImage from "../../Illustrations/Empty-bro.svg";
 import {
   MainStackRoutesTypes,
   MAIN_STACK_ROUTES,
 } from "../../Routes/MainStack/Types";
 import { filterByName, isDateInRange } from "../../Utils";
-import EmptyImage from "../../Illustrations/Empty-bro.svg";
 import { styles } from "./Styles";
-import { PerformaticList } from "../../Components/PerformaticList";
-const filterInitialState = {
+const initialFilterState = {
   clientName: "",
   initialDate: "",
   finalDate: "",
@@ -39,38 +39,42 @@ export const SalesListing: React.FC = () => {
     salesInfo: { sales, clients },
     dispatcher,
   } = useSalesInfoContext();
-  const { value: isInLongPressMode, setTrue, setFalse } = useBoolean();
-  const [selectedItems, setSelectedItems] = useState<Array<string>>([]);
-  const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
   const {
     primaryColor: primaryTheme,
     dangerColor,
     warningColor,
   } = useCommonThemeColors();
-  const [filterFields, setFilterFields] =
-    useState<FilterFields>(filterInitialState);
-  const [filteredSales, setFilteredSales] = useState(sales);
-  useEffect(() => {
-    onFilter();
-  }, [sales]);
-  useEffect(() => {
-    if (!isInLongPressMode) clearSelected();
-  }, [isInLongPressMode]);
-  const clearSelected = () => {
-    setSelectedItems([]);
-  };
-
-  const { clientName, finalDate, initialDate, saleName, saleStatus } =
-    filterFields;
-  const onFilter = () => {
-    clearSelected();
-    setFilteredSales(
+  const {
+    onDelete,
+    onReset,
+    onSelectAll,
+    setIsInLongPressModeFalse,
+    setIsInLongPressModeTrue,
+    isInLongPressMode,
+    filterFields,
+    filteredData,
+    setFilterFields,
+    clearSelected,
+    onFilter,
+    selectedItems,
+    setSelectedItems,
+  } = useListingScreenLogic({
+    data: sales,
+    initialFilterState,
+    onDeleteAction: (data) => {
+      dispatcher({
+        payload: data,
+        type: ActionsTypes.DELETE_MANY_SALES,
+      });
+    },
+    onFilterLogic: (filterData) =>
       sales.filter(({ name, clientId, date, status }) => {
+        const { clientName, finalDate, initialDate, saleName, saleStatus } =
+          filterData;
         let checkDate =
           finalDate && initialDate
             ? isDateInRange(initialDate, finalDate, date)
             : true;
-        console.log(saleStatus);
         const currentStatus =
           saleStatus === 0 || saleStatus === ("" as any)
             ? true
@@ -84,26 +88,10 @@ export const SalesListing: React.FC = () => {
           checkDate &&
           currentStatus
         );
-      })
-    );
-  };
-  const onReset = () => {
-    clearSelected();
-    setFilterFields(filterInitialState);
-    setFilteredSales(sales);
-  };
+      }),
+  });
+  const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
 
-  const onSelectAll = () => {
-    setSelectedItems(filteredSales.map(({ id }) => id));
-  };
-
-  const onDelete = () => {
-    setFalse();
-    dispatcher({
-      payload: selectedItems,
-      type: ActionsTypes.DELETE_MANY_SALES,
-    });
-  };
   return (
     <View
       style={{
@@ -157,42 +145,23 @@ export const SalesListing: React.FC = () => {
               />
             )}
             {isInLongPressMode && (
-              <Container
-                flexDirection="row"
-                justifyContent="space-around"
-                width="100%"
-                marginTop={30}
-              >
-                <AntDesign
-                  name="close"
-                  size={30}
-                  color={primaryTheme}
-                  onPress={setFalse}
-                />
-                <AntDesign
-                  onPress={onDelete}
-                  name="delete"
-                  size={30}
-                  color={dangerColor}
-                />
-                <MaterialIcons
-                  name="check-box"
-                  size={32}
-                  onPress={onSelectAll}
-                  color={warningColor}
-                />
-                <MaterialIcons
-                  name="check-box-outline-blank"
-                  size={32}
-                  onPress={clearSelected}
-                  color={warningColor}
-                />
-              </Container>
+              <ListActions
+                iconsColors={{
+                  clearAll: warningColor,
+                  selectAll: warningColor,
+                  close: primaryTheme,
+                  deleteItems: dangerColor,
+                }}
+                onClearAll={clearSelected}
+                onClose={setIsInLongPressModeFalse}
+                onDelete={onDelete}
+                onSelectAll={onSelectAll}
+              />
             )}
           </>
         )}
         <PerformaticList<Sale>
-          data={filteredSales}
+          data={filteredData}
           style={styles.list}
           emptyComponent={
             <Container
@@ -217,7 +186,7 @@ export const SalesListing: React.FC = () => {
               isInDeleteMode={isInLongPressMode}
               selectedItems={selectedItems}
               setSelectedItems={setSelectedItems}
-              onLongPress={setTrue}
+              onLongPress={setIsInLongPressModeTrue}
               index={index}
               item={item}
             />
