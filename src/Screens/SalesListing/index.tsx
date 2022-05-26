@@ -4,8 +4,8 @@ import { Container } from "../../Components/Container";
 import { ListActions } from "../../Components/ListActions";
 import { ListingScreenHeader } from "../../Components/ListingScreenHeader";
 import { PerformaticList } from "../../Components/PerformaticList";
+import { SalesItem } from "../../Components/SalesItem";
 import { SalesListingFilters } from "../../Components/SalesListingFilters";
-import { SalesListingItem } from "../../Components/SalesListingItem";
 import { Text } from "../../Components/Text";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
 import { ActionsTypes, Sale } from "../../Context/SalesInfo/Reducer";
@@ -144,10 +144,13 @@ export const SalesListing: React.FC = () => {
           }
         >
           {(_type, item, index) => (
-            <SalesListingItem
+            <SalesItem
               isInDeleteMode={isInLongPressMode}
               selectedItems={selectedItems}
               setSelectedItems={setSelectedItems}
+              dateKey="date"
+              detailsRoute={MAIN_STACK_ROUTES.SALES_DETAILS}
+              name={item.name}
               onLongPress={setIsInLongPressModeTrue}
               index={index}
               item={item}
