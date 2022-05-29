@@ -9,9 +9,9 @@ import { Text } from "../../Components/Text";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
 import { ActionsTypes, Client } from "../../Context/SalesInfo/Reducer";
 import { useCommonThemeColors, useListingScreenLogic } from "../../Hooks";
+import EmptyClient from "../../Illustrations/Empty-client.svg";
 import { MAIN_STACK_ROUTES } from "../../Routes/MainStack/Types";
 import { listingStyles as styles } from "../commonStyles";
-import EmptyClient from "../../Illustrations/Empty-client.svg";
 const initialFilterState = {
   name: "",
   phone: "",
@@ -111,12 +111,12 @@ export const ClientsListing: React.FC = () => {
           }
         >
           {(_type, item, index) => (
-            <ListingScreenItem
+            <ListingScreenItem<Client>
               isInDeleteMode={isInLongPressMode}
               selectedItems={selectedItems}
               setSelectedItems={setSelectedItems}
+              detailsRoute={MAIN_STACK_ROUTES.CLIENT_DETAILS}
               dateKey="createdAt"
-              detailsRoute={MAIN_STACK_ROUTES.SALES_DETAILS}
               name={item.name}
               onLongPress={setIsInLongPressModeTrue}
               index={index}
@@ -125,7 +125,7 @@ export const ClientsListing: React.FC = () => {
               {({ item, resolveTextColor, styles }) => (
                 <Text
                   status={resolveTextColor()}
-                  numberOfLines={1}
+                  numberOfLines={2}
                   style={styles.textItem}
                   category="c1"
                 >

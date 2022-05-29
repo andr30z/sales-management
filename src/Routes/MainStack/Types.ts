@@ -13,6 +13,7 @@ export type MainStackRoutesTypes = {
   ClientsForm: ClientsFormProps;
   SalesDetails: { saleId: string };
   BottomNav: undefined;
+  ClientDetails: { clientId: string };
 };
 
 export enum MAIN_STACK_ROUTES {
@@ -20,4 +21,5 @@ export enum MAIN_STACK_ROUTES {
   BOTTOM_NAV = "BottomNav",
   CLIENTS_FORM = "ClientsForm",
   SALES_DETAILS = "SalesDetails",
+  CLIENT_DETAILS = "ClientDetails",
 }

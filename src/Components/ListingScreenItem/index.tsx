@@ -11,7 +11,7 @@ interface ChildrenPropsInterface<P> {
   resolveTextColor: (optionalTextColor?: string) => string;
 }
 export interface SalesListingItemProps<I>
-  extends Pick<ListingScreenItemParams<any>, "dateKey" | "detailsRoute"> {
+  extends Pick<ListingScreenItemParams<I>, "dateKey" | "detailsRoute"> {
   item: I;
   index: number;
   onLongPress: () => void;
