@@ -1,4 +1,4 @@
-import { Feather } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Text, useTheme } from "@ui-kitten/components";
 import React from "react";
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
@@ -31,8 +31,8 @@ export const MainBottom: React.FC = () => {
             </Text>
           ),
           tabBarIcon: ({ focused, color, size }: any) => (
-            <Feather
-              name="list"
+            <MaterialCommunityIcons
+              name="point-of-sale"
               size={size ? size : 24}
               color={focused ? color : primaryTheme}
               focused={focused}
@@ -41,17 +41,17 @@ export const MainBottom: React.FC = () => {
         }}
         component={SalesListing}
       />
-       <Bottom.Screen
+      <Bottom.Screen
         name={MAIN_BOTTOM_ROUTES.CLIENTS_LISTING}
         options={{
           tabBarLabel: ({ focused, color }: any) => (
             <Text category={focused ? "p1" : "p2"} style={{ color }}>
-              Vendas
+              Clientes
             </Text>
           ),
           tabBarIcon: ({ focused, color, size }: any) => (
-            <Feather
-              name="list"
+            <Ionicons
+              name="person-circle"
               size={size ? size : 24}
               color={focused ? color : primaryTheme}
               focused={focused}

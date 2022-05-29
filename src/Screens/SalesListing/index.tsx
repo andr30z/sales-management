@@ -15,7 +15,7 @@ import { useListingScreenLogic } from "../../Hooks/useListingScreenLogic";
 import EmptyImage from "../../Illustrations/Empty-bro.svg";
 import { MAIN_STACK_ROUTES } from "../../Routes/MainStack/Types";
 import { filterByName, isDateInRange } from "../../Utils";
-import { styles } from "./Styles";
+import { listingStyles as styles } from "../commonStyles";
 const initialFilterState = {
   clientName: "",
   initialDate: "",
