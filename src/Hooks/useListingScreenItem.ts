@@ -42,7 +42,7 @@ export function useListingScreenItem<I extends { id: string }>({
 
   const onPress = () => {
     navigation.navigate(detailsRoute, {
-      saleId: item.id,
+      id: item.id,
     });
   };
 

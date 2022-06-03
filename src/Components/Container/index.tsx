@@ -1,11 +1,11 @@
 import React from "react";
 import { View, ViewStyle } from "react-native";
-type ContainerProps = ViewStyle & { center?: boolean };
+type ContainerProps = Omit<ViewStyle, "flex"> & { center?: boolean; flex?: null | number };
 
 /**
-* 
-* @author andr30z
-**/
+ *
+ * @author andr30z
+ **/
 export const Container: React.FC<ContainerProps> = ({
   children,
   flex = 1,

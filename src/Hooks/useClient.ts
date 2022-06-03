@@ -13,5 +13,10 @@ export function useClient(clientId: string) {
     () => getClient(salesInfo.clients, clientId),
     [salesInfo.clients, clientId]
   );
-  return { client };
+  const allSales = salesInfo.sales;
+  const clientSales = useMemo(
+    () => allSales.filter((sale) => sale.clientId === client?.id),
+    [salesInfo.sales, client]
+  );
+  return { client, clientSales: allSales };
 }

@@ -11,9 +11,9 @@ export type SalesFormProps = {
 export type MainStackRoutesTypes = {
   SalesForm: SalesFormProps;
   ClientsForm: ClientsFormProps;
-  SalesDetails: { saleId: string };
+  SalesDetails: { id: string };
   BottomNav: undefined;
-  ClientDetails: { clientId: string };
+  ClientDetails: { id: string };
 };
 
 export enum MAIN_STACK_ROUTES {

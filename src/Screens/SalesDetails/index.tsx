@@ -1,49 +1,42 @@
-import { Feather, FontAwesome, Entypo, Ionicons } from "@expo/vector-icons";
+import { Entypo, Feather, FontAwesome } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import { Linking, Pressable } from "react-native";
+import { Pressable } from "react-native";
+import { useToast } from "react-native-toast-notifications";
 import { Container } from "../../Components/Container";
+import { ItemTitleDetailsHeader } from "../../Components/ItemTitleDetailsHeader";
+import { SaleInfoListItem } from "../../Components/SaleInfoListItem";
+import { Text } from "../../Components/Text";
+import { useSalesInfoContext } from "../../Context/SalesInfo";
 import {
-  useBoolean,
+  ActionsTypes,
+  reversedSalesStatus,
+  reversedSalesTypes
+} from "../../Context/SalesInfo/Reducer";
+import {
   useClient,
   useCommonThemeColors,
   useFormatRelativeDate,
+  useWhatsappUtils
 } from "../../Hooks";
 import { useSale } from "../../Hooks/useSale";
 import {
   MainStackRoutesTypes,
-  MAIN_STACK_ROUTES,
+  MAIN_STACK_ROUTES
 } from "../../Routes/MainStack/Types";
 import { styles } from "./Styles";
-import * as Clipboard from "expo-clipboard";
-import { StatusBar } from "expo-status-bar";
-import { SaleInfoListItem } from "../../Components/SaleInfoListItem";
-import { useNavigation } from "@react-navigation/native";
-import {
-  ActionsTypes,
-  reversedSalesStatus,
-  reversedSalesTypes,
-} from "../../Context/SalesInfo/Reducer";
-import { ConfirmActionModal } from "../../Components/ConfirmActionModal";
-import { useSalesInfoContext } from "../../Context/SalesInfo";
-import { useToast } from "react-native-toast-notifications";
-import { format } from "date-fns";
-import { Text } from "../../Components/Text";
 
 export const SalesDetails: React.FC<
   StackScreenProps<MainStackRoutesTypes, MAIN_STACK_ROUTES.SALES_DETAILS>
 > = ({
   route: {
-    params: { saleId },
+    params: { id },
   },
 }) => {
-  const { sale } = useSale(saleId);
-  const {
-    setTrue,
-    value: showConfirm,
-    setValue: setShowConfirm,
-  } = useBoolean();
+  const { sale } = useSale(id);
+
   const { dispatcher } = useSalesInfoContext();
   const { client } = useClient(String(sale?.clientId));
   const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
@@ -52,22 +45,12 @@ export const SalesDetails: React.FC<
   const toast = useToast();
   if (!sale || !client) return null;
   const { name, value, types, description, date, quantity, status } = sale;
-  const copyToClipboard = () => {
-    Clipboard.setString(client.phoneNumber);
-  };
   const goBack = () => {
     navigation.goBack();
   };
-  const clientNumber = client.phoneNumber;
-  const onPressOpenWhatsapp = () => {
-    Linking.canOpenURL("whatsapp://send").then((supported) => {
-      return Linking.openURL(
-        supported
-          ? `whatsapp://send?phone=${clientNumber}`
-          : `https://api.whatsapp.com/send?phone=${clientNumber}i`
-      );
-    });
-  };
+  const { copyToClipboard, onPressOpenWhatsapp } = useWhatsappUtils(
+    client.phoneNumber
+  );
   const onPressEdit = () => {
     navigation.navigate(MAIN_STACK_ROUTES.SALES_FORM, {
       formValues: { ...sale, date: new Date(date).toString() },
@@ -83,72 +66,12 @@ export const SalesDetails: React.FC<
   //
   return (
     <Container flex={1} backgroundColor="#fff">
-      <ConfirmActionModal
-        onActionConfirmed={onConfirmDelete}
-        open={showConfirm}
-        setOpen={setShowConfirm}
-      />
-      <StatusBar translucent backgroundColor={warningColor} />
-      <Container
-        flex={2}
-        width="100%"
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="space-between"
-        position="relative"
+      <ItemTitleDetailsHeader
         backgroundColor={warningColor}
-      >
-        <Container
-          position="absolute"
-          top={20}
-          width="100%"
-          flexDirection="row"
-          paddingHorizontal={15}
-          justifyContent="space-between"
-        >
-          <Pressable onPress={goBack}>
-            <Ionicons name="chevron-back-circle" size={38} color="#fff" />
-          </Pressable>
-          <Entypo onPress={setTrue} name="trash" size={34} color="#fff" />
-        </Container>
-        <Container
-          position="absolute"
-          bottom={-35}
-          width="100%"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Container
-            width="80%"
-            padding={15}
-            backgroundColor="#fff"
-            flexDirection="column"
-            justifyContent="center"
-            alignItems="center"
-            {...styles.header}
-          >
-            <Text
-              numberOfLines={2}
-              status="warning"
-              ellipsizeMode="tail"
-              fontFamily="heading"
-              style={{ textAlign: "center" }}
-              category="h1"
-            >
-              {name}
-            </Text>
-            <Text
-              numberOfLines={2}
-              ellipsizeMode="tail"
-              style={{ textAlign: "left" }}
-              category="c1"
-              appearance="hint"
-            >
-              {format(new Date(date), "dd/MM/yyyy")}
-            </Text>
-          </Container>
-        </Container>
-      </Container>
+        date={date}
+        name={name}
+        onConfirmDelete={onConfirmDelete}
+      />
       <LinearGradient
         colors={[warningColor, primaryColor]}
         style={styles.linearGradient}
@@ -156,7 +79,7 @@ export const SalesDetails: React.FC<
         end={[1, 0]}
       >
         <Container width="100%" flexDirection="column" flex={1}>
-          <Text ellipsizeMode="tail" category="h6" status="control">
+          <Text ellipsizeMode="tail" numberOfLines={1} category="h6" status="control">
             Cliente: {client.name}
           </Text>
           <Pressable onPress={copyToClipboard}>
@@ -165,7 +88,7 @@ export const SalesDetails: React.FC<
               category="p2"
               status="control"
             >
-              +{clientNumber} <Feather name="copy" size={16} color="#fff" />
+              +{client.phoneNumber} <Feather name="copy" size={16} color="#fff" />
             </Text>
           </Pressable>
         </Container>
