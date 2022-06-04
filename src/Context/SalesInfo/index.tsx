@@ -85,7 +85,6 @@ export const SalesInfo: React.FC = ({ children }) => {
         type: ActionsTypes.SET_CURRENT_STATE_WITH_STORAGE,
         payload: initialData,
       });
-      console.log(value);
       AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(initialData));
     } catch (e) {
       // error reading value

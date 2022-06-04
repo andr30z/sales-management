@@ -25,7 +25,6 @@ export function useListingFilter<F, D>({
   const [filteredData, setFilteredData] = useState<Array<D>>(data);
   useEffect(
     function onEnterScreen() {
-      console.log("AAAAA")
       onFilter();
     },
     [onEnterScreenDependencies]

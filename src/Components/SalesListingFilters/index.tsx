@@ -114,7 +114,6 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
                 "Reembolsada",
               ]}
               onChange={(index) => {
-                console.log(index);
                 if (Array.isArray(index)) return;
                 setFilterFields((past) => ({ ...past, saleStatus: index.row }));
               }}
