@@ -1384,6 +1384,13 @@
     lodash.pick "^4.4.0"
     lodash.template "^4.5.0"
 
+"@fawazahmed/react-native-read-more@^2.3.6":
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/@fawazahmed/react-native-read-more/-/react-native-read-more-2.3.6.tgz#4678475477f6a31fa724f8af9c91c7ab5a27ade2"
+  integrity sha512-UXVvD2hRncegtAPdG67Fgj5x/NQv+sq9jPDr6jZLWCDch4qUj9DE4u+1xAUvzHXeHgWDE5+mk3vLePy2+xsSyA==
+  dependencies:
+    prop-types "^15.7.2"
+
 "@gorhom/portal@^1.0.13":
   version "1.0.13"
   resolved "https://registry.yarnpkg.com/@gorhom/portal/-/portal-1.0.13.tgz#da3af4d427e1fa68d264107de4b3072a4adf35ce"

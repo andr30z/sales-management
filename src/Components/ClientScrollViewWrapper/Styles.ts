@@ -14,5 +14,6 @@ export const styles = StyleSheet.create({
   },
   whatsappContainer: {
     height: 75,
+    marginTop:35
   },
 });
