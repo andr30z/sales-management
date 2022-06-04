@@ -34,6 +34,7 @@ interface PerfomaticListProps<D = {}>
   gridLayout?: boolean;
   scrollViewProps?: ScrollViewProps;
   numColumns?: number;
+  useEmptyListComponent?: boolean;
 }
 type RecyclerListViewPropsWithExternalScrollView = {
   externalScrollView: any;
@@ -55,6 +56,7 @@ export const PerformaticList = <D,>({
   externalScrollView,
   numColumns = 3,
   scrollViewProps,
+  useEmptyListComponent = true,
   ...props
 }: PerfomaticListProps<D>) => {
   const { width } = useWindowDimensions();
@@ -82,7 +84,7 @@ export const PerformaticList = <D,>({
     );
   };
   const layoutProvider = useRef(getLayoutProvider()).current;
-  return data.length === 0 ? (
+  return useEmptyListComponent && data.length === 0 ? (
     emptyComponent
   ) : (
     <RecyclerListView<

@@ -16,6 +16,7 @@ export const Text: React.FC<TextComponentProps> = ({
   center,
   ...props
 }) => {
+  // console.log(props)
   const centerStyles: any = center ? { textAlign: "center" } : {};
   // const customHeadingStyles =
   //   fontFamily === "heading" ? { fontSize: 60 } : undefined;
@@ -30,6 +31,7 @@ export const Text: React.FC<TextComponentProps> = ({
         },
       ]}
       {...props}
+      
     >
       {children}
     </KittenText>

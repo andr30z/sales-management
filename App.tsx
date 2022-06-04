@@ -13,7 +13,8 @@ import { Halant_400Regular, Halant_700Bold } from "@expo-google-fonts/halant";
 import { Satisfy_400Regular } from "@expo-google-fonts/satisfy";
 import * as montserrat from "@expo-google-fonts/montserrat";
 import { StatusBar } from "expo-status-bar";
-import { PortalProvider } from "@gorhom/portal";
+import { PortalHost, PortalProvider } from "@gorhom/portal";
+import { PortalLocations } from "./src/PortalLocations";
 
 const { useFonts: _, __metadata__, ...rest } = montserrat;
 SplashScreen.preventAutoHideAsync();
@@ -45,6 +46,7 @@ export default function App() {
             <SalesInfo>
               <SafeAreaView style={{ flex: 1 }}>
                 <MainStack />
+                <PortalHost name={PortalLocations.ROOT} />
               </SafeAreaView>
             </SalesInfo>
           </ApplicationProvider>

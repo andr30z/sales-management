@@ -1,21 +1,20 @@
+import { useTheme } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { Button, Input } from "@ui-kitten/components";
+import { StatusBar } from "expo-status-bar";
 import { Formik } from "formik";
 import React from "react";
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import { useToast } from "react-native-toast-notifications";
 import * as Yup from "yup";
 import { Container } from "../../Components/Container";
 import { FormErrorDisplayer } from "../../Components/FormErrorDisplayer";
 import { Text } from "../../Components/Text";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
-import {
-  ActionsTypes,
-  Client,
-  SalesTypes,
-} from "../../Context/SalesInfo/Reducer";
+import { ActionsTypes, Client } from "../../Context/SalesInfo/Reducer";
 import { globalStyles } from "../../GlobalStyles";
+import { useClient, useCommonThemeColors } from "../../Hooks";
 import {
-  ClientsFormProps,
   MainStackRoutesTypes,
   MAIN_STACK_ROUTES,
 } from "../../Routes/MainStack/Types";
@@ -40,10 +39,13 @@ export const ClientsForm: React.FC<
 > = ({
   navigation,
   route: {
-    params: { routeOnSubmit },
+    params: { routeOnSubmit, id },
   },
 }) => {
   const { dispatcher } = useSalesInfoContext();
+  const { primaryColor } = useCommonThemeColors();
+  const { client } = useClient(id as string);
+  const toast = useToast();
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -55,7 +57,13 @@ export const ClientsForm: React.FC<
       >
         <Formik<Omit<Client, "id" | "createdAt">>
           onSubmit={(values) => {
-            dispatcher({ type: ActionsTypes.ADD_CLIENT, payload: values });
+            dispatcher({
+              type: client ? ActionsTypes.EDIT_CLIENT : ActionsTypes.ADD_CLIENT,
+              payload: values,
+            });
+            toast.show("Cliente salvo com sucesso", {
+              type: "success",
+            });
             if (routeOnSubmit)
               navigation.navigate(routeOnSubmit as any, {
                 selectCreatedClient: values,
@@ -63,11 +71,13 @@ export const ClientsForm: React.FC<
             else navigation.goBack();
           }}
           validationSchema={validationSchema}
-          initialValues={{
-            name: "",
-            observation: "",
-            phoneNumber: "",
-          }}
+          initialValues={
+            client || {
+              name: "",
+              observation: "",
+              phoneNumber: "",
+            }
+          }
         >
           {({
             values: { name, observation, phoneNumber },
@@ -83,6 +93,7 @@ export const ClientsForm: React.FC<
               justifyContent="center"
               flexDirection="column"
             >
+              <StatusBar translucent backgroundColor={primaryColor} />
               <Container center minHeight={100} flex={null as any}>
                 <Text
                   category="h2"
@@ -90,7 +101,7 @@ export const ClientsForm: React.FC<
                   fontFamily="heading"
                   style={globalStyles.textCenter}
                 >
-                  Cadastro de Clientes
+                  Cadastro de Cliente {client ? ": " + client.name : ""}
                 </Text>
               </Container>
               <Input
@@ -127,7 +138,9 @@ export const ClientsForm: React.FC<
                 onChangeText={handleChange("observation")}
               />
 
-              <Button onPress={() => handleSubmit()}>Cadastrar</Button>
+              <Button onPress={() => handleSubmit()}>
+                {client ? "Editar" : "Cadastrar"}
+              </Button>
             </Container>
           )}
         </Formik>

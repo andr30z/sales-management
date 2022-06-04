@@ -9,27 +9,20 @@ import { SalesListingFilters } from "../../Components/SalesListingFilters";
 import { Text } from "../../Components/Text";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
 import { ActionsTypes, Sale } from "../../Context/SalesInfo/Reducer";
-import { getClient } from "../../Hooks";
 import { useCommonThemeColors } from "../../Hooks/useCommonThemeColors";
 import { useListingScreenLogic } from "../../Hooks/useListingScreenLogic";
 import EmptyImage from "../../Illustrations/Empty-bro.svg";
 import { MAIN_STACK_ROUTES } from "../../Routes/MainStack/Types";
-import { filterByName, isDateInRange } from "../../Utils";
+import { filterSalesArrays, initialSalesFilterState } from "../../Utils";
 import { listingStyles as styles } from "../commonStyles";
-const initialFilterState = {
-  clientName: "",
-  initialDate: "",
-  finalDate: "",
-  saleName: "",
-  saleStatus: "" as any,
-};
+
 /**
  *
  * @author andr30z
  **/
 export const SalesListing: React.FC = () => {
   const {
-    salesInfo: { sales, clients },
+    salesInfo: { sales },
     dispatcher,
   } = useSalesInfoContext();
   const {
@@ -53,35 +46,14 @@ export const SalesListing: React.FC = () => {
     setSelectedItems,
   } = useListingScreenLogic({
     data: sales,
-    initialFilterState,
+    initialFilterState: initialSalesFilterState,
     onDeleteAction: (data) => {
       dispatcher({
         payload: data,
         type: ActionsTypes.DELETE_MANY_SALES,
       });
     },
-    onFilterLogic: (filterData) =>
-      sales.filter(({ name, clientId, date, status }) => {
-        const { clientName, finalDate, initialDate, saleName, saleStatus } =
-          filterData;
-        let checkDate =
-          finalDate && initialDate
-            ? isDateInRange(initialDate, finalDate, date)
-            : true;
-        const currentStatus =
-          saleStatus === 0 || saleStatus === ("" as any)
-            ? true
-            : status === saleStatus - 1;
-        return (
-          filterByName(name, saleName) &&
-          filterByName(
-            getClient(clients || [], clientId)?.name || "",
-            clientName
-          ) &&
-          checkDate &&
-          currentStatus
-        );
-      }),
+    onFilterLogic: (filterData) => filterSalesArrays(sales, filterData),
   });
 
   return (
@@ -105,6 +77,7 @@ export const SalesListing: React.FC = () => {
                 setFilterFields={setFilterFields}
                 onFilter={onFilter}
                 onReset={onReset}
+                iconColors={primaryTheme}
               />
             )}
             <ListActions
@@ -125,11 +98,16 @@ export const SalesListing: React.FC = () => {
         <PerformaticList<Sale>
           data={filteredData}
           style={styles.list}
+          scrollViewProps={{
+            contentContainerStyle: {
+              paddingBottom: 50,
+            },
+          }}
           emptyComponent={
             <Container
               flexDirection="column"
               alignItems="center"
-              flex={null as any}
+              flex={null}
             >
               <EmptyImage height="450" width="100%" />
               <Text

@@ -1,4 +1,6 @@
-import { StackScreenProps } from "@react-navigation/stack";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { format } from "date-fns";
 import React from "react";
 import { useWindowDimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -6,8 +8,13 @@ import { ClientScrollViewWrapper } from "../../Components/ClientScrollViewWrappe
 import { Container } from "../../Components/Container";
 import { PerformaticList } from "../../Components/PerformaticList";
 import { Text } from "../../Components/Text";
-import { Sale } from "../../Context/SalesInfo/Reducer";
-import { useClient } from "../../Hooks";
+import { WithDirectFather } from "../../Components/WithDirectFather";
+import {
+  ClientSalesListingProvider,
+  useClientSalesListingContext,
+} from "../../Context/ClientSalesListing";
+import { reversedSalesStatus, Sale } from "../../Context/SalesInfo/Reducer";
+import { useClient, useRouteParams } from "../../Hooks";
 import {
   MainStackRoutesTypes,
   MAIN_STACK_ROUTES,
@@ -18,74 +25,113 @@ import { styles } from "./Styles";
  *
  * @author andr30z
  **/
-export const ClientDetails: React.FC<
-  StackScreenProps<MainStackRoutesTypes, MAIN_STACK_ROUTES.CLIENT_DETAILS>
-> = ({
-  route: {
-    params: { id },
-  },
-  navigation,
-}) => {
-  const { width } = useWindowDimensions();
-  const { client, clientSales } = useClient(id);
-  const goToSaleDetails = (id: string) => () => {
-    navigation.navigate(MAIN_STACK_ROUTES.SALES_DETAILS, {
-      id,
-    });
-  };
-  if (!client) return null;
-  return (
-    <Container center flex={1} width={width}>
-      <PerformaticList<Sale>
-        data={clientSales as any}
-        externalScrollView={ClientScrollViewWrapper}
-        widthOrHeight={125}
-        gridLayout
-        numColumns={4}
-        scrollViewProps={{
-          bounces: false,
-          style: styles.scrollView,
-          contentContainerStyle: {
-            justifyContent: "center",
-            alignItems: "center",
-          },
-        }}
-      >
-        {(_, item) => (
-          <Container
-            flex={null}
-            center
-            width="100%"
-            height="100%"
-          >
-            <Container
-              {...styles.containerShadow}
-              width="95%"
-              height="80%"
-              marginVertical={5}
-              backgroundColor="white"
-              borderRadius={14}
-              center
-              flex={1}
-            >
-              <TouchableOpacity
-                style={styles.touchableSaleItem}
-                containerStyle={styles.touchableContainerSaleItem}
-                onPress={goToSaleDetails(item.id)}
+export const ClientDetails = WithDirectFather(
+  ClientSalesListingProvider,
+  () => {
+    const { width } = useWindowDimensions();
+    const { id } = useRouteParams<
+      MainStackRoutesTypes,
+      MAIN_STACK_ROUTES.CLIENT_DETAILS
+    >();
+    const navigation =
+      useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
+    const { client } = useClient(id);
+    const goToSaleDetails = (id: string) => () => {
+      navigation.navigate(MAIN_STACK_ROUTES.SALES_DETAILS, {
+        id,
+        
+      });
+    };
+    const { filteredData } = useClientSalesListingContext();
+    if (!client) return null;
+
+    const emptyFilter = [{ id: "empty-data" }] as Array<Sale>;
+    const data = filteredData.length === 0 ? emptyFilter : filteredData;
+    return (
+      <Container center flex={1} width={width}>
+        <PerformaticList<Sale>
+          data={data}
+          externalScrollView={ClientScrollViewWrapper}
+          widthOrHeight={120}
+          gridLayout
+          useEmptyListComponent={false}
+          numColumns={3}
+          scrollViewProps={{
+            bounces: false,
+            style: styles.scrollView,
+            contentContainerStyle: styles.scrollViewContentContainer,
+          }}
+        >
+          {(_, item) =>
+            item.id === "empty-data" ? <></> : (
+              <Container
+                flex={null}
+                center
+                padding={7}
+                width="100%"
+                height="100%"
               >
-                <Text
-                  status="warning"
-                  category="label"
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
+                <Container
+                  {...styles.containerShadow}
+                  width="100%"
+                  height="100%"
+                  backgroundColor="white"
+                  borderRadius={14}
+                  center
+                  flex={1}
                 >
-                  {item.name}
-                </Text>
-              </TouchableOpacity>
-            </Container>
-          </Container>
-        )}
-      </PerformaticList>
-    </Container>
-  );
-};
+                  <TouchableOpacity
+                    style={styles.touchableSaleItem}
+                    containerStyle={styles.touchableContainerSaleItem}
+                    onPress={goToSaleDetails(item.id)}
+                  >
+                    <Text
+                      status="warning"
+                      category="p2"
+                      ellipsizeMode="tail"
+                      numberOfLines={1}
+                      center
+                      style={styles.saleName}
+                    >
+                      {item.name}
+                    </Text>
+                    <Text
+                      status="warning"
+                      category="s2"
+                      fontFamily="other"
+                      ellipsizeMode="tail"
+                      numberOfLines={1}
+                      center
+                    >
+                      R$ {item.value}
+                    </Text>
+                    <Text
+                      status="warning"
+                      category="c2"
+                      fontFamily="other"
+                      ellipsizeMode="tail"
+                      numberOfLines={1}
+                      center
+                    >
+                      {reversedSalesStatus[item.status]}
+                    </Text>
+                    <Text
+                      status="warning"
+                      category="c2"
+                      fontFamily="other"
+                      ellipsizeMode="tail"
+                      numberOfLines={1}
+                      center
+                    >
+                      {format(new Date(item.date), "dd/MM/yyyy")}
+                    </Text>
+                  </TouchableOpacity>
+                </Container>
+              </Container>
+            )
+          }
+        </PerformaticList>
+      </Container>
+    );
+  }
+);

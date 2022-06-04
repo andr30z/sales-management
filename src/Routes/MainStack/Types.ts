@@ -3,6 +3,7 @@ import { Client, Sale } from "../../Context/SalesInfo/Reducer";
 export type ClientsFormProps = {
   routeOnSubmit?: string;
   propsOnNavigateBack?: any;
+  id?: string;
 };
 export type SalesFormProps = {
   selectCreatedClient?: Client;

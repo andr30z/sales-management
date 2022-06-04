@@ -9,14 +9,14 @@ export const getClient = (clients: Array<Client>, clientId: string) =>
  **/
 export function useClient(clientId: string) {
   const { salesInfo } = useSalesInfoContext();
+  const allSales = salesInfo.sales;
   const client = useMemo(
     () => getClient(salesInfo.clients, clientId),
     [salesInfo.clients, clientId]
   );
-  const allSales = salesInfo.sales;
   const clientSales = useMemo(
     () => allSales.filter((sale) => sale.clientId === client?.id),
     [salesInfo.sales, client]
   );
-  return { client, clientSales: allSales };
+  return { client, clientSales };
 }

@@ -1,15 +1,9 @@
 import { AntDesign } from "@expo/vector-icons";
-import {
-  Button,
-  Datepicker,
-  Divider,
-  Input,
-  useTheme,
-} from "@ui-kitten/components";
-import { MotiView, useAnimationState } from "moti";
+import { Button, Datepicker, Divider, Input } from "@ui-kitten/components";
+import { EvaStatus } from "@ui-kitten/components/devsupport";
 import React, { Dispatch, SetStateAction } from "react";
 import { Keyboard, Pressable } from "react-native";
-import { FilterFields } from "../../Interfaces/FilterFields";
+import { SalesFilterFields } from "../../Interfaces/SalesFilterFields";
 import { brazilianDateService, minDate } from "../../Utils";
 import { Container } from "../Container";
 import { KittenSelect } from "../KittenSelect";
@@ -19,9 +13,12 @@ import { styles } from "./Styles";
 
 interface SalesListingFiltersProps {
   onFilter: () => void;
-  filterFields: FilterFields;
-  setFilterFields: Dispatch<SetStateAction<FilterFields>>;
+  filterFields: SalesFilterFields;
+  setFilterFields: Dispatch<SetStateAction<SalesFilterFields>>;
   onReset: () => void;
+  useClientNameInput?: boolean;
+  mainColor?: EvaStatus;
+  iconColors: string;
 }
 /**
  *
@@ -32,17 +29,18 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
   setFilterFields,
   onFilter,
   onReset,
+  useClientNameInput = true,
+  mainColor="primary",
+  iconColors
 }) => {
-  const theme = useTheme();
-
   const { clientName, finalDate, initialDate, saleName, saleStatus } =
     filterFields;
   return (
     <ToggleContainer
       containerStyle={styles.toggleContainer}
       onOpenStyle={{
-        height: 300,
         backgroundColor: "white",
+        height: 300,
         zIndex: 10000,
       }}
       onCloseStyle={{ height: 45 }}
@@ -72,7 +70,7 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
                 style={{ textAlign: "center" }}
                 fontFamily="subtitles"
                 category="h5"
-                status="primary"
+                status={mainColor}
               >
                 Filtros
               </Text>
@@ -80,7 +78,7 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
                 <AntDesign
                   name="eye"
                   style={{ marginLeft: 10 }}
-                  color={theme["color-primary-default"]}
+                  color={iconColors}
                   size={34}
                 />
               </Pressable>
@@ -89,18 +87,23 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
               style={styles.input}
               placeholder="Nome da venda"
               value={saleName}
+              status={mainColor}
               onChangeText={onChange("saleName")}
             />
-            <Input
-              style={styles.input}
-              placeholder="Nome do cliente"
-              value={clientName}
-              onChangeText={onChange("clientName")}
-            />
+            {useClientNameInput && (
+              <Input
+                style={styles.input}
+                placeholder="Nome do cliente"
+                value={clientName}
+                status={mainColor}
+                onChangeText={onChange("clientName")}
+              />
+            )}
             <KittenSelect
               multiSelect={false}
               selectStyle={styles.input}
               value={saleStatus}
+              status={mainColor}
               placeholder="Status da venda"
               options={[
                 "Todos",
@@ -127,6 +130,7 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
                 dateService={brazilianDateService as any}
                 min={minDate as any}
                 date={initialDate}
+                status={mainColor}
                 placeholder="Data inicial"
                 onSelect={onChange("initialDate")}
               />
@@ -134,6 +138,7 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
                 style={styles.calendarInput}
                 dateService={brazilianDateService as any}
                 date={finalDate}
+                status={mainColor}
                 placeholder="Data final"
                 min={minDate as any}
                 onSelect={onChange("finalDate")}
@@ -144,6 +149,7 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
               <Button
                 size="small"
                 style={styles.btns}
+                status={mainColor}
                 onPress={onBtnAction(onFilter)}
               >
                 Filtrar
@@ -152,6 +158,7 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
                 onPress={onBtnAction(onReset)}
                 size="small"
                 appearance="outline"
+                status={mainColor}
                 style={styles.btns}
               >
                 Resetar

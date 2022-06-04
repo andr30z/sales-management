@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useBoolean } from "./useBoolean";
-export interface UseListingScreenLogicParams<F, D extends { id: string }> {
-  initialFilterState: F;
-  data: Array<D>;
-  onFilterLogic: (filterValues: F) => Array<D>;
+import { useListingFilter, UseListingFilterParams } from "./useListingFilter";
+export interface UseListingScreenLogicParams<F, D extends { id: string }>
+  extends UseListingFilterParams<F, D> {
   onDeleteAction: (items: Array<string>) => void;
 }
 
@@ -19,27 +18,28 @@ export function useListingScreenLogic<F, D extends { id: string }>({
     setFalse: setIsInLongPressModeFalse,
   } = useBoolean();
   const [selectedItems, setSelectedItems] = useState<Array<string>>([]);
-  const [filterFields, setFilterFields] = useState<F>(initialFilterState);
-  const [filteredData, setFilteredData] = useState<Array<D>>(data);
-  useEffect(() => {
-    onFilter();
-  }, [data]);
-  useEffect(() => {
-    if (!isInLongPressMode) clearSelected();
-  }, [isInLongPressMode]);
   const clearSelected = () => {
     setSelectedItems([]);
   };
+  const {
+    filterFields,
+    filteredData,
+    onFilter,
+    onReset,
+    setFilterFields,
+    setFilteredData,
+  } = useListingFilter<F, D>({
+    initialFilterState,
+    data,
+    onEnterScreenDependencies: data,
+    onFilterLogic,
+    onFilterCallback: clearSelected,
+    onResetCallback: clearSelected,
+  });
 
-  const onFilter = () => {
-    clearSelected();
-    setFilteredData(onFilterLogic(filterFields));
-  };
-  const onReset = () => {
-    clearSelected();
-    setFilterFields(initialFilterState);
-    setFilteredData(data);
-  };
+  useEffect(() => {
+    if (!isInLongPressMode) clearSelected();
+  }, [isInLongPressMode]);
 
   const onSelectAll = () => {
     setSelectedItems(filteredData.map(({ id }) => id));
