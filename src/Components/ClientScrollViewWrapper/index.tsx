@@ -18,6 +18,7 @@ import { Container } from "../Container";
 import { ItemTitleDetailsHeader } from "../ItemTitleDetailsHeader";
 import { SalesListingFilters } from "../SalesListingFilters";
 import { Text } from "../Text";
+import { WhatsappNumber } from "../WhatsappNumber";
 import { styles } from "./Styles";
 export const ClientScrollViewWrapper = React.forwardRef<
   ScrollView,
@@ -79,6 +80,10 @@ export const ClientScrollViewWrapper = React.forwardRef<
               </Pressable>
             </Container>
           }
+        />
+        <WhatsappNumber
+          containerStyle={styles.whatsappContainer}
+          phoneNumber={client?.phoneNumber as string}
         />
         <Container flex={null} height={50} center marginTop={85} width="100%">
           <Text status="warning" center category="h5" fontFamily="subtitles">

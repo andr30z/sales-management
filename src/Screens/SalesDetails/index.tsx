@@ -1,7 +1,6 @@
-import { Entypo, Feather, FontAwesome } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack";
-import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { Pressable } from "react-native";
 import { useToast } from "react-native-toast-notifications";
@@ -9,24 +8,23 @@ import { Container } from "../../Components/Container";
 import { ItemTitleDetailsHeader } from "../../Components/ItemTitleDetailsHeader";
 import { SaleInfoListItem } from "../../Components/SaleInfoListItem";
 import { Text } from "../../Components/Text";
+import { WhatsappNumber } from "../../Components/WhatsappNumber";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
 import {
   ActionsTypes,
   reversedSalesStatus,
-  reversedSalesTypes
+  reversedSalesTypes,
 } from "../../Context/SalesInfo/Reducer";
 import {
   useClient,
   useCommonThemeColors,
   useFormatRelativeDate,
-  useWhatsappUtils
 } from "../../Hooks";
 import { useSale } from "../../Hooks/useSale";
 import {
   MainStackRoutesTypes,
-  MAIN_STACK_ROUTES
+  MAIN_STACK_ROUTES,
 } from "../../Routes/MainStack/Types";
-import { styles } from "./Styles";
 
 export const SalesDetails: React.FC<
   StackScreenProps<MainStackRoutesTypes, MAIN_STACK_ROUTES.SALES_DETAILS>
@@ -40,7 +38,7 @@ export const SalesDetails: React.FC<
   const { dispatcher } = useSalesInfoContext();
   const { client } = useClient(String(sale?.clientId));
   const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
-  const { primaryColor, warningColor } = useCommonThemeColors();
+  const { warningColor } = useCommonThemeColors();
   const saleCreatedAt = useFormatRelativeDate(sale?.createdAt);
   const toast = useToast();
   if (!sale || !client) return null;
@@ -48,9 +46,7 @@ export const SalesDetails: React.FC<
   const goBack = () => {
     navigation.goBack();
   };
-  const { copyToClipboard, onPressOpenWhatsapp } = useWhatsappUtils(
-    client.phoneNumber
-  );
+
   const onPressEdit = () => {
     navigation.navigate(MAIN_STACK_ROUTES.SALES_FORM, {
       formValues: { ...sale, date: new Date(date).toString() },
@@ -72,30 +68,10 @@ export const SalesDetails: React.FC<
         name={name}
         onConfirmDelete={onConfirmDelete}
       />
-      <LinearGradient
-        colors={[warningColor, primaryColor]}
-        style={styles.linearGradient}
-        start={[0, 0]}
-        end={[1, 0]}
-      >
-        <Container width="100%" flexDirection="column" flex={1}>
-          <Text ellipsizeMode="tail" numberOfLines={1} category="h6" status="control">
-            Cliente: {client.name}
-          </Text>
-          <Pressable onPress={copyToClipboard}>
-            <Text
-              style={styles.linearGradientPhoneNumber}
-              category="p2"
-              status="control"
-            >
-              +{client.phoneNumber} <Feather name="copy" size={16} color="#fff" />
-            </Text>
-          </Pressable>
-        </Container>
-        <Pressable onPress={onPressOpenWhatsapp}>
-          <FontAwesome name="whatsapp" size={40} color="#fff" />
-        </Pressable>
-      </LinearGradient>
+      <WhatsappNumber
+        phoneNumber={client.phoneNumber}
+        title={`Cliente: ${client.name}`}
+      />
       <Container
         paddingHorizontal={15}
         marginBottom={15}
