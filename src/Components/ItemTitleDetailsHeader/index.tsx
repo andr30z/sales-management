@@ -37,12 +37,13 @@ export const ItemTitleDetailsHeader: React.FC<ItemTitleDetailsHeaderProps> = ({
   children,
   height,
   stickyHeader = false,
-  headerMainContainerFirstChild
+  headerMainContainerFirstChild,
 }) => {
   const {
     value: showConfirmDelete,
     setValue: setShowConfirmDelete,
     setTrue,
+    setFalse,
   } = useBoolean();
   const navigation = useNavigation();
   const { width } = useWindowDimensions();
@@ -96,7 +97,10 @@ export const ItemTitleDetailsHeader: React.FC<ItemTitleDetailsHeaderProps> = ({
       backgroundColor={backgroundColor}
     >
       <ConfirmActionModal
-        onActionConfirmed={onConfirmDelete}
+        onActionConfirmed={() => {
+          onConfirmDelete();
+          setFalse();
+        }}
         open={showConfirmDelete}
         setOpen={setShowConfirmDelete}
       />

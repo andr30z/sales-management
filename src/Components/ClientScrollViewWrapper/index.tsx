@@ -2,14 +2,13 @@ import { Entypo } from "@expo/vector-icons";
 import ReadMore from "@fawazahmed/react-native-read-more";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { Card } from "@ui-kitten/components";
 import React from "react";
-import {
-  Pressable,
-  ScrollView,
-  ScrollViewProps,
-  useWindowDimensions,
-} from "react-native";
+import { Pressable, ScrollView, ScrollViewProps } from "react-native";
+import { useToast } from "react-native-toast-notifications";
 import { useClientSalesListingContext } from "../../Context/ClientSalesListing";
+import { useSalesInfoContext } from "../../Context/SalesInfo";
+import { ActionsTypes } from "../../Context/SalesInfo/Reducer";
 import {
   useBoolean,
   useClient,
@@ -36,6 +35,7 @@ export const ClientScrollViewWrapper = React.forwardRef<
   >();
   const clientId = id;
   const { warningColor } = useCommonThemeColors();
+  const { dispatcher } = useSalesInfoContext();
   const { client } = useClient(clientId);
   const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
   const openClient = () => {
@@ -43,8 +43,20 @@ export const ClientScrollViewWrapper = React.forwardRef<
       id,
     });
   };
-  const { width } = useWindowDimensions();
-  const onConfirmDelete = () => {};
+  const toast = useToast();
+  const onConfirmDelete = () => {
+    dispatcher({
+      payload: {
+        onError: () => null,
+        onSuccess: () => {
+          navigation.goBack();
+          toast.show("Cliente deletado com sucesso.", { type: "success" });
+        },
+        clients: [{ id: client?.id, name: client?.name }],
+      },
+      type: ActionsTypes.DELETE_CLIENT,
+    });
+  };
   const filter = useClientSalesListingContext();
   const { value: stickyHeader, setFalse, setTrue } = useBoolean();
   return (
@@ -88,43 +100,31 @@ export const ClientScrollViewWrapper = React.forwardRef<
             </Container>
           }
         />
-        <Text
-          center
-          style={{ marginTop: 65 }}
-          fontFamily="other"
-          status="primary"
-          category="s2"
-        >
-          ID: {client?.id as string}
-        </Text>
-        <Container center width="100%" paddingHorizontal={10}>
-          <ReadMore
-            seeMoreText="Ver mais"
-            seeLessText="Ver menos"
-            numberOfLines={3}
-            seeLessStyle={{ color: warningColor }}
-            seeMoreStyle={{ color: warningColor }}
-            style={{ alignSelf: "center", marginTop: 20 }}
-            customTextComponent={(props: any) => (
-              <Text
-                {...props}
-                category="p2"
-                fontFamily="other"
-                status="primary"
-              />
-            )}
-          >
-            Observação: {client?.observation as string} Observação:{" "}
-            {client?.observation as string} Observação:{" "}
-            {client?.observation as string} Observação:{" "}
-            {client?.observation as string} Observação:{" "}
-            {client?.observation as string} Observação:{" "}
-            {client?.observation as string} Observação:{" "}
-            {client?.observation as string} Observação:{" "}
-            {client?.observation as string} Observação:{" "}
-            {client?.observation as string}
-          </ReadMore>
-        </Container>
+        <Card style={{ marginTop: 65 }}>
+          <Text center fontFamily="other" status="primary" category="s2">
+            ID: {client?.id as string}
+          </Text>
+          <Container center width="100%" paddingHorizontal={10}>
+            <ReadMore
+              seeMoreText="Ver mais"
+              seeLessText="Ver menos"
+              numberOfLines={3}
+              seeLessStyle={{ color: warningColor }}
+              seeMoreStyle={{ color: warningColor }}
+              style={{ alignSelf: "center", marginTop: 20 }}
+              customTextComponent={(props: any) => (
+                <Text
+                  {...props}
+                  category="p2"
+                  fontFamily="other"
+                  status="primary"
+                />
+              )}
+            >
+              Observação: {client?.observation as string}
+            </ReadMore>
+          </Container>
+        </Card>
         <WhatsappNumber
           containerStyle={styles.whatsappContainer}
           phoneNumber={client?.phoneNumber as string}

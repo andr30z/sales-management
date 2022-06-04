@@ -1,7 +1,7 @@
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Button, Input, ListItem, Modal, Text } from "@ui-kitten/components";
+import { Button, Input, ListItem, Modal } from "@ui-kitten/components";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { KeyboardAvoidingView, useWindowDimensions } from "react-native";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
@@ -16,6 +16,7 @@ import { Container } from "../Container";
 import { FormErrorDisplayer } from "../FormErrorDisplayer";
 import { PerformaticList, RenderPerformaticItem } from "../PerformaticList";
 import { SelectClientHeader } from "../SelectClientHeader";
+import { Text } from "../Text";
 import { styles } from "./Styles";
 
 interface SelectClientProps {
@@ -62,13 +63,8 @@ export const SelectClient: React.FC<SelectClientProps> = ({
 
   const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
   const { height } = useWindowDimensions();
-  const renderListItem:RenderPerformaticItem<Client> = useCallback(
-    (
-      _type,
-      data,
-      _index,
-      _extendedState
-    ) => (
+  const renderListItem: RenderPerformaticItem<Client> = useCallback(
+    (_type, data, _index, _extendedState) => (
       <ListItem
         style={{ flex: 1 }}
         title={`${data.name} - ${data.phoneNumber}`}

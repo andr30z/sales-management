@@ -57,7 +57,6 @@ export const ClientDetails = WithDirectFather(
           useEmptyListComponent={false}
           numColumns={3}
           scrollViewProps={{
-            bounces: false,
             style: styles.scrollView,
             contentContainerStyle: styles.scrollViewContentContainer,
           }}

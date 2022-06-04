@@ -15,6 +15,7 @@ import * as montserrat from "@expo-google-fonts/montserrat";
 import { StatusBar } from "expo-status-bar";
 import { PortalHost, PortalProvider } from "@gorhom/portal";
 import { PortalLocations } from "./src/PortalLocations";
+import Toast from "react-native-toast-notifications";
 
 const { useFonts: _, __metadata__, ...rest } = montserrat;
 SplashScreen.preventAutoHideAsync();
@@ -50,6 +51,7 @@ export default function App() {
               </SafeAreaView>
             </SalesInfo>
           </ApplicationProvider>
+          <Toast ref={(ref) => ((global as any)["toast"] = ref)} />
         </ToastProvider>
       </PortalProvider>
     </GestureHandlerRootView>
