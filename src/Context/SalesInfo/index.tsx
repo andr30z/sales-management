@@ -38,10 +38,12 @@ export const SalesInfo: React.FC = ({ children }) => {
   };
   const syncContacts = async (asyncStorageData: any) => {
     // console.log(asyncStorageData);
+    const convertedData: SalesManagementState = JSON.parse(asyncStorageData);
+    if (convertedData.hasSyncedContacts) return;
     const { status } = await Contacts.requestPermissionsAsync();
     if (status !== "granted") return;
     const { data } = await Contacts.getContactsAsync();
-    const convertedData: SalesManagementState = JSON.parse(asyncStorageData);
+
     const notSyncedContacts: Array<Client> = data
       .filter(
         ({ phoneNumbers }) =>

@@ -180,7 +180,11 @@ export const reducer = (
       return payload;
     case ActionsTypes.DELETE_CLIENT:
       return verifyClientDeletion(state, payload, () =>
-        deleteItem("sales", state, payload)
+        deleteMany(
+          "clients",
+          state,
+          payload.clients.map((c: { id: string }) => c.id)
+        )
       );
     case ActionsTypes.ADD_CLIENT:
       return addToStateArray("clients", state, payload);

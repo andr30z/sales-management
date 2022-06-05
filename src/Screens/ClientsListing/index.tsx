@@ -1,5 +1,6 @@
 import React from "react";
 import { View } from "react-native";
+import { useToast } from "react-native-toast-notifications";
 import { Container } from "../../Components/Container";
 import { ListActions } from "../../Components/ListActions";
 import { ListingScreenHeader } from "../../Components/ListingScreenHeader";
@@ -18,7 +19,7 @@ const initialFilterState = {
 };
 export const ClientsListing: React.FC = () => {
   const {
-    salesInfo: { sales, clients },
+    salesInfo: { clients },
     dispatcher,
   } = useSalesInfoContext();
   const {
@@ -26,6 +27,7 @@ export const ClientsListing: React.FC = () => {
     dangerColor,
     warningColor,
   } = useCommonThemeColors();
+  const toast = useToast();
   const {
     onDelete,
     onReset,
@@ -45,7 +47,18 @@ export const ClientsListing: React.FC = () => {
     initialFilterState,
     onDeleteAction: (data) => {
       dispatcher({
-        payload: data,
+        payload: {
+          clients: data.map((clientId) => ({
+            id: clientId,
+            name: clients.find((client) => client.id === clientId)?.name,
+          })),
+          onSuccess: () => {
+            toast.show("Cliente(s) deletado(s) com sucesso.", {
+              type: "success",
+            });
+          },
+          onError: () => null,
+        },
         type: ActionsTypes.DELETE_CLIENT,
       });
     },
@@ -92,6 +105,12 @@ export const ClientsListing: React.FC = () => {
         <PerformaticList<Client>
           data={filteredData}
           style={styles.list}
+          scrollViewProps={{
+            contentContainerStyle: {
+              paddingVertical: 10,
+            },
+          }}
+          extendedState={{}}
           emptyComponent={
             <Container
               flexDirection="column"

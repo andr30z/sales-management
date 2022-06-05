@@ -98,6 +98,7 @@ export const SalesListing: React.FC = () => {
         <PerformaticList<Sale>
           data={filteredData}
           style={styles.list}
+          extendedState={{}}
           scrollViewProps={{
             contentContainerStyle: {
               paddingBottom: 50,

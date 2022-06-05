@@ -58,7 +58,10 @@ export const ListingScreenItem = <I extends { id: string }>({
       borderColor={"#c3c3c3"}
     >
       <TouchableOpacity
-        onPress={isInDeleteMode ? onPressDeleteMode : onPress}
+        onPress={() => {
+          if (isInDeleteMode) onPressDeleteMode();
+          else onPress();
+        }}
         onLongPress={() => {
           onLongPress();
           onPressDeleteMode();

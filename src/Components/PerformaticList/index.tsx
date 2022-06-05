@@ -35,6 +35,7 @@ interface PerfomaticListProps<D = {}>
   scrollViewProps?: ScrollViewProps;
   numColumns?: number;
   useEmptyListComponent?: boolean;
+  listDependencyProp?: any;
 }
 type RecyclerListViewPropsWithExternalScrollView = {
   externalScrollView: any;
@@ -57,13 +58,16 @@ export const PerformaticList = <D,>({
   numColumns = 3,
   scrollViewProps,
   useEmptyListComponent = true,
+  listDependencyProp,
   ...props
 }: PerfomaticListProps<D>) => {
   const { width } = useWindowDimensions();
 
-  const listData = useMemo(
-    () => new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(data),
-    [data]
+  const listData = useMemo(() => new DataProvider((r1, r2) => r1 !== r2), []);
+
+  const finalList = useMemo(
+    () => listData.cloneWithRows(data),
+    [data, listData, listDependencyProp]
   );
 
   const getLayoutProvider = () => {
@@ -95,9 +99,10 @@ export const PerformaticList = <D,>({
       scrollViewProps={scrollViewProps}
       externalScrollView={externalScrollView}
       layoutProvider={layoutProvider}
-      dataProvider={listData}
+      dataProvider={finalList}
       isHorizontal={isHorizontal}
       rowRenderer={children}
+      
       {...props}
     />
   );

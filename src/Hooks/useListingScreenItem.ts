@@ -25,7 +25,7 @@ export function useListingScreenItem<I extends { id: string }>({
 }: ListingScreenItemParams<I>) {
   const selectedPos = useMemo(
     () => selectedItems.findIndex((id) => id === item.id),
-    [selectedItems, item]
+    [selectedItems, item.id]
   );
   const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
   const isSelected = selectedPos > -1;

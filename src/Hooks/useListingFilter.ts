@@ -33,7 +33,12 @@ export function useListingFilter<F, D>({
   const onFilter = useCallback(() => {
     setFilteredData(onFilterLogic(filterFields));
     if (onFilterCallback) onFilterCallback();
-  }, [filterFields, onFilterCallback, onFilterLogic]);
+  }, [
+    filterFields,
+    onFilterCallback,
+    onFilterLogic,
+    onEnterScreenDependencies,
+  ]);
   const onReset = useCallback(() => {
     setFilterFields(initialFilterState);
     setFilteredData(data);
