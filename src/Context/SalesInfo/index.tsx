@@ -1,5 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { createContext, useContext, useReducer } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useReducer,
+} from "react";
 import { useEffect } from "react";
 import * as Contacts from "expo-contacts";
 import {
@@ -15,6 +20,7 @@ import {
 interface SalesInfoContextInterface {
   salesInfo: SalesManagementState;
   dispatcher: React.Dispatch<Action>;
+  syncContacts: (asyncStorageData: any) => Promise<void>;
 }
 
 const SalesInfoContext = createContext<SalesInfoContextInterface>(
@@ -36,7 +42,7 @@ export const SalesInfo: React.FC = ({ children }) => {
       ) !== undefined
     );
   };
-  const syncContacts = async (asyncStorageData: any) => {
+  const syncContacts = useCallback(async (asyncStorageData: any) => {
     // console.log(asyncStorageData);
     const convertedData: SalesManagementState = JSON.parse(asyncStorageData);
     if (convertedData?.hasSyncedContacts) return;
@@ -67,11 +73,10 @@ export const SalesInfo: React.FC = ({ children }) => {
       type: ActionsTypes.SYNC_CLIENTS_WITH_CONTACTS,
       payload: [...convertedData.clients, ...notSyncedContacts],
     });
-  };
+  }, []);
   const getData = async () => {
     try {
       const value = await AsyncStorage.getItem(STORAGE_KEY);
-      syncContacts(value);
       if (value !== null)
         return dispatcher({
           type: ActionsTypes.SET_CURRENT_STATE_WITH_STORAGE,
@@ -98,7 +103,9 @@ export const SalesInfo: React.FC = ({ children }) => {
   }, []);
 
   return (
-    <SalesInfoContext.Provider value={{ salesInfo: state, dispatcher }}>
+    <SalesInfoContext.Provider
+      value={{ salesInfo: state, dispatcher, syncContacts }}
+    >
       {children}
     </SalesInfoContext.Provider>
   );
