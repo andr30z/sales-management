@@ -25,6 +25,7 @@
     "date-fns": "^2.28.0",
     "expo": "~44.0.2",
     "expo-clipboard": "~2.1.0",
+    "expo-constants": "~13.0.1",
     "expo-contacts": "~10.1.0",
     "expo-font": "~10.0.4",
     "expo-linear-gradient": "~11.0.3",

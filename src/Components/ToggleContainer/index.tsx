@@ -8,7 +8,8 @@ export interface ToggleContainer {
       closed: ToggleStyle;
       open: ToggleStyle;
       from: ToggleStyle;
-    }>
+    }>,
+    toggle: () => void
   ) => React.ReactNode;
   containerStyle: ViewStyle;
   onOpenStyle?: ToggleStyle;
@@ -29,16 +30,19 @@ export const ToggleContainer: React.FC<ToggleContainer> = ({
     zIndex: 10000,
   },
 }) => {
-  const toggleAnimationState = useAnimationState(
-    {
-      closed: onCloseStyle,
-      open: onOpenStyle,
-      from: onCloseStyle,
-    },
-  );
+  const toggleAnimationState = useAnimationState({
+    closed: onCloseStyle,
+    open: onOpenStyle,
+    from: onCloseStyle,
+  });
+  const onToggle = () => {
+    toggleAnimationState.transitionTo((prevState) => {
+      return prevState === "open" ? "closed" : "open";
+    });
+  };
   return (
     <MotiView style={containerStyle} state={toggleAnimationState}>
-      {children(toggleAnimationState)}
+      {children(toggleAnimationState,onToggle)}
     </MotiView>
   );
 };

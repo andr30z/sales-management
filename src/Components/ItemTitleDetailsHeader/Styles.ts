@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import Constants from 'expo-constants';
 
 export const styles = StyleSheet.create({
   header: {
@@ -33,7 +34,7 @@ export const styles = StyleSheet.create({
     elevation: 7,
   },
   headerContainerSticky: {
-    top: 40,
+    top: Constants.statusBarHeight + 20,
     paddingHorizontal: 20,
     borderRadius: 15,
   },

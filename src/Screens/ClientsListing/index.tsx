@@ -1,6 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import { useToast } from "react-native-toast-notifications";
+import { ClientsListingFilter } from "../../Components/ClientsListingFilter";
 import { Container } from "../../Components/Container";
 import { ListActions } from "../../Components/ListActions";
 import { ListingScreenHeader } from "../../Components/ListingScreenHeader";
@@ -12,10 +13,12 @@ import { ActionsTypes, Client } from "../../Context/SalesInfo/Reducer";
 import { useCommonThemeColors, useListingScreenLogic } from "../../Hooks";
 import EmptyClient from "../../Illustrations/Empty-client.svg";
 import { MAIN_STACK_ROUTES } from "../../Routes/MainStack/Types";
+import { filterByName } from "../../Utils";
 import { listingStyles as styles } from "../commonStyles";
 const initialFilterState = {
   name: "",
-  phone: "",
+  phoneNumber: "",
+  observation: "",
 };
 export const ClientsListing: React.FC = () => {
   const {
@@ -62,7 +65,13 @@ export const ClientsListing: React.FC = () => {
         type: ActionsTypes.DELETE_CLIENT,
       });
     },
-    onFilterLogic: (filterData) => clients,
+    onFilterLogic: (filterData) =>
+      clients.filter(
+        ({ phoneNumber, name, observation }) =>
+          filterByName(name, filterData.name) &&
+          filterByName(phoneNumber, filterData.phoneNumber) &&
+          filterByName(observation, filterData.observation)
+      ),
   });
   return (
     <View
@@ -76,17 +85,19 @@ export const ClientsListing: React.FC = () => {
         addEntityScreen={MAIN_STACK_ROUTES.CLIENTS_FORM}
         headerTitle="Clientes"
       />
+
       <Container {...styles.listContainer}>
         {clients.length === 0 ? null : (
           <>
-            {/* {!isInLongPressMode && (
-              <SalesListingFilters
+            {!isInLongPressMode && (
+              <ClientsListingFilter
                 filterFields={filterFields}
                 setFilterFields={setFilterFields}
                 onFilter={onFilter}
                 onReset={onReset}
+                iconColors={primaryTheme}
               />
-            )} */}
+            )}
             <ListActions
               show={isInLongPressMode}
               iconsColors={{

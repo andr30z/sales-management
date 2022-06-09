@@ -3,6 +3,7 @@ import { Button, Datepicker, Divider, Input } from "@ui-kitten/components";
 import { EvaStatus } from "@ui-kitten/components/devsupport";
 import React, { Dispatch, SetStateAction } from "react";
 import { Keyboard, Pressable } from "react-native";
+import { ListingFiltersProps } from "../../Interfaces/ListingFilters";
 import { SalesFilterFields } from "../../Interfaces/SalesFilterFields";
 import { brazilianDateService, minDate } from "../../Utils";
 import { Container } from "../Container";
@@ -11,27 +12,20 @@ import { Text } from "../Text";
 import { ToggleContainer } from "../ToggleContainer";
 import { styles } from "./Styles";
 
-interface SalesListingFiltersProps {
-  onFilter: () => void;
-  filterFields: SalesFilterFields;
-  setFilterFields: Dispatch<SetStateAction<SalesFilterFields>>;
-  onReset: () => void;
-  useClientNameInput?: boolean;
-  mainColor?: EvaStatus;
-  iconColors: string;
-}
 /**
  *
  * @author andr30z
  **/
-export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
+export const SalesListingFilters: React.FC<
+  ListingFiltersProps<SalesFilterFields> & { useClientNameInput?: boolean }
+> = ({
   filterFields,
   setFilterFields,
   onFilter,
   onReset,
   useClientNameInput = true,
-  mainColor="primary",
-  iconColors
+  mainColor = "primary",
+  iconColors,
 }) => {
   const { clientName, finalDate, initialDate, saleName, saleStatus } =
     filterFields;
@@ -43,14 +37,9 @@ export const SalesListingFilters: React.FC<SalesListingFiltersProps> = ({
         height: 300,
         zIndex: 10000,
       }}
-      onCloseStyle={{ height: 45 }}
+      onCloseStyle={{ height: 42 }}
     >
-      {(toggleAnimationState) => {
-        const onToggle = () => {
-          toggleAnimationState.transitionTo((prevState) => {
-            return prevState === "open" ? "closed" : "open";
-          });
-        };
+      {(_, onToggle) => {
         const onChange = (key: string) => (value: string) =>
           setFilterFields((past) => ({ ...past, [key]: value }));
         const onBtnAction = (action: () => void) => () => {
