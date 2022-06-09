@@ -1,32 +1,32 @@
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Button, Input, ListItem, Modal, Text } from "@ui-kitten/components";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import {
-  KeyboardAvoidingView, useWindowDimensions
-} from "react-native";
-import { DataProvider, LayoutProvider, RecyclerListView } from "recyclerlistview";
+import { Button, Input, ListItem, Modal } from "@ui-kitten/components";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { KeyboardAvoidingView, useWindowDimensions } from "react-native";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
+import { Client } from "../../Context/SalesInfo/Reducer";
 import { globalStyles } from "../../GlobalStyles";
 import { useBoolean, useClient, useKeyboardVisibility } from "../../Hooks";
 import {
   MainStackRoutesTypes,
-  MAIN_STACK_ROUTES
+  MAIN_STACK_ROUTES,
 } from "../../Routes/MainStack/Types";
 import { Container } from "../Container";
 import { FormErrorDisplayer } from "../FormErrorDisplayer";
+import { PerformaticList, RenderPerformaticItem } from "../PerformaticList";
 import { SelectClientHeader } from "../SelectClientHeader";
+import { Text } from "../Text";
 import { styles } from "./Styles";
 
 interface SelectClientProps {
   value: string;
   onChange: (value: string) => void;
   marginY?: string | number;
-  error?:string;
+  error?: string;
 }
 
-const ITEM_HEIGHT = 100;
+// const ITEM_HEIGHT = 100;
 /**
  *
  * @author andr30z
@@ -35,7 +35,7 @@ export const SelectClient: React.FC<SelectClientProps> = ({
   value,
   onChange,
   marginY = 0,
-  error
+  error,
 }) => {
   const { params } =
     useRoute<RouteProp<MainStackRoutesTypes, MAIN_STACK_ROUTES.SALES_FORM>>();
@@ -54,49 +54,42 @@ export const SelectClient: React.FC<SelectClientProps> = ({
   const { client } = useClient(value);
   const data = useMemo(
     () =>
-    new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(clients.filter((c) =>
+      clients.filter((c) =>
         c.name.toLowerCase().includes(clientName.toLowerCase())
-      )),
+      ),
     [clientName, clients]
   );
   const isVisible = useKeyboardVisibility();
 
   const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
   const { height } = useWindowDimensions();
-  const renderListItem = useCallback(
-    ((type: string | number, data: any, index: number, extendedState?: object | undefined) => (
+  const renderListItem: RenderPerformaticItem<Client> = useCallback(
+    (_type, data, _index, _extendedState) => (
       <ListItem
-      style={{ flex:1 }}
-      title={`${data.name} - ${data.phoneNumber}`}
-      description={data.observation}
-      
-      accessoryLeft={
-        <Ionicons style={{ marginHorizontal: 7 }} size={18} name="person" />
-      }
-      accessoryRight={() => (
-        <Button
-          onPress={() => {
-            setFalse();
-            onChange(data.id);
-          }}
-          size="small"
-          status="warning"
-        >
-          <Text category="h5" status="control">
-            SELECIONAR
-          </Text>
-        </Button>
-      )}
-    />)
+        style={{ flex: 1 }}
+        title={`${data.name} - ${data.phoneNumber}`}
+        description={data.observation}
+        accessoryLeft={
+          <Ionicons style={{ marginHorizontal: 7 }} size={18} name="person" />
+        }
+        accessoryRight={() => (
+          <Button
+            onPress={() => {
+              setFalse();
+              onChange(data.id);
+            }}
+            size="small"
+            status="warning"
+          >
+            <Text category="h5" status="control">
+              SELECIONAR
+            </Text>
+          </Button>
+        )}
+      />
     ),
     []
   );
-  const {width}=useWindowDimensions();
-  const layoutProvider = useRef(new LayoutProvider(()=> 0,  (_type, dim) => {
-        dim.width = width;
-        dim.height = 100;
-    })).current;
-
 
   return (
     <Container
@@ -133,7 +126,7 @@ export const SelectClient: React.FC<SelectClientProps> = ({
         onBackdropPress={setFalse}
         visible={isShowing}
       >
-        <KeyboardAvoidingView style={{ flex: 1, flexDirection:"column" }}>
+        <KeyboardAvoidingView style={{ flex: 1, flexDirection: "column" }}>
           <SelectClientHeader
             navigation={navigation}
             clientName={clientName}
@@ -141,12 +134,9 @@ export const SelectClient: React.FC<SelectClientProps> = ({
             setFalse={setFalse}
             propsOnNavigateBack={params.formValues}
           />
-          <RecyclerListView
-            style={styles.list}
-            layoutProvider={layoutProvider}
-            dataProvider={data}
-            rowRenderer={renderListItem}
-          />
+          <PerformaticList<Client> style={styles.list} data={data}>
+            {renderListItem}
+          </PerformaticList>
         </KeyboardAvoidingView>
       </Modal>
     </Container>

@@ -135,6 +135,36 @@ const deleteMany = (
   });
 };
 
+const clientHasSale = (clientId: string, sales: Array<Sale>) =>
+  sales.find((sale) => sale.clientId === clientId) !== undefined;
+
+const verifyClientDeletion = (
+  state: SalesManagementState,
+  {
+    clients,
+    onError,
+    onSuccess,
+  }: {
+    clients: Array<{ name: string; id: string }>;
+    onSuccess: () => void;
+    onError: () => void;
+  },
+  onOkCallback: () => SalesManagementState
+) => {
+  let hasError = false;
+  clients.forEach((client) => {
+    if (clientHasSale(client.id, state.sales)) {
+      global.toast.show(
+        `Não é possível deletar o(a) cliente ${client.name}, pois este possui vendas cadastradas.`,
+        { type: "danger" }
+      );
+      hasError = true;
+    }
+  });
+  if (hasError) onError();
+  else onSuccess();
+  return hasError ? state : onOkCallback();
+};
 export const INITIAL_STATE: SalesManagementState = {
   clients: [],
   sales: [],
@@ -148,6 +178,14 @@ export const reducer = (
   switch (type) {
     case ActionsTypes.SET_CURRENT_STATE_WITH_STORAGE:
       return payload;
+    case ActionsTypes.DELETE_CLIENT:
+      return verifyClientDeletion(state, payload, () =>
+        deleteMany(
+          "clients",
+          state,
+          payload.clients.map((c: { id: string }) => c.id)
+        )
+      );
     case ActionsTypes.ADD_CLIENT:
       return addToStateArray("clients", state, payload);
     case ActionsTypes.EDIT_CLIENT:

@@ -38,10 +38,12 @@ export const SalesInfo: React.FC = ({ children }) => {
   };
   const syncContacts = async (asyncStorageData: any) => {
     // console.log(asyncStorageData);
+    const convertedData: SalesManagementState = JSON.parse(asyncStorageData);
+    if (convertedData?.hasSyncedContacts) return;
     const { status } = await Contacts.requestPermissionsAsync();
     if (status !== "granted") return;
     const { data } = await Contacts.getContactsAsync();
-    const convertedData: SalesManagementState = JSON.parse(asyncStorageData);
+
     const notSyncedContacts: Array<Client> = data
       .filter(
         ({ phoneNumbers }) =>
@@ -85,7 +87,6 @@ export const SalesInfo: React.FC = ({ children }) => {
         type: ActionsTypes.SET_CURRENT_STATE_WITH_STORAGE,
         payload: initialData,
       });
-      console.log(value);
       AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(initialData));
     } catch (e) {
       // error reading value

@@ -13,8 +13,11 @@ import { Halant_400Regular, Halant_700Bold } from "@expo-google-fonts/halant";
 import { Satisfy_400Regular } from "@expo-google-fonts/satisfy";
 import * as montserrat from "@expo-google-fonts/montserrat";
 import { StatusBar } from "expo-status-bar";
+import { PortalHost, PortalProvider } from "@gorhom/portal";
+import { PortalLocations } from "./src/PortalLocations";
+import Toast from "react-native-toast-notifications";
 
-const { useFonts: _, __metadata__,...rest } = montserrat;
+const { useFonts: _, __metadata__, ...rest } = montserrat;
 SplashScreen.preventAutoHideAsync();
 /**
  *
@@ -38,15 +41,19 @@ export default function App() {
     );
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <ToastProvider>
-        <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
-          <SalesInfo>
-            <SafeAreaView style={{ flex: 1 }}>
-              <MainStack />
-            </SafeAreaView>
-          </SalesInfo>
-        </ApplicationProvider>
-      </ToastProvider>
+      <PortalProvider>
+        <ToastProvider>
+          <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
+            <SalesInfo>
+              <SafeAreaView style={{ flex: 1 }}>
+                <MainStack />
+                <PortalHost name={PortalLocations.ROOT} />
+              </SafeAreaView>
+            </SalesInfo>
+          </ApplicationProvider>
+          <Toast ref={(ref) => ((global as any)["toast"] = ref)} />
+        </ToastProvider>
+      </PortalProvider>
     </GestureHandlerRootView>
   );
 }

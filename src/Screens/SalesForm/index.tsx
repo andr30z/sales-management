@@ -74,7 +74,6 @@ export const SalesForm: React.FC<
       >
         <Formik<Omit<Sale, "id" | "createdAt">>
           onSubmit={(values) => {
-            console.log(formValues);
             dispatcher({
               type: formValues?.id
                 ? ActionsTypes.EDIT_SALE

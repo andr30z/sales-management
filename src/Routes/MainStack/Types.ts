@@ -3,6 +3,7 @@ import { Client, Sale } from "../../Context/SalesInfo/Reducer";
 export type ClientsFormProps = {
   routeOnSubmit?: string;
   propsOnNavigateBack?: any;
+  id?: string;
 };
 export type SalesFormProps = {
   selectCreatedClient?: Client;
@@ -11,8 +12,9 @@ export type SalesFormProps = {
 export type MainStackRoutesTypes = {
   SalesForm: SalesFormProps;
   ClientsForm: ClientsFormProps;
-  SalesDetails: { saleId: string };
+  SalesDetails: { id: string };
   BottomNav: undefined;
+  ClientDetails: { id: string };
 };
 
 export enum MAIN_STACK_ROUTES {
@@ -20,4 +22,5 @@ export enum MAIN_STACK_ROUTES {
   BOTTOM_NAV = "BottomNav",
   CLIENTS_FORM = "ClientsForm",
   SALES_DETAILS = "SalesDetails",
+  CLIENT_DETAILS = "ClientDetails",
 }

@@ -1,8 +1,33 @@
 import { DateFnsService } from "@ui-kitten/date-fns";
+import { Sale } from "../Context/SalesInfo/Reducer";
+import { SalesFilterFields } from "../Interfaces/SalesFilterFields";
 
 export function filterByName(name: string, filter: string) {
   return name.toLowerCase().includes(filter.toLowerCase());
 }
+export const initialSalesFilterState = {
+  clientName: "",
+  initialDate: "",
+  finalDate: "",
+  saleName: "",
+  saleStatus: "" as any,
+};
+export const filterSalesArrays = (
+  sales: Array<Sale>,
+  filters: SalesFilterFields
+) =>
+sales.filter(({ name, date, status }) => {
+    const { finalDate, initialDate, saleName, saleStatus } = filters;
+    let checkDate =
+      finalDate && initialDate
+        ? isDateInRange(initialDate, finalDate, date)
+        : true;
+    const currentStatus =
+      saleStatus === 0 || saleStatus === ("" as any)
+        ? true
+        : status === saleStatus - 1;
+    return filterByName(name, saleName) && checkDate && currentStatus;
+  });
 
 export function isDateInRange(from: string, to: string, check: string) {
   let fDate, lDate, cDate;

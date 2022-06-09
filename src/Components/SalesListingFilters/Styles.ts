@@ -5,6 +5,7 @@ export const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "column",
     overflow: "hidden",
+    marginTop: 30,
   },
 
   calendarInput: {

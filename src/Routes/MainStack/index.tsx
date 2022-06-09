@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
+import { ClientDetails } from "../../Screens/ClientDetails";
 import { ClientsForm } from "../../Screens/ClientsForm";
 import { SalesDetails } from "../../Screens/SalesDetails";
 import { SalesForm } from "../../Screens/SalesForm";
@@ -32,6 +33,10 @@ export const MainStack: React.FC = () => {
         <Stack.Screen
           name={MAIN_STACK_ROUTES.SALES_DETAILS}
           component={SalesDetails}
+        />
+        <Stack.Screen
+          name={MAIN_STACK_ROUTES.CLIENT_DETAILS}
+          component={ClientDetails}
         />
       </Stack.Navigator>
     </NavigationContainer>

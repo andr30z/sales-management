@@ -1,4 +1,5 @@
 import { IndexPath, Select, SelectItem, Text } from "@ui-kitten/components";
+import { EvaStatus } from "@ui-kitten/components/devsupport";
 import React from "react";
 import { useMemo } from "react";
 import { StyleProp, ViewStyle } from "react-native";
@@ -12,7 +13,8 @@ interface KittenSelectProps {
   multiSelect?: boolean;
   placeholder?: string;
   label?: string;
-  error?:string;
+  error?: string;
+  status?: EvaStatus;
 }
 
 /**
@@ -27,7 +29,8 @@ export const KittenSelect: React.FC<KittenSelectProps> = ({
   multiSelect = false,
   placeholder = "Selecione",
   label,
-  error
+  error,
+  status,
 }) => {
   const index = useMemo(
     () =>
@@ -43,6 +46,7 @@ export const KittenSelect: React.FC<KittenSelectProps> = ({
   return (
     <Select
       label={label}
+      status={status}
       placeholder={placeholder}
       multiSelect={multiSelect}
       caption={<FormErrorDisplayer text={error} />}

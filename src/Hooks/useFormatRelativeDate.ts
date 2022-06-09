@@ -4,7 +4,6 @@ import { useMemo } from "react";
 
 export function useFormatRelativeDate(date?: string) {
   return useMemo(() => {
-    console.log(date)
     return date
       ? formatRelative(new Date(date), new Date(), {
           locale: ptBR,
