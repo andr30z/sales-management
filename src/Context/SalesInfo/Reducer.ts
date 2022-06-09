@@ -66,10 +66,11 @@ export enum ActionsTypes {
   EDIT_SALE,
   DELETE_MANY_SALES,
   SYNC_CLIENTS_WITH_CONTACTS,
+  RESET_APP,
 }
 
 export interface Action {
-  payload: any;
+  payload?: any;
   type: ActionsTypes;
 }
 
@@ -198,6 +199,12 @@ export const reducer = (
       return deleteItem("sales", state, payload);
     case ActionsTypes.DELETE_MANY_SALES:
       return deleteMany("sales", state, payload);
+    case ActionsTypes.RESET_APP:
+      return updateStorage({
+        clients: [],
+        hasSyncedContacts: false,
+        sales: [],
+      });
     case ActionsTypes.SYNC_CLIENTS_WITH_CONTACTS:
       return updateStorage({
         ...state,
