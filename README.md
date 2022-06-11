@@ -8,7 +8,7 @@
 </ol>
 
 <h6>Screens</h6>
-<div style="flex:1; display:flex; align-items:center; flex-direction:row; flex-wrap: wrap; justify-content:center; gap:1em; width:100%;">
+<div align="center" style=" width:100%;">
   <img height="750" width="350" src="./assets/readme/clients-form.png" />
   <img height="750" width="350" src="./assets/readme/sales-listing.png" />
   <img height="750" width="350" src="./assets/readme/sales-details.png" />
