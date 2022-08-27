@@ -1,4 +1,5 @@
 import React from "react";
+import { PropsWithChildren } from "react";
 import { View, ViewStyle } from "react-native";
 type ContainerProps = Omit<ViewStyle, "flex"> & { center?: boolean; flex?: null | number };
 
@@ -6,7 +7,7 @@ type ContainerProps = Omit<ViewStyle, "flex"> & { center?: boolean; flex?: null 
  *
  * @author andr30z
  **/
-export const Container: React.FC<ContainerProps> = ({
+export const Container: React.FC<PropsWithChildren<ContainerProps>> = ({
   children,
   flex = 1,
   center = false,

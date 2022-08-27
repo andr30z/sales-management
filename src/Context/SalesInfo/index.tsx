@@ -17,6 +17,7 @@ import {
   STORAGE_KEY,
   uuidv4,
 } from "./Reducer";
+import { PropsWithChildren } from "react";
 interface SalesInfoContextInterface {
   salesInfo: SalesManagementState;
   dispatcher: React.Dispatch<Action>;
@@ -27,7 +28,7 @@ const SalesInfoContext = createContext<SalesInfoContextInterface>(
   {} as SalesInfoContextInterface
 );
 
-export const SalesInfo: React.FC = ({ children }) => {
+export const SalesInfo: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const [state, dispatcher] = useReducer(reducer, INITIAL_STATE);
   const isAlreadyInClientsList = (
     phones: Array<Contacts.PhoneNumber>,
