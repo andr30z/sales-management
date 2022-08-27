@@ -50,10 +50,12 @@ export const ClientsForm: React.FC<
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
+      
     >
       <ScrollView
         style={{ flex: 1, backgroundColor: "white" }}
         contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled"
       >
         <Formik<Omit<Client, "id" | "createdAt">>
           onSubmit={(values) => {
