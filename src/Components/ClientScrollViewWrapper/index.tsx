@@ -3,7 +3,7 @@ import ReadMore from "@fawazahmed/react-native-read-more";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Card } from "@ui-kitten/components";
-import React from "react";
+import React, { ReactNode } from "react";
 import { Pressable, ScrollView, ScrollViewProps } from "react-native";
 import { useToast } from "react-native-toast-notifications";
 import { useClientSalesListingContext } from "../../Context/ClientSalesListing";
@@ -59,6 +59,10 @@ export const ClientScrollViewWrapper = React.forwardRef<
   };
   const filter = useClientSalesListingContext();
   const { value: stickyHeader, setFalse, setTrue } = useBoolean();
+
+  const observation: any = (props: any) => (
+    <Text {...props} category="p2" fontFamily="other" status="primary" />
+  );
   return (
     <>
       <ScrollView
@@ -112,14 +116,7 @@ export const ClientScrollViewWrapper = React.forwardRef<
               seeLessStyle={{ color: warningColor }}
               seeMoreStyle={{ color: warningColor }}
               style={{ alignSelf: "center", marginTop: 20 }}
-              customTextComponent={(props: any) => (
-                <Text
-                  {...props}
-                  category="p2"
-                  fontFamily="other"
-                  status="primary"
-                />
-              )}
+              customTextComponent={observation}
             >
               Observação: {client?.observation as string}
             </ReadMore>

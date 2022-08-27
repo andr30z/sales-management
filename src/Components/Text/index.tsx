@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { Text as KittenText, TextProps } from "@ui-kitten/components";
 interface TextComponentProps extends TextProps {
   fontFamily?: "heading" | "subtitles" | "other";
@@ -9,7 +9,7 @@ const fonts = {
   subtitles: "Montserrat_700Bold",
   other: "Montserrat_500Medium",
 };
-export const Text: React.FC<TextComponentProps> = ({
+export const Text: React.FC<PropsWithChildren<TextComponentProps>> = ({
   fontFamily = "subtitles",
   children,
   style,

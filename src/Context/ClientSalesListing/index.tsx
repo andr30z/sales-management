@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import React, { createContext, useContext } from "react";
+import React, { createContext, PropsWithChildren, useContext } from "react";
 import { useClient, useListingFilter } from "../../Hooks";
 import {
   MainStackRoutesTypes,
@@ -20,7 +20,7 @@ const ClientsDetailsContext = createContext<ClientsDetailsContextInterface>(
 );
 
 export const ClientSalesListingProvider: React.FC<
-  StackScreenProps<MainStackRoutesTypes, MAIN_STACK_ROUTES.CLIENT_DETAILS>
+  PropsWithChildren<StackScreenProps<MainStackRoutesTypes, MAIN_STACK_ROUTES.CLIENT_DETAILS>>
 > = ({
   children,
   route: {
