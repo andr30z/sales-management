@@ -87,7 +87,11 @@ export const PerformaticList = <D,>({
       }
     );
   };
-  const layoutProvider = useRef(getLayoutProvider()).current;
+  const layout = useMemo(
+    () => getLayoutProvider(),
+    [gridLayout, numColumns, widthOrHeight, itemWidth, itemHeight]
+  );
+  const layoutProvider = useRef(layout).current;
   return useEmptyListComponent && data.length === 0 ? (
     emptyComponent
   ) : (
@@ -102,7 +106,6 @@ export const PerformaticList = <D,>({
       dataProvider={finalList}
       isHorizontal={isHorizontal}
       rowRenderer={children}
-      
       {...props}
     />
   );
