@@ -1,8 +1,8 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import { Button, Datepicker, Input } from "@ui-kitten/components";
 import { StatusBar } from "expo-status-bar";
-import { Formik, useFormik, withFormik } from "formik";
-import React from "react";
+import { Formik, getIn, useFormik, withFormik } from "formik";
+import React, { useMemo } from "react";
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { useToast } from "react-native-toast-notifications";
 import * as Yup from "yup";
@@ -19,11 +19,16 @@ import {
   SalesTypes,
 } from "../../Context/SalesInfo/Reducer";
 import { globalStyles } from "../../GlobalStyles";
+import { useBoolean } from "../../Hooks";
 import {
   MainStackRoutesTypes,
   MAIN_STACK_ROUTES,
 } from "../../Routes/MainStack/Types";
-import { brazilianDateService, minDate } from "../../Utils";
+import {
+  brazilianDateService,
+  formatToLocalCurrency,
+  minDate,
+} from "../../Utils";
 import { styles } from "./Styles";
 
 const validationSchema = Yup.object().shape({
@@ -42,6 +47,7 @@ const validationSchema = Yup.object().shape({
     .typeError(
       "Verifique se o valor informado possui virgulas, somente pontos e numeros são aceitos."
     )
+    .min(0.1, "O valor não pode ser 0.")
     .required("O valor da compra é requerido."),
   quantity: Yup.number()
     .min(1, "O número deve ser no mínimo 1.")
@@ -79,6 +85,18 @@ export const SalesForm: React.FC<
     errors,
   } = useFormik<Omit<Sale, "id" | "created_at">>({
     onSubmit: (values) => {
+      if (
+        values.installment?.value !== undefined &&
+        Number(values.installment.value) > Number(values.value)
+      ) {
+        toast.show(
+          "O valor do parcelamento não pode ser maior que o valor da venda.",
+          {
+            type: "danger",
+          }
+        );
+        return;
+      }
       dispatcher({
         type: formValues?.id ? ActionsTypes.EDIT_SALE : ActionsTypes.ADD_SALES,
         payload: values,
@@ -95,11 +113,13 @@ export const SalesForm: React.FC<
       types: [],
       description: "",
       clientId: "",
+      installment: undefined,
       value: "",
       quantity: 1 as any,
       status: SaleStatusType.UNPAID,
     },
   });
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}

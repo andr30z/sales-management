@@ -3,8 +3,8 @@ import * as Clipboard from "expo-clipboard";
 import { useCallback } from "react";
 
 export function useWhatsappUtils(phone: string) {
-  const copyToClipboard = useCallback(() => {
-    Clipboard.setString(phone);
+  const copyToClipboard = useCallback(async () => {
+    await Clipboard.setStringAsync(phone);
   }, [phone]);
 
   const onPressOpenWhatsapp = useCallback(() => {

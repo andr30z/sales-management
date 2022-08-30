@@ -17,6 +17,31 @@ export enum SaleStatusType {
   REFOUNDED,
 }
 
+export enum InstallmentItemStatusType {
+  PAID,
+  UNPAID,
+  OVERDUE_PAYMENT,
+  CANCELED,
+}
+
+export enum InstallmentStatusType {
+  FINISHED,
+  IN_PROGRESS,
+  CANCELED,
+}
+
+export const reversedInstallementStatus = {
+  [InstallmentStatusType.FINISHED]: "Finalizado",
+  [InstallmentStatusType.IN_PROGRESS]: "Em andamento",
+  [InstallmentStatusType.CANCELED]: "Cancelada",
+};
+
+export const reversedInstallementItemStatus = {
+  [InstallmentItemStatusType.PAID]: "Paga",
+  [InstallmentItemStatusType.UNPAID]: "Não paga",
+  [InstallmentItemStatusType.OVERDUE_PAYMENT]: "Paga com atraso",
+  [InstallmentItemStatusType.CANCELED]: "Cancelada",
+};
 export const reversedSalesStatus = {
   [SaleStatusType.PAID]: "Paga",
   [SaleStatusType.UNPAID]: "Não paga",
@@ -30,6 +55,20 @@ export const reversedSalesTypes = {
   [SalesTypes.TROUSSEAU]: "Enxoval",
   [SalesTypes.OTHERS]: "Outros",
 };
+
+export interface InstallmentItem {
+  status: InstallmentItemStatusType;
+  expectedPaymentDate: string;
+  paymentDate?: string;
+}
+
+export interface Installment {
+  value: number;
+  quantity: number;
+  status: InstallmentStatusType;
+  items: Array<InstallmentItem>;
+}
+
 export interface Sale {
   name: string;
   id: string;
@@ -41,6 +80,7 @@ export interface Sale {
   quantity: number;
   status: SaleStatusType;
   createdAt: string;
+  installment?: Installment;
 }
 
 export interface Client {
