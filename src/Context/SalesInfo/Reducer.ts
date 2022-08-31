@@ -24,18 +24,6 @@ export enum InstallmentItemStatusType {
   CANCELED,
 }
 
-export enum InstallmentStatusType {
-  FINISHED,
-  IN_PROGRESS,
-  CANCELED,
-}
-
-export const reversedInstallementStatus = {
-  [InstallmentStatusType.FINISHED]: "Finalizado",
-  [InstallmentStatusType.IN_PROGRESS]: "Em andamento",
-  [InstallmentStatusType.CANCELED]: "Cancelada",
-};
-
 export const reversedInstallementItemStatus = {
   [InstallmentItemStatusType.PAID]: "Paga",
   [InstallmentItemStatusType.UNPAID]: "Não paga",
@@ -58,15 +46,8 @@ export const reversedSalesTypes = {
 
 export interface InstallmentItem {
   status: InstallmentItemStatusType;
-  expectedPaymentDate: string;
-  paymentDate?: string;
-}
-
-export interface Installment {
   value: number;
-  quantity: number;
-  status: InstallmentStatusType;
-  items: Array<InstallmentItem>;
+  paymentDate: string;
 }
 
 export interface Sale {
@@ -80,7 +61,7 @@ export interface Sale {
   quantity: number;
   status: SaleStatusType;
   createdAt: string;
-  installment?: Installment;
+  installments?: Array<InstallmentItem>;
 }
 
 export interface Client {

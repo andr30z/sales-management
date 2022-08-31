@@ -87,14 +87,3 @@ export const brazilianDateService = new DateFnsService("pt-BR", {
 });
 
 export const minDate = new Date("01/01/1969");
-
-
-
-const localValue = new Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL",
-  minimumFractionDigits: 2,
-});
-export function formatToLocalCurrency(str: number | string) {
-  return localValue.format(Number(str));
-}

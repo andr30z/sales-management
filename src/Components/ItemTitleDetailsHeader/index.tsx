@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import { View } from "moti";
+import React from "react";
 import { Pressable, useWindowDimensions } from "react-native";
 import { useBoolean, useCommonThemeColors } from "../../Hooks";
 import { PortalLocations } from "../../PortalLocations";
@@ -22,6 +23,7 @@ interface ItemTitleDetailsHeaderProps {
   height?: number;
   stickyHeader?: boolean;
   headerMainContainerFirstChild?: React.ReactNode;
+  headerMiddleItem?: React.ReactNode;
 }
 
 /**
@@ -37,6 +39,7 @@ export const ItemTitleDetailsHeader: React.FC<ItemTitleDetailsHeaderProps> = ({
   height,
   stickyHeader = false,
   headerMainContainerFirstChild,
+  headerMiddleItem,
 }) => {
   const {
     value: showConfirmDelete,
@@ -80,6 +83,7 @@ export const ItemTitleDetailsHeader: React.FC<ItemTitleDetailsHeaderProps> = ({
         <Pressable onPress={navigation.goBack}>
           <Ionicons name="chevron-back-circle" size={38} color={"#fff"} />
         </Pressable>
+        {headerMiddleItem}
         <Entypo onPress={setTrue} name="trash" size={34} color={"#fff"} />
       </LinearGradient>
     </View>
@@ -100,6 +104,7 @@ export const ItemTitleDetailsHeader: React.FC<ItemTitleDetailsHeaderProps> = ({
           onConfirmDelete();
           setFalse();
         }}
+        confirmText="Deseja realmente deletar o item?"
         open={showConfirmDelete}
         setOpen={setShowConfirmDelete}
       />

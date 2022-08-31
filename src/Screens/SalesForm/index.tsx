@@ -85,18 +85,6 @@ export const SalesForm: React.FC<
     errors,
   } = useFormik<Omit<Sale, "id" | "created_at">>({
     onSubmit: (values) => {
-      if (
-        values.installment?.value !== undefined &&
-        Number(values.installment.value) > Number(values.value)
-      ) {
-        toast.show(
-          "O valor do parcelamento não pode ser maior que o valor da venda.",
-          {
-            type: "danger",
-          }
-        );
-        return;
-      }
       dispatcher({
         type: formValues?.id ? ActionsTypes.EDIT_SALE : ActionsTypes.ADD_SALES,
         payload: values,
