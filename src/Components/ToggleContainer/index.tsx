@@ -42,7 +42,7 @@ export const ToggleContainer: React.FC<ToggleContainer> = ({
   };
   return (
     <MotiView style={containerStyle} state={toggleAnimationState}>
-      {children(toggleAnimationState,onToggle)}
+      {children(toggleAnimationState, onToggle)}
     </MotiView>
   );
 };
