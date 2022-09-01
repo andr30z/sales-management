@@ -1,8 +1,8 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import { Button, Datepicker, Input } from "@ui-kitten/components";
 import { StatusBar } from "expo-status-bar";
-import { Formik, getIn, useFormik, withFormik } from "formik";
-import React, { useMemo } from "react";
+import { useFormik } from "formik";
+import React from "react";
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { useToast } from "react-native-toast-notifications";
 import * as Yup from "yup";
@@ -16,18 +16,15 @@ import {
   ActionsTypes,
   Sale,
   SaleStatusType,
-  SalesTypes,
+  SalesTypes
 } from "../../Context/SalesInfo/Reducer";
 import { globalStyles } from "../../GlobalStyles";
-import { useBoolean } from "../../Hooks";
 import {
   MainStackRoutesTypes,
-  MAIN_STACK_ROUTES,
+  MAIN_STACK_ROUTES
 } from "../../Routes/MainStack/Types";
 import {
-  brazilianDateService,
-  formatToLocalCurrency,
-  minDate,
+  brazilianDateService, minDate
 } from "../../Utils";
 import { styles } from "./Styles";
 
