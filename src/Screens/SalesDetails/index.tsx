@@ -45,9 +45,10 @@ export const SalesDetails: React.FC<
     value: showInstallment,
     setFalse: closeInstallment,
   } = useBoolean();
+
   const { client } = useClient(String(sale?.clientId));
   const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
-  const { warningColor } = useCommonThemeColors();
+  const { warningColor, primaryColor } = useCommonThemeColors();
   const saleCreatedAt = useFormatRelativeDate(sale?.createdAt);
   const toast = useToast();
   if (!sale || !client) return null;
@@ -80,7 +81,7 @@ export const SalesDetails: React.FC<
                 height: "75%",
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: "#fff",
+                overflow: "hidden",
                 borderRadius: 20,
               },
               backdropStyle: {

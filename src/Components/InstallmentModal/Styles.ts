@@ -10,4 +10,12 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
   },
+
+  inputValueText: { textAlign: "left",  },
+  toggleInputs: {
+    width: "100%",
+    flexDirection: "column",
+    overflow: "hidden",
+    marginTop: 30,
+  },
 });
