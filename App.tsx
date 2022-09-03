@@ -41,19 +41,19 @@ export default function App() {
     );
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <PortalProvider>
-        <ToastProvider>
-          <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
-            <SalesInfo>
+      <SalesInfo>
+        <PortalProvider>
+          <ToastProvider>
+            <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
               <SafeAreaView style={{ flex: 1 }}>
                 <MainStack />
                 <PortalHost name={PortalLocations.ROOT} />
               </SafeAreaView>
-            </SalesInfo>
-          </ApplicationProvider>
-          <Toast ref={(ref) => ((global as any)["toast"] = ref)} />
-        </ToastProvider>
-      </PortalProvider>
+            </ApplicationProvider>
+            <Toast ref={(ref) => ((global as any)["toast"] = ref)} />
+          </ToastProvider>
+        </PortalProvider>
+      </SalesInfo>
     </GestureHandlerRootView>
   );
 }
