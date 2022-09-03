@@ -1,6 +1,7 @@
 import { MotiView, UseAnimationState, useAnimationState, Variants } from "moti";
 import React from "react";
 import { ViewStyle } from "react-native";
+import { useBoolean } from "../../Hooks";
 type ToggleStyle = { [x: string]: any };
 export interface ToggleContainer {
   children: (
@@ -9,7 +10,8 @@ export interface ToggleContainer {
       open: ToggleStyle;
       from: ToggleStyle;
     }>,
-    toggle: () => void
+    toggle: () => void,
+    isOpen: boolean
   ) => React.ReactNode;
   containerStyle: ViewStyle;
   onOpenStyle?: ToggleStyle;
@@ -35,14 +37,16 @@ export const ToggleContainer: React.FC<ToggleContainer> = ({
     open: onOpenStyle,
     from: onCloseStyle,
   });
+  const { value, toggle } = useBoolean();
   const onToggle = () => {
     toggleAnimationState.transitionTo((prevState) => {
       return prevState === "open" ? "closed" : "open";
     });
+    toggle();
   };
   return (
     <MotiView style={containerStyle} state={toggleAnimationState}>
-      {children(toggleAnimationState,onToggle)}
+      {children(toggleAnimationState, onToggle, value)}
     </MotiView>
   );
 };

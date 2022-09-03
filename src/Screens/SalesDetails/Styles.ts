@@ -13,4 +13,12 @@ export const styles = StyleSheet.create({
     // overflow: "visible",
     elevation: 2,
   },
+  modalStyle: {
+    width: "95%",
+    height: "75%",
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
+    borderRadius: 20,
+  },
 });
