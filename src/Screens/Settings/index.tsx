@@ -6,15 +6,21 @@ import { ConfirmActionModal } from "../../Components/ConfirmActionModal";
 import { Container } from "../../Components/Container";
 import { Text } from "../../Components/Text";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
-import { ActionsTypes } from "../../Context/SalesInfo/Reducer";
+import {
+  ActionsTypes,
+  SalesManagementState,
+} from "../../Context/SalesInfo/Reducer";
 import { useBoolean, useCommonThemeColors } from "../../Hooks";
 import { styles } from "./Styles";
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
+import * as DocumentPicker from "expo-document-picker";
+import { isTypeOf } from "../../Utils";
 
 enum SettingsResetSyncAction {
   RESET,
   SYNC,
+  IMPORT,
 }
 
 /**
@@ -32,6 +38,24 @@ export const Settings: React.FC = () => {
   const action = actionRef.current;
   const toast = useToast();
   const actionIsReset = action === SettingsResetSyncAction.RESET;
+  const importData = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: "application/json",
+      });
+      if (result.type !== "success") return;
+      const fileData = await FileSystem.readAsStringAsync(result.uri);
+      console.log(fileData);
+      const convertedFile: SalesManagementState = JSON.parse(fileData) || {};
+      if (!isTypeOf<SalesManagementState>(convertedFile, "hasSyncedContacts"))
+        throw new Error();
+      dispatcher({ type: ActionsTypes.IMPORT_DATA, payload: convertedFile });
+      toast.show("Dados importados com sucesso!", { type: "success" });
+    } catch (e) {
+      toast.show("Falha ao converter dados do arquivo", { type: "danger" });
+    }
+    setFalse();
+  };
   const shareData = () => {
     const fileUri = FileSystem.documentDirectory + "data.json";
 
@@ -39,7 +63,7 @@ export const Settings: React.FC = () => {
       encoding: FileSystem.EncodingType.UTF8,
     })
       .then(() => {
-        const UTI = "public.text";
+        const UTI = "public.json";
 
         Sharing.shareAsync(fileUri, { UTI }).catch((error) => {
           console.log(error);
@@ -49,17 +73,25 @@ export const Settings: React.FC = () => {
         console.log(e);
       });
   };
+
+  const confirmTextOptions = {
+    [SettingsResetSyncAction.RESET]:
+      "Deseja realmente resetar o app? Todos os dados de vendas e clientes serão perdidos.",
+    [SettingsResetSyncAction.SYNC]:
+      "Deseja realmente sincronizar os contatos? Isso pode adicionar contatos previamente deletados.",
+    [SettingsResetSyncAction.IMPORT]:
+      "Deseja realmente importar os dados do app? Isso irá substituir todos os dados de vendas e clientes atuais do app.",
+  };
   return (
     <Container backgroundColor="white" flex={1} center>
       <ConfirmActionModal
         open={value}
         setOpen={setValue}
-        confirmText={
-          actionIsReset
-            ? "Deseja realmente resetar o app? Todos os dados de vendas e clientes serão perdidos."
-            : "Deseja realmente sincronizar os contatos? Isso pode adicionar contatos previamente deletados."
-        }
+        confirmText={confirmTextOptions[action]}
         onActionConfirmed={async () => {
+          if (action === SettingsResetSyncAction.IMPORT) {
+            return importData();
+          }
           if (actionIsReset) {
             toast.show("App resetado com sucesso!", { type: "success" });
             setFalse();
@@ -120,13 +152,13 @@ export const Settings: React.FC = () => {
 
         <Card
           onPress={() => {
-            // actionRef.current = SettingsResetSyncAction.SYNC;
-            // setTrue();
+            actionRef.current = SettingsResetSyncAction.IMPORT;
+            setTrue();
           }}
           style={styles.card}
         >
           <Container height="100%" flexDirection="column" center flex={1}>
-            <FontAwesome5 name="sync" size={27} color={primaryColor} />
+            <FontAwesome5 name="file-import" size={27} color={primaryColor} />
             <Text status="primary" center>
               Importar Dados
             </Text>

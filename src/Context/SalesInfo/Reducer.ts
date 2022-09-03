@@ -81,6 +81,7 @@ export enum ActionsTypes {
   ADD_SALES,
   DELETE_SALES,
   SET_CURRENT_STATE_WITH_STORAGE,
+  IMPORT_DATA,
   ADD_CLIENT,
   DELETE_CLIENT,
   EDIT_CLIENT,
@@ -247,6 +248,8 @@ export const reducer = (
   switch (type) {
     case ActionsTypes.SET_CURRENT_STATE_WITH_STORAGE:
       return payload;
+    case ActionsTypes.IMPORT_DATA:
+      return updateStorage(payload);
     case ActionsTypes.DELETE_CLIENT:
       return verifyClientDeletion(state, payload, () =>
         deleteMany(
