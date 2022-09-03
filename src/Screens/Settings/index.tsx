@@ -1,14 +1,16 @@
+import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import { Card } from "@ui-kitten/components";
 import React, { useRef } from "react";
+import { useToast } from "react-native-toast-notifications";
+import { ConfirmActionModal } from "../../Components/ConfirmActionModal";
 import { Container } from "../../Components/Container";
 import { Text } from "../../Components/Text";
-import { styles } from "./Styles";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { useBoolean, useCommonThemeColors } from "../../Hooks";
-import { ConfirmActionModal } from "../../Components/ConfirmActionModal";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
 import { ActionsTypes } from "../../Context/SalesInfo/Reducer";
-import { useToast } from "react-native-toast-notifications";
+import { useBoolean, useCommonThemeColors } from "../../Hooks";
+import { styles } from "./Styles";
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
 
 enum SettingsResetSyncAction {
   RESET,
@@ -24,23 +26,31 @@ export const Settings: React.FC = () => {
   const actionRef = useRef<SettingsResetSyncAction>(
     SettingsResetSyncAction.RESET
   );
-  const {
-    dispatcher,
-    salesInfo: { clients },
-    syncContacts,
-  } = useSalesInfoContext();
+  const { dispatcher, salesInfo, syncContacts } = useSalesInfoContext();
+  const { clients } = salesInfo;
   const { value, setValue, setTrue, setFalse } = useBoolean();
   const action = actionRef.current;
   const toast = useToast();
   const actionIsReset = action === SettingsResetSyncAction.RESET;
+  const shareData = () => {
+    const fileUri = FileSystem.documentDirectory + "data.json";
+
+    FileSystem.writeAsStringAsync(fileUri, JSON.stringify(salesInfo), {
+      encoding: FileSystem.EncodingType.UTF8,
+    })
+      .then(() => {
+        const UTI = "public.text";
+
+        Sharing.shareAsync(fileUri, { UTI }).catch((error) => {
+          console.log(error);
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
   return (
-    <Container
-      backgroundColor="white"
-      flex={1}
-      justifyContent="space-evenly"
-      flexDirection="row"
-      center
-    >
+    <Container backgroundColor="white" flex={1} center>
       <ConfirmActionModal
         open={value}
         setOpen={setValue}
@@ -64,34 +74,65 @@ export const Settings: React.FC = () => {
           toast.show("Contatos atualizados com sucesso!", { type: "success" });
         }}
       />
-      <Card
-        onPress={() => {
-          actionRef.current = SettingsResetSyncAction.RESET;
-          setTrue();
-        }}
-        style={styles.card}
+      <Container
+        flexDirection="row"
+        alignItems="center"
+        flexWrap="wrap"
+        flex={null}
+        justifyContent="center"
       >
-        <Container height="100%" flexDirection="column" center flex={1}>
-          <FontAwesome5 name="eraser" size={24} color={primaryColor} />
-          <Text status="primary" center>
-            Resetar App
-          </Text>
-        </Container>
-      </Card>
-      <Card
-        onPress={() => {
-          actionRef.current = SettingsResetSyncAction.SYNC;
-          setTrue();
-        }}
-        style={styles.card}
-      >
-        <Container height="100%" flexDirection="column" center flex={1}>
-          <FontAwesome5 name="sync" size={27} color={primaryColor} />
-          <Text status="primary" center>
-            Sincronizar Contatos
-          </Text>
-        </Container>
-      </Card>
+        <Card
+          onPress={() => {
+            actionRef.current = SettingsResetSyncAction.RESET;
+            setTrue();
+          }}
+          style={styles.card}
+        >
+          <Container height="100%" flexDirection="column" center flex={1}>
+            <FontAwesome5 name="eraser" size={24} color={primaryColor} />
+            <Text status="primary" center>
+              Resetar App
+            </Text>
+          </Container>
+        </Card>
+        <Card
+          onPress={() => {
+            actionRef.current = SettingsResetSyncAction.SYNC;
+            setTrue();
+          }}
+          style={styles.card}
+        >
+          <Container height="100%" flexDirection="column" center flex={1}>
+            <FontAwesome5 name="sync" size={27} color={primaryColor} />
+            <Text status="primary" center>
+              Sincronizar Contatos
+            </Text>
+          </Container>
+        </Card>
+        <Card onPress={shareData} style={styles.card}>
+          <Container height="100%" flexDirection="column" center flex={1}>
+            <AntDesign name="export" size={27} color={primaryColor} />
+            <Text status="primary" center>
+              Exportar Dados
+            </Text>
+          </Container>
+        </Card>
+
+        <Card
+          onPress={() => {
+            // actionRef.current = SettingsResetSyncAction.SYNC;
+            // setTrue();
+          }}
+          style={styles.card}
+        >
+          <Container height="100%" flexDirection="column" center flex={1}>
+            <FontAwesome5 name="sync" size={27} color={primaryColor} />
+            <Text status="primary" center>
+              Importar Dados
+            </Text>
+          </Container>
+        </Card>
+      </Container>
     </Container>
   );
 };
