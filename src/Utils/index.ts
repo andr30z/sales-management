@@ -16,7 +16,7 @@ export const filterSalesArrays = (
   sales: Array<Sale>,
   filters: SalesFilterFields
 ) =>
-sales.filter(({ name, date, status }) => {
+  sales.filter(({ name, date, status }) => {
     const { finalDate, initialDate, saleName, saleStatus } = filters;
     let checkDate =
       finalDate && initialDate
@@ -87,3 +87,7 @@ export const brazilianDateService = new DateFnsService("pt-BR", {
 });
 
 export const minDate = new Date("01/01/1969");
+
+export function isTypeOf<T>(data: any, key: keyof T): data is T {
+  return (data as T)[key] !== undefined;
+}
