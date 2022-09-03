@@ -1,16 +1,27 @@
-import { Entypo, MaterialIcons } from "@expo/vector-icons";
-import { Button, Input, Modal, ModalProps } from "@ui-kitten/components";
-import { format } from "date-fns";
-import React, { useState } from "react";
-import { Pressable } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useBackHandler } from "@react-native-community/hooks";
 import {
-  InstallmentItem,
-  reversedInstallementItemStatus,
+  Button,
+  ButtonGroup,
+  Datepicker,
+  Input,
+  Modal,
+  ModalProps,
+} from "@ui-kitten/components";
+import React, { useState } from "react";
+import { Keyboard } from "react-native";
+import { useToast } from "react-native-toast-notifications";
+import { useSalesInfoContext } from "../../Context/SalesInfo";
+import {
+  ActionsTypes,
+  InstallmentItem as InstallmentItemInterface,
   Sale,
 } from "../../Context/SalesInfo/Reducer";
 import { globalStyles } from "../../GlobalStyles";
 import { useCommonThemeColors } from "../../Hooks";
+import { brazilianDateService, minDate } from "../../Utils";
 import { Container } from "../Container";
+import { InstallmentItem } from "../InstallmentItem";
 import { PerformaticList } from "../PerformaticList";
 import { Text } from "../Text";
 import { ToggleContainer } from "../ToggleContainer";
@@ -19,6 +30,7 @@ import { styles } from "./Styles";
 
 interface InstallmentModalProps {
   sale: Sale;
+  closeModal: () => void;
 }
 
 /**
@@ -28,10 +40,22 @@ interface InstallmentModalProps {
 export const InstallmentModal = React.memo(
   WithDirectFather<ModalProps, InstallmentModalProps>(
     Modal as unknown as React.FC<ModalProps>,
-    ({ sale }) => {
-      const installmentData = sale?.installments ?? [];
+    ({ sale, closeModal }) => {
       const { primaryColor } = useCommonThemeColors();
+      const { dispatcher } = useSalesInfoContext();
+      const installmentData = sale?.installments ?? [];
       const [installmentValue, setInstallmentValue] = useState("");
+      const [installmentDate, setInstallmentDate] = useState("");
+      useBackHandler(() => {
+        closeModal();
+        return true;
+      });
+      const resetInputs = () => {
+        Keyboard.dismiss();
+        setInstallmentDate("");
+        setInstallmentValue("");
+      };
+      const toast = useToast();
       return (
         <Container backgroundColor="#fff" center flex={1} width="100%">
           <Container
@@ -49,7 +73,7 @@ export const InstallmentModal = React.memo(
           <ToggleContainer
             onOpenStyle={{
               backgroundColor: "white",
-              height: 150,
+              height: 200,
               zIndex: 10000,
             }}
             onCloseStyle={{ height: 49 }}
@@ -64,27 +88,107 @@ export const InstallmentModal = React.memo(
                     flex={null as any}
                     maxHeight={50}
                   >
-                    <Button
-                      status="primary"
-                      onPress={onToggle}
-                      accessoryRight={
-                        <MaterialIcons
-                          name="attach-money"
-                          color="#fff"
-                          size={24}
-                        />
-                      }
-                    >
-                      {isOpen ? "Salvar Pagamento" : "Adicionar Pagamento"}
-                    </Button>
+                    {isOpen ? (
+                      <ButtonGroup
+                        style={styles.buttonGroup}
+                        status="primary"
+                        appearance="outline"
+                      >
+                        <Button
+                          onPress={() => {
+                            if (installmentValue.trim().length === 0) {
+                              toast.show("Infome um valor!", {
+                                type: "danger",
+                              });
+                              return;
+                            }
+                            if (installmentValue.includes(",")) {
+                              toast.show(
+                                "Apenas pontos são permitidos no valor!",
+                                {
+                                  type: "danger",
+                                }
+                              );
+                              return;
+                            }
+                            if (Number(installmentValue) < 0) {
+                              toast.show("O valor não pode ser negativo!", {
+                                type: "danger",
+                              });
+                              return;
+                            }
+                            if (!installmentDate) {
+                              toast.show("Infome a data!", {
+                                type: "danger",
+                              });
+                              return;
+                            }
+                            onToggle();
+                            dispatcher({
+                              type: ActionsTypes.ADD_SALES_PAYMENT,
+                              payload: {
+                                saleId: sale.id,
+                                installment: {
+                                  value: installmentValue,
+                                  paymentDate: installmentDate,
+                                },
+                              },
+                            });
+                            resetInputs();
+                            toast.show("Pagamento lançado com sucesso!", {
+                              type: "success",
+                            });
+                          }}
+                        >
+                          Salvar
+                        </Button>
+                        <Button
+                          onPress={() => {
+                            onToggle();
+                            resetInputs();
+                          }}
+                        >
+                          Cancelar
+                        </Button>
+                      </ButtonGroup>
+                    ) : (
+                      <Button
+                        status="primary"
+                        onPress={onToggle}
+                        accessoryRight={
+                          <MaterialIcons
+                            name="attach-money"
+                            color="#fff"
+                            size={24}
+                          />
+                        }
+                      >
+                        {isOpen ? "Salvar Pagamento" : "Adicionar Pagamento"}
+                      </Button>
+                    )}
                   </Container>
                   <Container
                     {...globalStyles.input}
                     marginTop={20}
                     paddingHorizontal={15}
-                    flexDirection="row"
+                    flexDirection="column"
                     alignItems="center"
                   >
+                    <Datepicker
+                      min={minDate}
+                      label="Data do pagamento"
+                      style={styles.datePicker}
+                      dateService={brazilianDateService}
+                      onPress={() => Keyboard.dismiss()}
+                      boundingMonth
+                      date={
+                        installmentDate
+                          ? new Date(installmentDate)
+                          : installmentDate
+                      }
+                      placeholder="Data da venda"
+                      onSelect={(value) => setInstallmentDate(value.toString())}
+                    />
                     <Input
                       label="Valor do Lançamento"
                       accessoryLeft={() => (
@@ -108,42 +212,23 @@ export const InstallmentModal = React.memo(
             }}
           </ToggleContainer>
           <Container width="100%" backgroundColor="#fff" flex={1} center>
-            <PerformaticList<InstallmentItem>
+            <PerformaticList<InstallmentItemInterface>
               style={styles.installmentList}
               data={installmentData}
-              emptyComponent={<></>}
-            >
-              {(_, { paymentDate, value, status: itemStatus }) => (
+              emptyComponent={
                 <Container
-                  width="100%"
-                  borderRadius={60}
-                  height={50}
-                  flexDirection="row"
+                  flex={null}
+                  height={100}
+                  justifyContent="center"
                   alignItems="center"
-                  justifyContent="space-evenly"
-                  paddingHorizontal={5}
                 >
-                  <Text
-                    numberOfLines={1}
-                    status={paymentDate ? "primary" : "danger"}
-                  >
-                    {paymentDate ? "Paga em:" : "Data de pagamento"}{" "}
-                    {format(new Date(paymentDate), "MM/dd/yyyy HH:mm")}
+                  <Text status="primary" category="h5" center>
+                    Nenhum pagamento para exibir.
                   </Text>
-                  <Text numberOfLines={1} status="info">
-                    {reversedInstallementItemStatus[itemStatus]}
-                  </Text>
-                  <Text numberOfLines={1} status="success">
-                    {value}
-                  </Text>
-                  <Button
-                    status="danger"
-                    accessoryLeft={(props) => (
-                      <Entypo {...props} name="trash" />
-                    )}
-                  />
                 </Container>
-              )}
+              }
+            >
+              {(_, item) => <InstallmentItem sale={sale} {...item} />}
             </PerformaticList>
           </Container>
         </Container>

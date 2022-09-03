@@ -30,6 +30,7 @@ import {
   MainStackRoutesTypes,
   MAIN_STACK_ROUTES,
 } from "../../Routes/MainStack/Types";
+import { styles } from "./Styles";
 
 export const SalesDetails: React.FC<
   StackScreenProps<MainStackRoutesTypes, MAIN_STACK_ROUTES.SALES_DETAILS>
@@ -48,7 +49,7 @@ export const SalesDetails: React.FC<
 
   const { client } = useClient(String(sale?.clientId));
   const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
-  const { warningColor, primaryColor } = useCommonThemeColors();
+  const { warningColor } = useCommonThemeColors();
   const saleCreatedAt = useFormatRelativeDate(sale?.createdAt);
   const toast = useToast();
   if (!sale || !client) return null;
@@ -76,14 +77,7 @@ export const SalesDetails: React.FC<
         <Portal hostName={PortalLocations.ROOT}>
           <InstallmentModal
             fatherProps={{
-              style: {
-                width: "95%",
-                height: "75%",
-                alignItems: "center",
-                justifyContent: "center",
-                overflow: "hidden",
-                borderRadius: 20,
-              },
+              style: styles.modalStyle,
               backdropStyle: {
                 backgroundColor: "rgba(0, 0, 0, 0.5)",
               },
@@ -92,6 +86,7 @@ export const SalesDetails: React.FC<
             }}
             childProps={{
               sale,
+              closeModal: closeInstallment,
             }}
           />
         </Portal>

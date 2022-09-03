@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   installmentList: {
-    paddingBottom: 30,
+    paddingBottom: 35,
     width: "100%",
     flex: 1,
   },
@@ -10,12 +10,18 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
   },
-
-  inputValueText: { textAlign: "left",  },
+  deleteButton: {
+    padding: 4,
+  },
+  datePicker: {
+    marginTop: 5,
+    width: "100%",
+  },
+  inputValueText: { textAlign: "left" },
   toggleInputs: {
     width: "100%",
     flexDirection: "column",
     overflow: "hidden",
-    marginTop: 30,
+    marginVertical: 30,
   },
 });

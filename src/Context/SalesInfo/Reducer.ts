@@ -45,9 +45,9 @@ export const reversedSalesTypes = {
 };
 
 export interface InstallmentItem {
-  status: InstallmentItemStatusType;
   value: number;
   paymentDate: string;
+  id: string;
 }
 
 export interface Sale {
@@ -85,6 +85,8 @@ export enum ActionsTypes {
   DELETE_CLIENT,
   EDIT_CLIENT,
   EDIT_SALE,
+  ADD_SALES_PAYMENT,
+  DELETE_SALES_PAYMENT,
   DELETE_MANY_SALES,
   SYNC_CLIENTS_WITH_CONTACTS,
   RESET_APP,
@@ -158,7 +160,52 @@ const deleteMany = (
 };
 
 const clientHasSale = (clientId: string, sales: Array<Sale>) =>
-  sales.find((sale) => sale.clientId === clientId) !== undefined;
+  sales.some((sale) => sale.clientId === clientId);
+
+function addSaleInstallment(
+  state: SalesManagementState,
+  saleId: string,
+  installment: Omit<InstallmentItem, "id">
+) {
+  const sales = [...state.sales];
+  const index = sales.findIndex((sale) => sale.id === saleId);
+  if (index === -1) return state;
+  const item = sales[index];
+  sales[index] = {
+    ...sales[index],
+    installments: [
+      { ...installment, id: uuidv4() },
+      ...(item.installments || []),
+    ],
+  };
+  return updateStorage({
+    ...state,
+    sales: [...sales],
+  });
+}
+
+function deleteSaleInstallment(
+  state: SalesManagementState,
+  saleInfo: { saleId: string; installmentId: string }
+) {
+  const sales = [...state.sales];
+  const { installmentId, saleId } = saleInfo;
+  const index = sales.findIndex((sale) => sale.id === saleId);
+  if (index === -1) return state;
+  const item = { ...sales[index] };
+  if (!item.installments) return state;
+  const installmentIndex = item.installments.findIndex(
+    ({ id }) => id === installmentId
+  );
+  if (installmentIndex === -1) return state;
+  const itemInstallment = [...item.installments];
+  itemInstallment.splice(installmentIndex, 1);
+  sales[index] = { ...item, installments: itemInstallment };
+  return updateStorage({
+    ...state,
+    sales,
+  });
+}
 
 const verifyClientDeletion = (
   state: SalesManagementState,
@@ -216,6 +263,10 @@ export const reducer = (
       return editItemInArray("sales", state, payload);
     case ActionsTypes.ADD_SALES:
       return addToStateArray("sales", state, payload);
+    case ActionsTypes.ADD_SALES_PAYMENT:
+      return addSaleInstallment(state, payload.saleId, payload.installment);
+    case ActionsTypes.DELETE_SALES_PAYMENT:
+      return deleteSaleInstallment(state, payload);
     case ActionsTypes.DELETE_SALES:
       return deleteItem("sales", state, payload);
     case ActionsTypes.DELETE_MANY_SALES:
