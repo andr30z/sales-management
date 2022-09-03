@@ -17,6 +17,13 @@
         "backgroundColor": "#ffff"
       }
     },
-    "assetBundlePatterns": ["**/*"]
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "7ae5cf5a-5689-49c3-839e-c18f2b62ad3e"
+      }
+    }
   }
 }
