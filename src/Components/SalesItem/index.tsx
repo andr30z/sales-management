@@ -1,4 +1,5 @@
 import React from "react";
+import NumberFormat from "react-number-format";
 import { Sale } from "../../Context/SalesInfo/Reducer";
 import { useClient } from "../../Hooks";
 import { ListingScreenItem, SalesListingItemProps } from "../ListingScreenItem";
@@ -12,14 +13,28 @@ export const SalesItem: React.FC<
     <ListingScreenItem {...props}>
       {({ item, styles, resolveTextColor }) => (
         <>
-          <Text
-            status={resolveTextColor()}
-            numberOfLines={1}
-            style={styles.textItem}
-            category="c1"
-          >
-            R$: {item.value}
-          </Text>
+          <NumberFormat
+            value={item.value}
+            displayType={"text"}
+            fixedDecimalScale
+            decimalSeparator=","
+            decimalScale={2}
+            allowLeadingZeros
+            allowEmptyFormatting
+            isNumericString
+            prefix={"R$ "}
+            renderText={(value) => (
+              <Text
+                status={resolveTextColor()}
+                numberOfLines={1}
+                style={styles.textItem}
+                category="c1"
+              >
+                {value}
+              </Text>
+            )}
+          />
+
           <Text
             numberOfLines={1}
             style={styles.textItem}

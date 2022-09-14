@@ -83,7 +83,7 @@ export const ListingScreenItem = <I extends { id: string }>({
               status={resolveTextColor()}
               numberOfLines={1}
               style={[styles.textItem]}
-              category="c2"
+              category="s2"
             >
               {date}
             </Text>
