@@ -186,7 +186,7 @@ export const InstallmentModal = React.memo(
                           ? new Date(installmentDate)
                           : installmentDate
                       }
-                      placeholder="Data da venda"
+                      placeholder="Data do Pagamengo"
                       onSelect={(value) => setInstallmentDate(value.toString())}
                     />
                     <Input
@@ -203,7 +203,7 @@ export const InstallmentModal = React.memo(
                       style={{ flex: 5 }}
                       value={installmentValue}
                       keyboardType="numeric"
-                      placeholder="Valor da compra"
+                      placeholder="Valor do Lançamento"
                       onChangeText={setInstallmentValue}
                     />
                   </Container>
