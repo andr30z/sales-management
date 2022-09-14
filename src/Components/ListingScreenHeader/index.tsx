@@ -49,7 +49,7 @@ export const ListingScreenHeader: React.FC<ListingScreenHeaderProps> = ({
             appearance="outline"
             size="small"
             status="control"
-            onPress={() => navigation.navigate(addEntityScreen, {})}
+            onPress={() => navigation.navigate(addEntityScreen as any, {})}
           >
             {(props) => (
               <Text {...props} style={undefined} category="h6" status="control">
