@@ -156,7 +156,7 @@ export const ClientsListing: React.FC = () => {
                 <Text
                   status={resolveTextColor()}
                   numberOfLines={2}
-                  style={styles.textItem}
+                  style={[styles.textItem, { maxWidth: "45%" }]}
                   category="c1"
                 >
                   {item.phoneNumber}
