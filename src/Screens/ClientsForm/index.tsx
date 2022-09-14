@@ -34,7 +34,7 @@ const validationSchema = Yup.object().shape({
  *
  * @author andr30z
  **/
-export const ClientsForm: React.FC<
+export const ClientsFormNoMemo: React.FC<
   StackScreenProps<MainStackRoutesTypes, MAIN_STACK_ROUTES.CLIENTS_FORM>
 > = ({
   navigation,
@@ -50,7 +50,6 @@ export const ClientsForm: React.FC<
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
-      
     >
       <ScrollView
         style={{ flex: 1, backgroundColor: "white" }}
@@ -150,3 +149,5 @@ export const ClientsForm: React.FC<
     </KeyboardAvoidingView>
   );
 };
+
+export const ClientsForm = React.memo(ClientsFormNoMemo);

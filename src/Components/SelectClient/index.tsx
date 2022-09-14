@@ -31,7 +31,7 @@ interface SelectClientProps {
  *
  * @author andr30z
  **/
-export const SelectClient: React.FC<SelectClientProps> = ({
+export const SelectClientNoMemo: React.FC<SelectClientProps> = ({
   value,
   onChange,
   marginY = 0,
@@ -142,3 +142,5 @@ export const SelectClient: React.FC<SelectClientProps> = ({
     </Container>
   );
 };
+
+export const SelectClient = React.memo(SelectClientNoMemo);

@@ -55,7 +55,7 @@ const validationSchema = Yup.object().shape({
  *
  * @author andr30z
  **/
-export const SalesForm: React.FC<
+export const SalesFormNoMemo: React.FC<
   StackScreenProps<MainStackRoutesTypes, MAIN_STACK_ROUTES.SALES_FORM>
 > = ({
   navigation,
@@ -240,3 +240,5 @@ export const SalesForm: React.FC<
     </KeyboardAvoidingView>
   );
 };
+
+export const SalesForm = React.memo(SalesFormNoMemo);
