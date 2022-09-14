@@ -27,7 +27,7 @@ import { styles } from "./Styles";
  **/
 export const ClientDetails = WithDirectFather(
   ClientSalesListingProvider,
-  () => {
+  React.memo(() => {
     const { width } = useWindowDimensions();
     const { id } = useRouteParams<
       MainStackRoutesTypes,
@@ -39,7 +39,6 @@ export const ClientDetails = WithDirectFather(
     const goToSaleDetails = (id: string) => () => {
       navigation.navigate(MAIN_STACK_ROUTES.SALES_DETAILS, {
         id,
-        
       });
     };
     const { filteredData } = useClientSalesListingContext();
@@ -62,7 +61,9 @@ export const ClientDetails = WithDirectFather(
           }}
         >
           {(_, item) =>
-            item.id === "empty-data" ? <></> : (
+            item.id === "empty-data" ? (
+              <></>
+            ) : (
               <Container
                 flex={null}
                 center
@@ -132,5 +133,5 @@ export const ClientDetails = WithDirectFather(
         </PerformaticList>
       </Container>
     );
-  }
+  })
 );

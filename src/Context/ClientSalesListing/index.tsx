@@ -1,6 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import React, { createContext, PropsWithChildren, useContext } from "react";
-import { useClient, useListingFilter } from "../../Hooks";
+import { useClient, useListingFilter, useRouteParams } from "../../Hooks";
 import {
   MainStackRoutesTypes,
   MAIN_STACK_ROUTES,
@@ -19,14 +19,11 @@ const ClientsDetailsContext = createContext<ClientsDetailsContextInterface>(
   {} as ClientsDetailsContextInterface
 );
 
-export const ClientSalesListingProvider: React.FC<
-  PropsWithChildren<StackScreenProps<MainStackRoutesTypes, MAIN_STACK_ROUTES.CLIENT_DETAILS>>
-> = ({
-  children,
-  route: {
-    params: { id },
-  },
-}) => {
+export const ClientSalesListingProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
+  const { id } = useRouteParams<
+    MainStackRoutesTypes,
+    MAIN_STACK_ROUTES.CLIENT_DETAILS
+  >();
   const { clientSales } = useClient(id);
   const filter = useListingFilter({
     onEnterScreenDependencies: clientSales,
