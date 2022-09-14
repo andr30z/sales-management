@@ -16,7 +16,7 @@ import { styles } from "./Styles";
  *
  * @author andr30z
  **/
-export const SalesListingFilters: React.FC<
+export const SalesListingFiltersNoMemo: React.FC<
   ListingFiltersProps<SalesFilterFields> & { useClientNameInput?: boolean }
 > = ({
   filterFields,
@@ -33,7 +33,6 @@ export const SalesListingFilters: React.FC<
     <ToggleContainer
       containerStyle={styles.toggleContainer}
       onOpenStyle={{
-        backgroundColor: "white",
         height: 300,
         zIndex: 10000,
       }}
@@ -104,7 +103,10 @@ export const SalesListingFilters: React.FC<
               ]}
               onChange={(index) => {
                 if (Array.isArray(index)) return;
-                setFilterFields((past) => ({ ...past, saleStatus: index.row }));
+                setFilterFields((past) => ({
+                  ...past,
+                  saleStatus: index.row,
+                }));
               }}
             />
             <Container
@@ -159,3 +161,5 @@ export const SalesListingFilters: React.FC<
     </ToggleContainer>
   );
 };
+
+export const SalesListingFilters = React.memo(SalesListingFiltersNoMemo);

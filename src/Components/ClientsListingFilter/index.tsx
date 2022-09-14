@@ -28,7 +28,7 @@ export const ClientsListingFilter: React.FC<
     <ToggleContainer
       containerStyle={styles.toggleContainer}
       onOpenStyle={{
-        backgroundColor: "white",
+        // backgroundColor: "white",
         height: 300,
         zIndex: 10000,
       }}
