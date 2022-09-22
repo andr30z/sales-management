@@ -3,7 +3,7 @@ import React, { Dispatch, SetStateAction } from "react";
 import { globalStyles } from "../../GlobalStyles";
 import { Container } from "../Container";
 
-interface ConfirmActionModalProps {
+export interface ConfirmActionModalProps {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   confirmText?: string;
@@ -22,6 +22,7 @@ export const ConfirmActionModal: React.FC<ConfirmActionModalProps> = ({
   };
   return (
     <Modal
+      testID="modalContainer"
       style={{
         width: "95%",
         height: "32%",
@@ -38,7 +39,11 @@ export const ConfirmActionModal: React.FC<ConfirmActionModalProps> = ({
         padding={10}
       >
         <Container justifyContent="center" paddingLeft={5} flex={3}>
-          <Text style={{ textAlign: "left" }} category="h5">
+          <Text
+            testID="confirmText"
+            style={{ textAlign: "left" }}
+            category="h5"
+          >
             {confirmText}
           </Text>
         </Container>
@@ -50,10 +55,11 @@ export const ConfirmActionModal: React.FC<ConfirmActionModalProps> = ({
           height={"30%"}
           flex={null as any}
         >
-          <Button onPress={close} status="control">
+          <Button testID="onPressCancel" onPress={close} status="control">
             Cancelar
           </Button>
           <Button
+            testID="onPressConfirm"
             onPress={onActionConfirmed}
             status={btnConfirmActionColor}
             style={{ marginLeft: 5 }}
