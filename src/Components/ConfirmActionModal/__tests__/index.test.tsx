@@ -28,6 +28,28 @@ describe("<ConfirmActionModal />", () => {
   const touchables = {
     findOpenButton: (api: RenderAPI) => api.getByTestId(openButtonId),
   };
+
+  it("should render confirmation modal with a different confirm button color", async () => {
+    const confirmationText = "ConfirmationText";
+    const component = render(
+      <TestModal
+        onActionConfirmed={() => {
+          console.log("I'm confirmed by the user :D!");
+        }}
+        btnConfirmActionColor="primary"
+        confirmText={confirmationText}
+      />
+    );
+    const { getByTestId } = component;
+    fireEvent.press(touchables.findOpenButton(component));
+    const confirmationButton = await waitFor(() =>
+      getByTestId("onPressConfirm")
+    );
+    const primaryColor = theme["color-primary-500"];
+    expect(confirmationButton.props.style.backgroundColor).toBe(primaryColor);
+    expect(component.toJSON()).toMatchSnapshot()
+  });
+
   it("should open confirmation modal", async () => {
     const confirmationText = "ConfirmationText";
     const component = render(
@@ -38,9 +60,8 @@ describe("<ConfirmActionModal />", () => {
         confirmText={confirmationText}
       />
     );
-    const { debug, getByText } = component;
+    const { getByText } = component;
     fireEvent.press(touchables.findOpenButton(component));
-    debug();
     const text = await waitFor(() => getByText(confirmationText));
     expect(text).toBeTruthy();
   });
@@ -48,9 +69,8 @@ describe("<ConfirmActionModal />", () => {
   it("should press confirm button", async () => {
     const onPress = jest.fn();
     const component = render(<TestModal onActionConfirmed={onPress} />);
-    const { debug, getByTestId } = component;
+    const { getByTestId } = component;
     fireEvent.press(touchables.findOpenButton(component));
-    debug();
     await waitFor(() => fireEvent.press(getByTestId("onPressConfirm")));
     expect(onPress).toBeCalled();
   });

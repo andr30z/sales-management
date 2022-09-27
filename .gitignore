@@ -23,7 +23,7 @@ DerivedData
 project.xcworkspace
 
 coverage/\*\*/*
-
+coverage/
 # Android/IntelliJ
 #
 build/
