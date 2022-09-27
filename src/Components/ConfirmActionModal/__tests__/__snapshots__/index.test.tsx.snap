@@ -1,0 +1,265 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ConfirmActionModal /> should render confirmation modal with a different confirm button color 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#FF1173",
+        "borderColor": "#FF1173",
+        "borderRadius": 4,
+        "borderWidth": 1,
+        "flexDirection": "row",
+        "justifyContent": "center",
+        "minHeight": 40,
+        "minWidth": 40,
+        "opacity": 1,
+        "paddingHorizontal": 10,
+        "paddingVertical": 12,
+      }
+    }
+    testID="@modal/open-button"
+  />
+  <View
+    style={
+      {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0.5)",
+          "bottom": 0,
+          "left": 0,
+          "opacity": 1,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    />
+    <View
+      backdropStyle={
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0.5)",
+        }
+      }
+      onBackdropPress={[Function]}
+      onLayout={[Function]}
+      style={
+        [
+          {
+            "height": "32%",
+            "width": "95%",
+          },
+          {
+            "position": "absolute",
+          },
+          {
+            "left": -999,
+            "top": -999,
+          },
+        ]
+      }
+      testID="modalContainer"
+      visible={true}
+    >
+      <View
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderRadius": 13,
+            "flex": 1,
+            "height": "100%",
+            "padding": 10,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "flex": 3,
+              "justifyContent": "center",
+              "paddingLeft": 5,
+            }
+          }
+        >
+          <Text
+            appearance="default"
+            category="h5"
+            style={
+              [
+                {
+                  "color": "#222B45",
+                  "fontFamily": "System",
+                  "fontSize": 22,
+                  "fontWeight": "800",
+                },
+                {
+                  "textAlign": "left",
+                },
+              ]
+            }
+            testID="confirmText"
+          >
+            ConfirmationText
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flex": null,
+              "flexDirection": "row",
+              "height": "30%",
+              "justifyContent": "flex-end",
+              "width": "100%",
+            }
+          }
+        >
+          <View
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderColor": "#FFFFFF",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "minHeight": 40,
+                "minWidth": 40,
+                "opacity": 1,
+                "paddingHorizontal": 10,
+                "paddingVertical": 12,
+              }
+            }
+            testID="onPressCancel"
+          >
+            <Text
+              appearance="default"
+              category="p1"
+              style={
+                [
+                  {
+                    "color": "#222B45",
+                    "fontFamily": "System",
+                    "fontSize": 15,
+                    "fontWeight": "400",
+                  },
+                  {
+                    "color": "#222B45",
+                    "fontFamily": "System",
+                    "fontSize": 14,
+                    "fontWeight": "bold",
+                    "marginHorizontal": 10,
+                  },
+                ]
+              }
+            >
+              Cancelar
+            </Text>
+          </View>
+          <View
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "backgroundColor": "#FF1173",
+                "borderColor": "#FF1173",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "marginLeft": 5,
+                "minHeight": 40,
+                "minWidth": 40,
+                "opacity": 1,
+                "paddingHorizontal": 10,
+                "paddingVertical": 12,
+              }
+            }
+            testID="onPressConfirm"
+          >
+            <Text
+              appearance="default"
+              category="p1"
+              style={
+                [
+                  {
+                    "color": "#222B45",
+                    "fontFamily": "System",
+                    "fontSize": 15,
+                    "fontWeight": "400",
+                  },
+                  {
+                    "color": "#FFFFFF",
+                    "fontFamily": "System",
+                    "fontSize": 14,
+                    "fontWeight": "bold",
+                    "marginHorizontal": 10,
+                  },
+                ]
+              }
+            >
+              Confirmar
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
