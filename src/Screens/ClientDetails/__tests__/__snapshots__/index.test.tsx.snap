@@ -1,0 +1,1819 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ClientDetails /> should render client sales 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "flex": 1,
+      }
+    }
+  >
+    <RNCSafeAreaProvider
+      onInsetsChange={[Function]}
+      style={
+        [
+          {
+            "flex": 1,
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "backgroundColor": "rgb(242, 242, 242)",
+              "flex": 1,
+            },
+            undefined,
+          ]
+        }
+      >
+        <View
+          collapsable={false}
+          pointerEvents="box-none"
+          style={
+            {
+              "zIndex": 1,
+            }
+          }
+        >
+          <View
+            accessibilityElementsHidden={false}
+            importantForAccessibility="auto"
+            onLayout={[Function]}
+            pointerEvents="box-none"
+            style={null}
+          >
+            <View
+              collapsable={false}
+              pointerEvents="box-none"
+              style={
+                {
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 1,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                  "zIndex": 0,
+                }
+              }
+            >
+              <View
+                collapsable={false}
+                style={
+                  {
+                    "backgroundColor": "rgb(255, 255, 255)",
+                    "borderBottomColor": "rgb(216, 216, 216)",
+                    "flex": 1,
+                    "shadowColor": "rgb(216, 216, 216)",
+                    "shadowOffset": {
+                      "height": 0.5,
+                      "width": 0,
+                    },
+                    "shadowOpacity": 0.85,
+                    "shadowRadius": 0,
+                  }
+                }
+              />
+            </View>
+            <View
+              collapsable={false}
+              pointerEvents="box-none"
+              style={
+                {
+                  "height": 44,
+                  "maxHeight": undefined,
+                  "minHeight": undefined,
+                  "opacity": undefined,
+                  "transform": undefined,
+                }
+              }
+            >
+              <View
+                pointerEvents="none"
+                style={
+                  {
+                    "height": 0,
+                  }
+                }
+              />
+              <View
+                pointerEvents="box-none"
+                style={
+                  {
+                    "alignItems": "stretch",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  collapsable={false}
+                  pointerEvents="box-none"
+                  style={
+                    {
+                      "alignItems": "flex-start",
+                      "flexBasis": 0,
+                      "flexGrow": 1,
+                      "justifyContent": "center",
+                      "marginStart": 0,
+                      "opacity": 1,
+                    }
+                  }
+                />
+                <View
+                  collapsable={false}
+                  pointerEvents="box-none"
+                  style={
+                    {
+                      "justifyContent": "center",
+                      "marginHorizontal": 16,
+                      "maxWidth": 718,
+                      "opacity": 1,
+                    }
+                  }
+                >
+                  <Text
+                    accessibilityRole="header"
+                    aria-level="1"
+                    collapsable={false}
+                    numberOfLines={1}
+                    onLayout={[Function]}
+                    style={
+                      {
+                        "color": "rgb(28, 28, 30)",
+                        "fontSize": 17,
+                        "fontWeight": "600",
+                      }
+                    }
+                  >
+                    MockedScreen
+                  </Text>
+                </View>
+                <View
+                  collapsable={false}
+                  pointerEvents="box-none"
+                  style={
+                    {
+                      "alignItems": "flex-end",
+                      "flexBasis": 0,
+                      "flexGrow": 1,
+                      "justifyContent": "center",
+                      "marginEnd": 0,
+                      "opacity": 1,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+        </View>
+        <RNSScreenContainer
+          onLayout={[Function]}
+          style={
+            {
+              "flex": 1,
+            }
+          }
+        >
+          <RNSScreen
+            activityState={2}
+            collapsable={false}
+            forwardedRef={[Function]}
+            gestureResponseDistance={
+              {
+                "bottom": -1,
+                "end": -1,
+                "start": -1,
+                "top": -1,
+              }
+            }
+            pointerEvents="box-none"
+            style={
+              {
+                "bottom": 0,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              }
+            }
+          >
+            <View
+              collapsable={false}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            />
+            <View
+              accessibilityElementsHidden={false}
+              closing={false}
+              gestureVelocityImpact={0.3}
+              importantForAccessibility="auto"
+              onClose={[Function]}
+              onGestureBegin={[Function]}
+              onGestureCanceled={[Function]}
+              onGestureEnd={[Function]}
+              onOpen={[Function]}
+              onTransition={[Function]}
+              pointerEvents="box-none"
+              style={
+                [
+                  {
+                    "display": "flex",
+                    "overflow": undefined,
+                  },
+                  {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  },
+                ]
+              }
+              transitionSpec={
+                {
+                  "close": {
+                    "animation": "spring",
+                    "config": {
+                      "damping": 500,
+                      "mass": 3,
+                      "overshootClamping": true,
+                      "restDisplacementThreshold": 10,
+                      "restSpeedThreshold": 10,
+                      "stiffness": 1000,
+                    },
+                  },
+                  "open": {
+                    "animation": "spring",
+                    "config": {
+                      "damping": 500,
+                      "mass": 3,
+                      "overshootClamping": true,
+                      "restDisplacementThreshold": 10,
+                      "restSpeedThreshold": 10,
+                      "stiffness": 1000,
+                    },
+                  },
+                }
+              }
+            >
+              <View
+                collapsable={false}
+                pointerEvents="box-none"
+                style={
+                  {
+                    "flex": 1,
+                  }
+                }
+              >
+                <View
+                  collapsable={false}
+                  forwardedRef={[Function]}
+                  handlerTag={5}
+                  handlerType="PanGestureHandler"
+                  needsOffscreenAlphaCompositing={false}
+                  onGestureHandlerEvent={[Function]}
+                  onGestureHandlerStateChange={[Function]}
+                  style={
+                    {
+                      "flex": 1,
+                      "transform": [
+                        {
+                          "translateX": 0,
+                        },
+                        {
+                          "translateX": 0,
+                        },
+                      ],
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      [
+                        {
+                          "flex": 1,
+                          "overflow": "hidden",
+                        },
+                        [
+                          {
+                            "backgroundColor": "rgb(242, 242, 242)",
+                          },
+                          undefined,
+                        ],
+                      ]
+                    }
+                  >
+                    <View
+                      style={
+                        {
+                          "flex": 1,
+                          "flexDirection": "column-reverse",
+                        }
+                      }
+                    >
+                      <View
+                        style={
+                          {
+                            "flex": 1,
+                          }
+                        }
+                      >
+                        <View
+                          style={
+                            {
+                              "alignItems": "center",
+                              "flex": 1,
+                              "justifyContent": "center",
+                              "width": 750,
+                            }
+                          }
+                          testID="clientDetailsContainerID"
+                        >
+                          <RCTScrollView
+                            canChangeSize={false}
+                            contentContainerStyle={
+                              {
+                                "paddingBottom": 35,
+                              }
+                            }
+                            contentHeight={120}
+                            contentWidth={393}
+                            dataProvider={
+                              DataProvider {
+                                "_data": [
+                                  {
+                                    "clientId": "1",
+                                    "createdAt": "2022-10-05T12:58:49.736Z",
+                                    "date": "2022-10-05T12:58:49.736Z",
+                                    "description": "",
+                                    "id": "1",
+                                    "name": "Test Sale",
+                                    "quantity": 1,
+                                    "status": 0,
+                                    "types": [
+                                      0,
+                                    ],
+                                    "value": "15",
+                                  },
+                                ],
+                                "_firstIndexToProcess": 0,
+                                "_hasStableIds": true,
+                                "_requiresDataChangeHandling": false,
+                                "_size": 1,
+                                "getStableId": [Function],
+                                "rowHasChanged": [Function],
+                              }
+                            }
+                            disableRecycling={false}
+                            externalScrollView={
+                              {
+                                "$$typeof": Symbol(react.forward_ref),
+                                "render": [Function],
+                              }
+                            }
+                            horizontal={false}
+                            initialOffset={0}
+                            initialRenderIndex={0}
+                            isHorizontal={false}
+                            layoutProvider={
+                              GridLayoutProvider {
+                                "_acceptableRelayoutDelta": 1,
+                                "_getHeightOrWidth": [Function],
+                                "_getLayoutTypeForIndex": [Function],
+                                "_getSpan": [Function],
+                                "_isHorizontal": false,
+                                "_maxSpan": 3,
+                                "_renderWindowSize": {
+                                  "height": 781,
+                                  "width": 393,
+                                },
+                                "_setLayoutForType": [Function],
+                                "_tempDim": {
+                                  "height": 120,
+                                  "width": 131,
+                                },
+                                "shouldRefreshWithAnchoring": true,
+                              }
+                            }
+                            onEndReachedThreshold={0}
+                            onScroll={[Function]}
+                            onSizeChanged={[Function]}
+                            removeClippedSubviews={false}
+                            renderAheadOffset={250}
+                            rowRenderer={[Function]}
+                            scrollEventThrottle={16}
+                            scrollThrottle={16}
+                            scrollViewProps={
+                              {
+                                "contentContainerStyle": {
+                                  "paddingBottom": 35,
+                                },
+                                "style": {
+                                  "width": "100%",
+                                },
+                              }
+                            }
+                            style={
+                              {
+                                "width": "100%",
+                              }
+                            }
+                            testID="clientSalesID"
+                          >
+                            <View>
+                              <View
+                                style={
+                                  {
+                                    "alignItems": "center",
+                                    "backgroundColor": "#bb40ff",
+                                    "flex": null,
+                                    "flexDirection": "row",
+                                    "height": 300,
+                                    "justifyContent": "space-between",
+                                    "position": "relative",
+                                    "width": "100%",
+                                  }
+                                }
+                              >
+                                <View
+                                  style={
+                                    [
+                                      [
+                                        {
+                                          "position": "absolute",
+                                          "width": "100%",
+                                        },
+                                        {
+                                          "borderRadius": 0,
+                                          "paddingHorizontal": 15,
+                                          "top": 20,
+                                        },
+                                      ],
+                                      {
+                                        "opacity": 0,
+                                        "transform": [
+                                          {
+                                            "translateY": -15,
+                                          },
+                                        ],
+                                      },
+                                    ]
+                                  }
+                                >
+                                  <ViewManagerAdapter_ExpoLinearGradient
+                                    proxiedProperties={
+                                      {
+                                        "colors": [
+                                          4290461951,
+                                          0,
+                                        ],
+                                        "endPoint": [
+                                          1,
+                                          0,
+                                        ],
+                                        "locations": undefined,
+                                        "startPoint": [
+                                          0,
+                                          0,
+                                        ],
+                                      }
+                                    }
+                                    style={
+                                      [
+                                        {
+                                          "alignItems": "center",
+                                          "flexDirection": "row",
+                                          "justifyContent": "space-between",
+                                          "width": "100%",
+                                        },
+                                        undefined,
+                                      ]
+                                    }
+                                  >
+                                    <View
+                                      accessible={true}
+                                      collapsable={false}
+                                      focusable={true}
+                                      onBlur={[Function]}
+                                      onClick={[Function]}
+                                      onFocus={[Function]}
+                                      onResponderGrant={[Function]}
+                                      onResponderMove={[Function]}
+                                      onResponderRelease={[Function]}
+                                      onResponderTerminate={[Function]}
+                                      onResponderTerminationRequest={[Function]}
+                                      onStartShouldSetResponder={[Function]}
+                                    >
+                                      <Text
+                                        allowFontScaling={false}
+                                        selectable={false}
+                                        style={
+                                          [
+                                            {
+                                              "color": "#fff",
+                                              "fontSize": 38,
+                                            },
+                                            undefined,
+                                            {
+                                              "fontFamily": "ionicons",
+                                              "fontStyle": "normal",
+                                              "fontWeight": "normal",
+                                            },
+                                            {},
+                                          ]
+                                        }
+                                      >
+                                        
+                                      </Text>
+                                    </View>
+                                    <Text
+                                      allowFontScaling={false}
+                                      onPress={[Function]}
+                                      selectable={false}
+                                      style={
+                                        [
+                                          {
+                                            "color": "#fff",
+                                            "fontSize": 34,
+                                          },
+                                          undefined,
+                                          {
+                                            "fontFamily": "entypo",
+                                            "fontStyle": "normal",
+                                            "fontWeight": "normal",
+                                          },
+                                          {},
+                                        ]
+                                      }
+                                    >
+                                      
+                                    </Text>
+                                  </ViewManagerAdapter_ExpoLinearGradient>
+                                </View>
+                                <View
+                                  style={
+                                    {
+                                      "alignItems": "center",
+                                      "bottom": -35,
+                                      "flex": 1,
+                                      "justifyContent": "center",
+                                      "position": "absolute",
+                                      "width": "100%",
+                                    }
+                                  }
+                                >
+                                  <View
+                                    style={
+                                      {
+                                        "alignItems": "center",
+                                        "backgroundColor": "#fff",
+                                        "borderRadius": 15,
+                                        "elevation": 2,
+                                        "flex": 1,
+                                        "flexDirection": "column",
+                                        "justifyContent": "center",
+                                        "padding": 15,
+                                        "position": "relative",
+                                        "shadowColor": "#000",
+                                        "shadowOffset": {
+                                          "height": 1,
+                                          "width": 0,
+                                        },
+                                        "shadowOpacity": 0.2,
+                                        "shadowRadius": 1.41,
+                                        "width": "85%",
+                                      }
+                                    }
+                                  >
+                                    <View
+                                      style={
+                                        {
+                                          "alignItems": "center",
+                                          "backgroundColor": "white",
+                                          "borderRadius": 20,
+                                          "elevation": 11,
+                                          "flex": null,
+                                          "height": 40,
+                                          "justifyContent": "center",
+                                          "position": "absolute",
+                                          "right": -10,
+                                          "shadowColor": "#000",
+                                          "shadowOffset": {
+                                            "height": 5,
+                                            "width": 0,
+                                          },
+                                          "shadowOpacity": 0.36,
+                                          "shadowRadius": 6.68,
+                                          "top": -10,
+                                          "width": 40,
+                                        }
+                                      }
+                                    >
+                                      <View
+                                        accessible={true}
+                                        collapsable={false}
+                                        focusable={true}
+                                        onBlur={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onResponderGrant={[Function]}
+                                        onResponderMove={[Function]}
+                                        onResponderRelease={[Function]}
+                                        onResponderTerminate={[Function]}
+                                        onResponderTerminationRequest={[Function]}
+                                        onStartShouldSetResponder={[Function]}
+                                      >
+                                        <Text
+                                          allowFontScaling={false}
+                                          selectable={false}
+                                          style={
+                                            [
+                                              {
+                                                "color": "#bb40ff",
+                                                "fontSize": 19,
+                                              },
+                                              undefined,
+                                              {
+                                                "fontFamily": "entypo",
+                                                "fontStyle": "normal",
+                                                "fontWeight": "normal",
+                                              },
+                                              {},
+                                            ]
+                                          }
+                                        >
+                                          
+                                        </Text>
+                                      </View>
+                                    </View>
+                                    <Text
+                                      appearance="default"
+                                      category="h1"
+                                      ellipsizeMode="tail"
+                                      numberOfLines={1}
+                                      status="warning"
+                                      style={
+                                        [
+                                          {
+                                            "color": "#bb40ff",
+                                            "fontFamily": "System",
+                                            "fontSize": 36,
+                                            "fontWeight": "800",
+                                          },
+                                          [
+                                            {
+                                              "maxWidth": 637.5,
+                                              "textAlign": "center",
+                                              "width": "100%",
+                                            },
+                                            {
+                                              "fontFamily": "Satisfy_400Regular",
+                                            },
+                                          ],
+                                        ]
+                                      }
+                                    >
+                                      Test Client
+                                    </Text>
+                                    <Text
+                                      appearance="hint"
+                                      category="c1"
+                                      ellipsizeMode="tail"
+                                      numberOfLines={2}
+                                      style={
+                                        [
+                                          {
+                                            "color": "#8F9BB3",
+                                            "fontFamily": "System",
+                                            "fontSize": 12,
+                                            "fontWeight": "400",
+                                          },
+                                          [
+                                            {
+                                              "textAlign": "left",
+                                            },
+                                            {
+                                              "fontFamily": "Montserrat_700Bold",
+                                            },
+                                          ],
+                                        ]
+                                      }
+                                    >
+                                      05/10/2022
+                                    </Text>
+                                  </View>
+                                </View>
+                              </View>
+                              <View
+                                accessible={true}
+                                collapsable={false}
+                                focusable={false}
+                                onClick={[Function]}
+                                onResponderGrant={[Function]}
+                                onResponderMove={[Function]}
+                                onResponderRelease={[Function]}
+                                onResponderTerminate={[Function]}
+                                onResponderTerminationRequest={[Function]}
+                                onStartShouldSetResponder={[Function]}
+                                style={
+                                  {
+                                    "backgroundColor": "#FFFFFF",
+                                    "borderColor": "#E4E9F2",
+                                    "borderRadius": 4,
+                                    "borderWidth": 1,
+                                    "marginTop": 65,
+                                    "opacity": 1,
+                                    "overflow": "hidden",
+                                  }
+                                }
+                              >
+                                <View
+                                  style={
+                                    {
+                                      "backgroundColor": undefined,
+                                      "height": 0,
+                                    }
+                                  }
+                                />
+                                <View
+                                  style={
+                                    {
+                                      "paddingHorizontal": 24,
+                                      "paddingVertical": 16,
+                                    }
+                                  }
+                                >
+                                  <Text
+                                    appearance="default"
+                                    category="s2"
+                                    status="primary"
+                                    style={
+                                      [
+                                        {
+                                          "color": "#FF1173",
+                                          "fontFamily": "System",
+                                          "fontSize": 13,
+                                          "fontWeight": "600",
+                                        },
+                                        [
+                                          undefined,
+                                          {
+                                            "fontFamily": "Montserrat_500Medium",
+                                            "textAlign": "center",
+                                          },
+                                        ],
+                                      ]
+                                    }
+                                  >
+                                    ID: 
+                                    1
+                                  </Text>
+                                  <View
+                                    style={
+                                      {
+                                        "alignItems": "center",
+                                        "flex": 1,
+                                        "justifyContent": "center",
+                                        "paddingHorizontal": 10,
+                                        "width": "100%",
+                                      }
+                                    }
+                                  >
+                                    <View
+                                      style={
+                                        {
+                                          "overflow": "hidden",
+                                          "width": "100%",
+                                        }
+                                      }
+                                    >
+                                      <Text
+                                        appearance="default"
+                                        category="p2"
+                                        ellipsizeMode="clip"
+                                        numberOfLines={3}
+                                        status="primary"
+                                        style={
+                                          [
+                                            {
+                                              "color": "#FF1173",
+                                              "fontFamily": "System",
+                                              "fontSize": 13,
+                                              "fontWeight": "400",
+                                            },
+                                            [
+                                              {
+                                                "alignSelf": "center",
+                                                "marginTop": 20,
+                                              },
+                                              {
+                                                "fontFamily": "Montserrat_500Medium",
+                                              },
+                                            ],
+                                          ]
+                                        }
+                                      >
+                                        Observação: 
+                                      </Text>
+                                    </View>
+                                  </View>
+                                </View>
+                              </View>
+                              <ViewManagerAdapter_ExpoLinearGradient
+                                proxiedProperties={
+                                  {
+                                    "colors": [
+                                      4290461951,
+                                      4294906227,
+                                    ],
+                                    "endPoint": [
+                                      1,
+                                      0,
+                                    ],
+                                    "locations": undefined,
+                                    "startPoint": [
+                                      0,
+                                      0,
+                                    ],
+                                  }
+                                }
+                                style={
+                                  [
+                                    {
+                                      "alignItems": "center",
+                                      "borderRadius": 15,
+                                      "elevation": 5,
+                                      "flex": 1.2,
+                                      "flexDirection": "row",
+                                      "justifyContent": "center",
+                                      "marginHorizontal": 15,
+                                      "marginTop": 65,
+                                      "paddingHorizontal": 15,
+                                    },
+                                    {
+                                      "alignItems": "center",
+                                      "justifyContent": "space-between",
+                                      "paddingHorizontal": 10,
+                                    },
+                                    {
+                                      "height": 75,
+                                      "marginTop": 35,
+                                    },
+                                  ]
+                                }
+                              >
+                                <View
+                                  accessible={true}
+                                  collapsable={false}
+                                  focusable={true}
+                                  onBlur={[Function]}
+                                  onClick={[Function]}
+                                  onFocus={[Function]}
+                                  onResponderGrant={[Function]}
+                                  onResponderMove={[Function]}
+                                  onResponderRelease={[Function]}
+                                  onResponderTerminate={[Function]}
+                                  onResponderTerminationRequest={[Function]}
+                                  onStartShouldSetResponder={[Function]}
+                                >
+                                  <Text
+                                    appearance="default"
+                                    category="h5"
+                                    status="control"
+                                    style={
+                                      [
+                                        {
+                                          "color": "#FFFFFF",
+                                          "fontFamily": "System",
+                                          "fontSize": 22,
+                                          "fontWeight": "800",
+                                        },
+                                        [
+                                          undefined,
+                                          {
+                                            "fontFamily": "Montserrat_700Bold",
+                                          },
+                                        ],
+                                      ]
+                                    }
+                                  >
+                                    +
+                                    61952356723
+                                     
+                                    <Text
+                                      allowFontScaling={false}
+                                      selectable={false}
+                                      style={
+                                        [
+                                          {
+                                            "color": "#fff",
+                                            "fontSize": 23,
+                                          },
+                                          undefined,
+                                          {
+                                            "fontFamily": "feather",
+                                            "fontStyle": "normal",
+                                            "fontWeight": "normal",
+                                          },
+                                          {},
+                                        ]
+                                      }
+                                    >
+                                      
+                                    </Text>
+                                  </Text>
+                                </View>
+                                <View
+                                  accessible={true}
+                                  collapsable={false}
+                                  focusable={true}
+                                  onBlur={[Function]}
+                                  onClick={[Function]}
+                                  onFocus={[Function]}
+                                  onResponderGrant={[Function]}
+                                  onResponderMove={[Function]}
+                                  onResponderRelease={[Function]}
+                                  onResponderTerminate={[Function]}
+                                  onResponderTerminationRequest={[Function]}
+                                  onStartShouldSetResponder={[Function]}
+                                >
+                                  <Text
+                                    allowFontScaling={false}
+                                    selectable={false}
+                                    style={
+                                      [
+                                        {
+                                          "color": "#fff",
+                                          "fontSize": 37,
+                                        },
+                                        undefined,
+                                        {
+                                          "fontFamily": "FontAwesome",
+                                          "fontStyle": "normal",
+                                          "fontWeight": "normal",
+                                        },
+                                        {},
+                                      ]
+                                    }
+                                  >
+                                    
+                                  </Text>
+                                </View>
+                              </ViewManagerAdapter_ExpoLinearGradient>
+                              <View
+                                style={
+                                  {
+                                    "alignItems": "center",
+                                    "flex": null,
+                                    "height": 50,
+                                    "justifyContent": "center",
+                                    "marginTop": 25,
+                                    "width": "100%",
+                                  }
+                                }
+                              >
+                                <Text
+                                  appearance="default"
+                                  category="h5"
+                                  status="warning"
+                                  style={
+                                    [
+                                      {
+                                        "color": "#bb40ff",
+                                        "fontFamily": "System",
+                                        "fontSize": 22,
+                                        "fontWeight": "800",
+                                      },
+                                      [
+                                        undefined,
+                                        {
+                                          "fontFamily": "Montserrat_700Bold",
+                                          "textAlign": "center",
+                                        },
+                                      ],
+                                    ]
+                                  }
+                                >
+                                  Vendas para o cliente
+                                </Text>
+                              </View>
+                              <View
+                                style={
+                                  {
+                                    "flex": 1,
+                                    "justifyContent": "center",
+                                    "maxHeight": 300,
+                                    "paddingHorizontal": 15,
+                                    "width": "100%",
+                                  }
+                                }
+                              >
+                                <View
+                                  style={
+                                    [
+                                      {
+                                        "flexDirection": "column",
+                                        "marginTop": 30,
+                                        "overflow": "hidden",
+                                        "width": "100%",
+                                      },
+                                      {
+                                        "height": 42,
+                                        "transform": [],
+                                      },
+                                    ]
+                                  }
+                                >
+                                  <View
+                                    style={
+                                      {
+                                        "alignItems": "center",
+                                        "flex": null,
+                                        "flexDirection": "row",
+                                        "justifyContent": "center",
+                                      }
+                                    }
+                                  >
+                                    <Text
+                                      appearance="default"
+                                      category="h5"
+                                      status="warning"
+                                      style={
+                                        [
+                                          {
+                                            "color": "#bb40ff",
+                                            "fontFamily": "System",
+                                            "fontSize": 22,
+                                            "fontWeight": "800",
+                                          },
+                                          [
+                                            {
+                                              "textAlign": "center",
+                                            },
+                                            {
+                                              "fontFamily": "Montserrat_700Bold",
+                                            },
+                                          ],
+                                        ]
+                                      }
+                                    >
+                                      Filtros
+                                    </Text>
+                                    <View
+                                      accessible={true}
+                                      collapsable={false}
+                                      focusable={true}
+                                      onBlur={[Function]}
+                                      onClick={[Function]}
+                                      onFocus={[Function]}
+                                      onResponderGrant={[Function]}
+                                      onResponderMove={[Function]}
+                                      onResponderRelease={[Function]}
+                                      onResponderTerminate={[Function]}
+                                      onResponderTerminationRequest={[Function]}
+                                      onStartShouldSetResponder={[Function]}
+                                    >
+                                      <Text
+                                        allowFontScaling={false}
+                                        selectable={false}
+                                        style={
+                                          [
+                                            {
+                                              "color": "#bb40ff",
+                                              "fontSize": 34,
+                                            },
+                                            {
+                                              "marginLeft": 10,
+                                            },
+                                            {
+                                              "fontFamily": "anticon",
+                                              "fontStyle": "normal",
+                                              "fontWeight": "normal",
+                                            },
+                                            {},
+                                          ]
+                                        }
+                                      >
+                                        
+                                      </Text>
+                                    </View>
+                                  </View>
+                                  <View
+                                    accessible={true}
+                                    collapsable={false}
+                                    focusable={false}
+                                    onClick={[Function]}
+                                    onResponderGrant={[Function]}
+                                    onResponderMove={[Function]}
+                                    onResponderRelease={[Function]}
+                                    onResponderTerminate={[Function]}
+                                    onResponderTerminationRequest={[Function]}
+                                    onStartShouldSetResponder={[Function]}
+                                    style={
+                                      {
+                                        "marginTop": 10,
+                                        "opacity": 1,
+                                      }
+                                    }
+                                  >
+                                    <View
+                                      style={
+                                        [
+                                          {
+                                            "backgroundColor": "#F7F9FC",
+                                            "borderColor": "#bb40ff",
+                                            "borderRadius": 4,
+                                            "borderWidth": 1,
+                                            "minHeight": 40,
+                                            "paddingHorizontal": 8,
+                                            "paddingVertical": 7,
+                                          },
+                                          {
+                                            "alignItems": "center",
+                                            "flexDirection": "row",
+                                            "width": "100%",
+                                          },
+                                        ]
+                                      }
+                                    >
+                                      <TextInput
+                                        appearance="default"
+                                        editable={true}
+                                        onBlur={[Function]}
+                                        onChangeText={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseEnter={[Function]}
+                                        onMouseLeave={[Function]}
+                                        placeholder="Nome da venda"
+                                        placeholderTextColor="#8F9BB3"
+                                        size="medium"
+                                        status="warning"
+                                        style={
+                                          [
+                                            {
+                                              "color": "#222B45",
+                                              "fontFamily": "System",
+                                              "fontSize": 15,
+                                              "fontWeight": "normal",
+                                              "marginHorizontal": 8,
+                                            },
+                                            {
+                                              "flexBasis": "auto",
+                                              "flexGrow": 1,
+                                              "flexShrink": 1,
+                                            },
+                                            null,
+                                            undefined,
+                                          ]
+                                        }
+                                        value=""
+                                      />
+                                    </View>
+                                  </View>
+                                  <View
+                                    style={
+                                      {
+                                        "marginTop": 10,
+                                      }
+                                    }
+                                  >
+                                    <View
+                                      accessible={true}
+                                      collapsable={false}
+                                      focusable={true}
+                                      onClick={[Function]}
+                                      onLayout={[Function]}
+                                      onResponderGrant={[Function]}
+                                      onResponderMove={[Function]}
+                                      onResponderRelease={[Function]}
+                                      onResponderTerminate={[Function]}
+                                      onResponderTerminationRequest={[Function]}
+                                      onStartShouldSetResponder={[Function]}
+                                      style={
+                                        {
+                                          "alignItems": "center",
+                                          "backgroundColor": "#F7F9FC",
+                                          "borderColor": "#bb40ff",
+                                          "borderRadius": 4,
+                                          "borderWidth": 1,
+                                          "flexDirection": "row",
+                                          "justifyContent": "space-between",
+                                          "minHeight": 40,
+                                          "opacity": 1,
+                                          "paddingHorizontal": 8,
+                                          "paddingVertical": 7,
+                                        }
+                                      }
+                                    >
+                                      <Text
+                                        appearance="default"
+                                        category="p1"
+                                        ellipsizeMode="tail"
+                                        numberOfLines={1}
+                                        style={
+                                          [
+                                            {
+                                              "color": "#222B45",
+                                              "fontFamily": "System",
+                                              "fontSize": 15,
+                                              "fontWeight": "400",
+                                            },
+                                            [
+                                              {
+                                                "flex": 1,
+                                                "textAlign": "left",
+                                              },
+                                              {
+                                                "color": "#8F9BB3",
+                                                "fontFamily": "System",
+                                                "fontSize": 15,
+                                                "fontWeight": "400",
+                                                "marginHorizontal": 8,
+                                              },
+                                              "",
+                                            ],
+                                          ]
+                                        }
+                                      >
+                                        Status da venda
+                                      </Text>
+                                      <View
+                                        collapsable={false}
+                                        style={
+                                          {
+                                            "transform": [
+                                              {
+                                                "rotate": "0deg",
+                                              },
+                                            ],
+                                          }
+                                        }
+                                      >
+                                        <RNSVGSvgView
+                                          align="xMidYMid"
+                                          bbHeight={24}
+                                          bbWidth={24}
+                                          fill="#8F9BB3"
+                                          focusable={false}
+                                          meetOrSlice={0}
+                                          minX={0}
+                                          minY={0}
+                                          style={
+                                            [
+                                              {
+                                                "backgroundColor": "transparent",
+                                                "borderWidth": 0,
+                                              },
+                                              {
+                                                "height": 24,
+                                                "marginHorizontal": 8,
+                                                "width": 24,
+                                              },
+                                              {
+                                                "flex": 0,
+                                                "height": 24,
+                                                "width": 24,
+                                              },
+                                            ]
+                                          }
+                                          vbHeight={24}
+                                          vbWidth={24}
+                                        >
+                                          <RNSVGGroup
+                                            fill={4287601587}
+                                            propList={
+                                              [
+                                                "fill",
+                                              ]
+                                            }
+                                          >
+                                            <RNSVGGroup>
+                                              <RNSVGGroup>
+                                                <RNSVGRect
+                                                  height="24"
+                                                  opacity={0}
+                                                  width="24"
+                                                  x={0}
+                                                  y={0}
+                                                />
+                                                <RNSVGPath
+                                                  d="M12 15.5a1 1 0 0 1-.71-.29l-4-4a1 1 0 1 1 1.42-1.42L12 13.1l3.3-3.18a1 1 0 1 1 1.38 1.44l-4 3.86a1 1 0 0 1-.68.28z"
+                                                />
+                                              </RNSVGGroup>
+                                            </RNSVGGroup>
+                                          </RNSVGGroup>
+                                        </RNSVGSvgView>
+                                      </View>
+                                    </View>
+                                  </View>
+                                  <View
+                                    style={
+                                      {
+                                        "flex": 1,
+                                        "flexDirection": "row",
+                                        "justifyContent": "space-between",
+                                        "marginTop": 8,
+                                        "width": "100%",
+                                      }
+                                    }
+                                  >
+                                    <View
+                                      style={
+                                        {
+                                          "width": "49%",
+                                        }
+                                      }
+                                    >
+                                      <View
+                                        accessible={true}
+                                        collapsable={false}
+                                        focusable={true}
+                                        onClick={[Function]}
+                                        onLayout={[Function]}
+                                        onResponderGrant={[Function]}
+                                        onResponderMove={[Function]}
+                                        onResponderRelease={[Function]}
+                                        onResponderTerminate={[Function]}
+                                        onResponderTerminationRequest={[Function]}
+                                        onStartShouldSetResponder={[Function]}
+                                        style={
+                                          {
+                                            "alignItems": "center",
+                                            "backgroundColor": "#F7F9FC",
+                                            "borderColor": "#bb40ff",
+                                            "borderRadius": 4,
+                                            "borderWidth": 1,
+                                            "flexDirection": "row",
+                                            "justifyContent": "space-between",
+                                            "minHeight": 40,
+                                            "opacity": 1,
+                                            "paddingHorizontal": 8,
+                                            "paddingVertical": 7,
+                                          }
+                                        }
+                                      >
+                                        <Text
+                                          appearance="default"
+                                          category="p1"
+                                          ellipsizeMode="tail"
+                                          numberOfLines={1}
+                                          style={
+                                            [
+                                              {
+                                                "color": "#222B45",
+                                                "fontFamily": "System",
+                                                "fontSize": 15,
+                                                "fontWeight": "400",
+                                              },
+                                              {
+                                                "color": "#222B45",
+                                                "fontFamily": "System",
+                                                "fontSize": 15,
+                                                "fontWeight": "normal",
+                                                "marginHorizontal": 8,
+                                              },
+                                            ]
+                                          }
+                                        >
+                                          Data inicial
+                                        </Text>
+                                      </View>
+                                    </View>
+                                    <View
+                                      style={
+                                        {
+                                          "width": "49%",
+                                        }
+                                      }
+                                    >
+                                      <View
+                                        accessible={true}
+                                        collapsable={false}
+                                        focusable={true}
+                                        onClick={[Function]}
+                                        onLayout={[Function]}
+                                        onResponderGrant={[Function]}
+                                        onResponderMove={[Function]}
+                                        onResponderRelease={[Function]}
+                                        onResponderTerminate={[Function]}
+                                        onResponderTerminationRequest={[Function]}
+                                        onStartShouldSetResponder={[Function]}
+                                        style={
+                                          {
+                                            "alignItems": "center",
+                                            "backgroundColor": "#F7F9FC",
+                                            "borderColor": "#bb40ff",
+                                            "borderRadius": 4,
+                                            "borderWidth": 1,
+                                            "flexDirection": "row",
+                                            "justifyContent": "space-between",
+                                            "minHeight": 40,
+                                            "opacity": 1,
+                                            "paddingHorizontal": 8,
+                                            "paddingVertical": 7,
+                                          }
+                                        }
+                                      >
+                                        <Text
+                                          appearance="default"
+                                          category="p1"
+                                          ellipsizeMode="tail"
+                                          numberOfLines={1}
+                                          style={
+                                            [
+                                              {
+                                                "color": "#222B45",
+                                                "fontFamily": "System",
+                                                "fontSize": 15,
+                                                "fontWeight": "400",
+                                              },
+                                              {
+                                                "color": "#222B45",
+                                                "fontFamily": "System",
+                                                "fontSize": 15,
+                                                "fontWeight": "normal",
+                                                "marginHorizontal": 8,
+                                              },
+                                            ]
+                                          }
+                                        >
+                                          Data final
+                                        </Text>
+                                      </View>
+                                    </View>
+                                  </View>
+                                  <View
+                                    style={
+                                      {
+                                        "flex": 1,
+                                        "flexDirection": "row",
+                                        "justifyContent": "space-between",
+                                      }
+                                    }
+                                  >
+                                    <View
+                                      accessible={true}
+                                      collapsable={false}
+                                      focusable={true}
+                                      onClick={[Function]}
+                                      onResponderGrant={[Function]}
+                                      onResponderMove={[Function]}
+                                      onResponderRelease={[Function]}
+                                      onResponderTerminate={[Function]}
+                                      onResponderTerminationRequest={[Function]}
+                                      onStartShouldSetResponder={[Function]}
+                                      style={
+                                        {
+                                          "alignItems": "center",
+                                          "backgroundColor": "#bb40ff",
+                                          "borderColor": "#bb40ff",
+                                          "borderRadius": 4,
+                                          "borderWidth": 1,
+                                          "flexDirection": "row",
+                                          "height": 40,
+                                          "justifyContent": "center",
+                                          "marginBottom": 5,
+                                          "minHeight": 32,
+                                          "minWidth": 32,
+                                          "opacity": 1,
+                                          "paddingHorizontal": 8,
+                                          "paddingVertical": 8,
+                                          "width": "49%",
+                                        }
+                                      }
+                                    >
+                                      <Text
+                                        appearance="default"
+                                        category="p1"
+                                        style={
+                                          [
+                                            {
+                                              "color": "#222B45",
+                                              "fontFamily": "System",
+                                              "fontSize": 15,
+                                              "fontWeight": "400",
+                                            },
+                                            {
+                                              "color": "#FFFFFF",
+                                              "fontFamily": "System",
+                                              "fontSize": 12,
+                                              "fontWeight": "bold",
+                                              "marginHorizontal": 8,
+                                            },
+                                          ]
+                                        }
+                                      >
+                                        Filtrar
+                                      </Text>
+                                    </View>
+                                    <View
+                                      accessible={true}
+                                      collapsable={false}
+                                      focusable={true}
+                                      onClick={[Function]}
+                                      onResponderGrant={[Function]}
+                                      onResponderMove={[Function]}
+                                      onResponderRelease={[Function]}
+                                      onResponderTerminate={[Function]}
+                                      onResponderTerminationRequest={[Function]}
+                                      onStartShouldSetResponder={[Function]}
+                                      style={
+                                        {
+                                          "alignItems": "center",
+                                          "backgroundColor": "rgba(255, 170, 0, 0.08)",
+                                          "borderColor": "#bb40ff",
+                                          "borderRadius": 4,
+                                          "borderWidth": 1,
+                                          "flexDirection": "row",
+                                          "height": 40,
+                                          "justifyContent": "center",
+                                          "marginBottom": 5,
+                                          "minHeight": 32,
+                                          "minWidth": 32,
+                                          "opacity": 1,
+                                          "paddingHorizontal": 8,
+                                          "paddingVertical": 8,
+                                          "width": "49%",
+                                        }
+                                      }
+                                    >
+                                      <Text
+                                        appearance="default"
+                                        category="p1"
+                                        style={
+                                          [
+                                            {
+                                              "color": "#222B45",
+                                              "fontFamily": "System",
+                                              "fontSize": 15,
+                                              "fontWeight": "400",
+                                            },
+                                            {
+                                              "color": "#bb40ff",
+                                              "fontFamily": "System",
+                                              "fontSize": 12,
+                                              "fontWeight": "bold",
+                                              "marginHorizontal": 8,
+                                            },
+                                          ]
+                                        }
+                                      >
+                                        Resetar
+                                      </Text>
+                                    </View>
+                                  </View>
+                                  <View
+                                    appearance="default"
+                                    style={
+                                      [
+                                        {
+                                          "backgroundColor": "#EDF1F7",
+                                          "height": 1,
+                                        },
+                                        undefined,
+                                      ]
+                                    }
+                                  />
+                                </View>
+                              </View>
+                              <View
+                                style={
+                                  {
+                                    "flexDirection": "column",
+                                  }
+                                }
+                              >
+                                <View
+                                  horizontal={false}
+                                  scrollOffset={0}
+                                  style={
+                                    {
+                                      "height": 120,
+                                      "width": 393,
+                                    }
+                                  }
+                                  windowSize={1031}
+                                >
+                                  <View
+                                    style={
+                                      {
+                                        "height": 120,
+                                        "left": 0,
+                                        "position": "absolute",
+                                        "top": 0,
+                                        "width": 131,
+                                      }
+                                    }
+                                  >
+                                    <View
+                                      style={
+                                        {
+                                          "alignItems": "center",
+                                          "flex": null,
+                                          "height": "100%",
+                                          "justifyContent": "center",
+                                          "padding": 7,
+                                          "width": "100%",
+                                        }
+                                      }
+                                      testID="sale-1"
+                                    >
+                                      <View
+                                        style={
+                                          {
+                                            "alignItems": "center",
+                                            "backgroundColor": "white",
+                                            "borderRadius": 14,
+                                            "elevation": 4,
+                                            "flex": 1,
+                                            "height": "100%",
+                                            "justifyContent": "center",
+                                            "shadowColor": "#000",
+                                            "shadowOffset": {
+                                              "height": 2,
+                                              "width": 0,
+                                            },
+                                            "shadowOpacity": 0.23,
+                                            "shadowRadius": 2.62,
+                                            "width": "100%",
+                                          }
+                                        }
+                                      >
+                                        <RNGestureHandlerButton
+                                          collapsable={false}
+                                          exclusive={true}
+                                          handlerTag={6}
+                                          handlerType="NativeViewGestureHandler"
+                                          onGestureEvent={[Function]}
+                                          onGestureHandlerEvent={[Function]}
+                                          onGestureHandlerStateChange={[Function]}
+                                          onHandlerStateChange={[Function]}
+                                          rippleColor={0}
+                                          style={
+                                            {
+                                              "alignItems": "center",
+                                              "flexDirection": "column",
+                                              "height": "100%",
+                                              "justifyContent": "center",
+                                              "paddingHorizontal": 3,
+                                              "width": "100%",
+                                            }
+                                          }
+                                          testID="clientDetailsTouchableId-1"
+                                          touchSoundDisabled={false}
+                                        >
+                                          <View
+                                            accessible={true}
+                                            collapsable={false}
+                                            style={
+                                              {
+                                                "opacity": 1,
+                                              }
+                                            }
+                                          >
+                                            <Text
+                                              appearance="default"
+                                              category="p2"
+                                              ellipsizeMode="tail"
+                                              numberOfLines={1}
+                                              status="warning"
+                                              style={
+                                                [
+                                                  {
+                                                    "color": "#bb40ff",
+                                                    "fontFamily": "System",
+                                                    "fontSize": 13,
+                                                    "fontWeight": "400",
+                                                  },
+                                                  [
+                                                    {
+                                                      "paddingHorizontal": 2,
+                                                    },
+                                                    {
+                                                      "fontFamily": "Montserrat_700Bold",
+                                                      "textAlign": "center",
+                                                    },
+                                                  ],
+                                                ]
+                                              }
+                                              testID="sale-name-1"
+                                            >
+                                              Test Sale
+                                            </Text>
+                                            <Text
+                                              appearance="default"
+                                              category="s2"
+                                              ellipsizeMode="tail"
+                                              numberOfLines={1}
+                                              status="warning"
+                                              style={
+                                                [
+                                                  {
+                                                    "color": "#bb40ff",
+                                                    "fontFamily": "System",
+                                                    "fontSize": 13,
+                                                    "fontWeight": "600",
+                                                  },
+                                                  [
+                                                    undefined,
+                                                    {
+                                                      "fontFamily": "Montserrat_500Medium",
+                                                      "textAlign": "center",
+                                                    },
+                                                  ],
+                                                ]
+                                              }
+                                            >
+                                              R$ 
+                                              15
+                                            </Text>
+                                            <Text
+                                              appearance="default"
+                                              category="c2"
+                                              ellipsizeMode="tail"
+                                              numberOfLines={1}
+                                              status="warning"
+                                              style={
+                                                [
+                                                  {
+                                                    "color": "#bb40ff",
+                                                    "fontFamily": "System",
+                                                    "fontSize": 12,
+                                                    "fontWeight": "600",
+                                                  },
+                                                  [
+                                                    undefined,
+                                                    {
+                                                      "fontFamily": "Montserrat_500Medium",
+                                                      "textAlign": "center",
+                                                    },
+                                                  ],
+                                                ]
+                                              }
+                                            >
+                                              Paga
+                                            </Text>
+                                            <Text
+                                              appearance="default"
+                                              category="c2"
+                                              ellipsizeMode="tail"
+                                              numberOfLines={1}
+                                              status="warning"
+                                              style={
+                                                [
+                                                  {
+                                                    "color": "#bb40ff",
+                                                    "fontFamily": "System",
+                                                    "fontSize": 12,
+                                                    "fontWeight": "600",
+                                                  },
+                                                  [
+                                                    undefined,
+                                                    {
+                                                      "fontFamily": "Montserrat_500Medium",
+                                                      "textAlign": "center",
+                                                    },
+                                                  ],
+                                                ]
+                                              }
+                                            >
+                                              05/10/2022
+                                            </Text>
+                                          </View>
+                                        </RNGestureHandlerButton>
+                                      </View>
+                                    </View>
+                                  </View>
+                                </View>
+                              </View>
+                            </View>
+                          </RCTScrollView>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </RNSScreen>
+        </RNSScreenContainer>
+      </View>
+    </RNCSafeAreaProvider>
+  </View>
+</View>
+`;
