@@ -25,6 +25,9 @@ import { SalesListingFilters } from "../SalesListingFilters";
 import { Text } from "../Text";
 import { WhatsappNumber } from "../WhatsappNumber";
 import { styles } from "./Styles";
+
+export const CLIENT_SCROLL_VIEW_WRAPPER_CLIENT_ID = "clientId";
+
 export const ClientScrollViewWrapper = React.forwardRef<
   ScrollView,
   ScrollViewProps
@@ -38,7 +41,7 @@ export const ClientScrollViewWrapper = React.forwardRef<
   const { dispatcher } = useSalesInfoContext();
   const { client } = useClient(clientId);
   const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
-  const openClient = () => {
+  const openClientForm = () => {
     navigation.navigate(MAIN_STACK_ROUTES.CLIENTS_FORM, {
       id,
     });
@@ -98,14 +101,20 @@ export const ClientScrollViewWrapper = React.forwardRef<
               flex={null}
               {...styles.editIconContainer}
             >
-              <Pressable onPress={openClient}>
+              <Pressable onPress={openClientForm}>
                 <Entypo name="edit" size={19} color={warningColor} />
               </Pressable>
             </Container>
           }
         />
         <Card style={{ marginTop: 65 }}>
-          <Text center fontFamily="other" status="primary" category="s2">
+          <Text
+            testID={CLIENT_SCROLL_VIEW_WRAPPER_CLIENT_ID}
+            center
+            fontFamily="other"
+            status="primary"
+            category="s2"
+          >
             ID: {client?.id as string}
           </Text>
           <Container center width="100%" paddingHorizontal={10}>
