@@ -27,6 +27,7 @@ import { WhatsappNumber } from "../WhatsappNumber";
 import { styles } from "./Styles";
 
 export const CLIENT_SCROLL_VIEW_WRAPPER_CLIENT_ID = "clientId";
+export const PRESSABLE_OPEN_CLIENT_FORM_TEST_ID = "pressable_open_client_form";
 
 export const ClientScrollViewWrapper = React.forwardRef<
   ScrollView,
@@ -66,6 +67,7 @@ export const ClientScrollViewWrapper = React.forwardRef<
   const observation: any = (props: any) => (
     <Text {...props} category="p2" fontFamily="other" status="primary" />
   );
+  if (!client) return null;
   return (
     <>
       <ScrollView
@@ -101,7 +103,10 @@ export const ClientScrollViewWrapper = React.forwardRef<
               flex={null}
               {...styles.editIconContainer}
             >
-              <Pressable onPress={openClientForm}>
+              <Pressable
+                testID={PRESSABLE_OPEN_CLIENT_FORM_TEST_ID}
+                onPress={openClientForm}
+              >
                 <Entypo name="edit" size={19} color={warningColor} />
               </Pressable>
             </Container>

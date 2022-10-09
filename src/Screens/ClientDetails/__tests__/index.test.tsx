@@ -44,7 +44,7 @@ const renderRecyclerListView = (
   expect(recyclerListView).toBeDefined();
 
   //jest doesn't render the recyclerlistview component by default
-  //so with I have to fire the layout event to force the component render
+  //so I have to fire the layout event to force a component render
   fireEvent(recyclerListView, "layout", {
     nativeEvent: { layout: { height: 781, width: 393, x: 0, y: 0 } },
   });

@@ -41,6 +41,13 @@ export const initialMockSale: Sale = {
   value: "15",
 };
 
+export const clientWithNoSales: Client = {
+  createdAt: "2022-10-05T12:58:49.736Z",
+  id: "213aslkdxx234-29398123",
+  name: "Test Client With No Sales",
+  observation: "I have no sales",
+  phoneNumber: "519327744799",
+};
 export const MockedSalesInfoContext: React.FC<
   PropsWithChildren<{
     reducerInitialState?: SalesManagementState;
@@ -50,7 +57,7 @@ export const MockedSalesInfoContext: React.FC<
   children,
   salesContextValue,
   reducerInitialState = {
-    clients: [initialMockClient, initialSecondClientMock],
+    clients: [initialMockClient, initialSecondClientMock, clientWithNoSales],
     sales: [initialMockSale],
     hasSyncedContacts: true,
   },

@@ -2,7 +2,7 @@ import { Button, Modal, Text } from "@ui-kitten/components";
 import React, { Dispatch, SetStateAction } from "react";
 import { globalStyles } from "../../GlobalStyles";
 import { Container } from "../Container";
-
+export const CONFIRM_ACTION_BUTTON_TEST_ID = "onPressConfirm";
 export interface ConfirmActionModalProps {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -59,7 +59,7 @@ export const ConfirmActionModal: React.FC<ConfirmActionModalProps> = ({
             Cancelar
           </Button>
           <Button
-            testID="onPressConfirm"
+            testID={CONFIRM_ACTION_BUTTON_TEST_ID}
             onPress={onActionConfirmed}
             status={btnConfirmActionColor}
             style={{ marginLeft: 5 }}

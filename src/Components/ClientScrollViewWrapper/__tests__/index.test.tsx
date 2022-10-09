@@ -1,42 +1,49 @@
-import { PortalProvider } from "@gorhom/portal";
-import { render } from "@testing-library/react-native";
-import { ApplicationProvider } from "@ui-kitten/components";
+import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { ScrollViewProps } from "react-native";
-import { ToastProvider } from "react-native-toast-notifications";
+import Toast, { ToastProvider } from "react-native-toast-notifications";
 import { ClientSalesListingProvider } from "../../../Context/ClientSalesListing";
+import { MAIN_STACK_ROUTES } from "../../../Routes/MainStack/Types";
 import {
+  clientWithNoSales,
   EvaApplicationProvider,
   initialMockClient,
   MockedSalesInfoContext,
   MockedStackNavigator,
 } from "../../../TestCommons";
+import { CONFIRM_ACTION_BUTTON_TEST_ID } from "../../ConfirmActionModal";
+import { PRESSABLE_DELETE_ICON_TEST_ID } from "../../ItemTitleDetailsHeader";
 import {
   ClientScrollViewWrapper,
-  CLIENT_SCROLL_VIEW_WRAPPER_CLIENT_ID,
+  PRESSABLE_OPEN_CLIENT_FORM_TEST_ID,
 } from "../index";
 
 const mockedNavigate = jest.fn();
+const mockedGoBack = jest.fn();
 
 jest.mock("@react-navigation/native", () => {
   const actualNav = jest.requireActual("@react-navigation/native");
   return {
     ...actualNav,
+
     useNavigation: () => ({
       navigate: mockedNavigate,
       dispatch: jest.fn(),
+      goBack: mockedGoBack,
     }),
   };
 });
 
 describe("<ClientScrollViewWrapper />", () => {
-  const TestClientScrollViewWrapper: React.FC<ScrollViewProps> = (props) => {
+  const TestClientScrollViewWrapper: React.FC<
+    ScrollViewProps & { clientId?: string }
+  > = ({ clientId, ...props }) => {
     return (
       <MockedSalesInfoContext>
         <ToastProvider>
           <EvaApplicationProvider>
             <MockedStackNavigator
               params={{
-                id: initialMockClient.id,
+                id: clientId ?? initialMockClient.id,
               }}
             >
               {() => (
@@ -54,6 +61,7 @@ describe("<ClientScrollViewWrapper />", () => {
               )}
             </MockedStackNavigator>
           </EvaApplicationProvider>
+          <Toast ref={(ref) => ((global as any)["toast"] = ref)} />
         </ToastProvider>
       </MockedSalesInfoContext>
     );
@@ -66,11 +74,38 @@ describe("<ClientScrollViewWrapper />", () => {
     expect(clientID).toBeTruthy();
   });
 
-  it("should render correctly", () => {
-    const { getByText, debug } = render(<TestClientScrollViewWrapper />);
-    debug();
-    const clientID = getByText(`ID: ${initialMockClient.id}`);
+  it("should delete the client", async () => {
+    //WARNING!!! clientWithNoSales is important and should not be changed because
+    // a client can only be deleted if he is not bonded to any sales
+    const { getByTestId } = render(
+      <TestClientScrollViewWrapper clientId={clientWithNoSales.id} />
+    );
 
-    expect(clientID).toBeTruthy();
+    const deleteClientPressable = getByTestId(PRESSABLE_DELETE_ICON_TEST_ID);
+
+    //fire delete button to open confirmation modal
+    fireEvent.press(deleteClientPressable);
+
+    const confirmDeleteButton = await waitFor(() =>
+      getByTestId(CONFIRM_ACTION_BUTTON_TEST_ID)
+    );
+
+    //confirm client delete action
+    fireEvent.press(confirmDeleteButton);
+
+    expect(mockedGoBack).toBeCalled();
+  });
+
+  it("should open client form", async () => {
+    const { getByTestId } = render(<TestClientScrollViewWrapper />);
+
+    const openClientForm = getByTestId(PRESSABLE_OPEN_CLIENT_FORM_TEST_ID);
+
+    //fire open form action
+    fireEvent.press(openClientForm);
+
+    expect(mockedNavigate).toBeCalledWith(MAIN_STACK_ROUTES.CLIENTS_FORM, {
+      id: initialMockClient.id,
+    });
   });
 });
