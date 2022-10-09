@@ -67,11 +67,13 @@ describe("<ClientScrollViewWrapper />", () => {
     );
   };
   it("should render correctly", () => {
-    const { getByText, debug } = render(<TestClientScrollViewWrapper />);
-    debug();
+    const { getByText, toJSON } = render(
+      <TestClientScrollViewWrapper />
+    );
     const clientID = getByText(`ID: ${initialMockClient.id}`);
 
     expect(clientID).toBeTruthy();
+    expect(toJSON()).toMatchSnapshot();
   });
 
   it("should delete the client", async () => {
