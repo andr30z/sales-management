@@ -224,7 +224,7 @@ const verifyClientDeletion = (
   let hasError = false;
   clients.forEach((client) => {
     if (clientHasSale(client.id, state.sales)) {
-      global.toast.show(
+      global.toast?.show(
         `Não é possível deletar o(a) cliente ${client.name}, pois este possui vendas cadastradas.`,
         { type: "danger" }
       );

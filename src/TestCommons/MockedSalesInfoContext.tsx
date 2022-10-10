@@ -48,6 +48,12 @@ export const clientWithNoSales: Client = {
   observation: "I have no sales",
   phoneNumber: "519327744799",
 };
+
+export const mockedSalesInfoContextInitialState: SalesManagementState = {
+  clients: [initialMockClient, initialSecondClientMock, clientWithNoSales],
+  sales: [initialMockSale],
+  hasSyncedContacts: true,
+};
 export const MockedSalesInfoContext: React.FC<
   PropsWithChildren<{
     reducerInitialState?: SalesManagementState;
@@ -56,11 +62,7 @@ export const MockedSalesInfoContext: React.FC<
 > = ({
   children,
   salesContextValue,
-  reducerInitialState = {
-    clients: [initialMockClient, initialSecondClientMock, clientWithNoSales],
-    sales: [initialMockSale],
-    hasSyncedContacts: true,
-  },
+  reducerInitialState = mockedSalesInfoContextInitialState,
 }) => {
   const [state, dispatcher] = useReducer(reducer, reducerInitialState);
   return (

@@ -1,3 +1,4 @@
+export const asyncStorageSetItemMockFn = jest.fn();
 const asMock = {
     __INTERNAL_MOCK_STORAGE__: {},
   
@@ -5,6 +6,7 @@ const asMock = {
       const setResult = await asMock.multiSet([[key, value]], undefined);
   
       callback && callback(setResult);
+      asyncStorageSetItemMockFn(value);
       return setResult;
     },
   
