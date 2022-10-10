@@ -41,6 +41,19 @@ export const initialMockSale: Sale = {
   value: "15",
 };
 
+export const secondMockSale: Sale = {
+  clientId: initialMockClient.id,
+  createdAt: "2022-10-05T12:58:49.736Z",
+  date: "2022-10-05T12:58:49.736Z",
+  description: "",
+  id: "2",
+  name: "Test Sale 2",
+  quantity: 3,
+  status: SaleStatusType.UNPAID,
+  types: [SalesTypes.OTHERS],
+  value: "60",
+};
+
 export const clientWithNoSales: Client = {
   createdAt: "2022-10-05T12:58:49.736Z",
   id: "213aslkdxx234-29398123",
@@ -51,7 +64,7 @@ export const clientWithNoSales: Client = {
 
 export const mockedSalesInfoContextInitialState: SalesManagementState = {
   clients: [initialMockClient, initialSecondClientMock, clientWithNoSales],
-  sales: [initialMockSale],
+  sales: [initialMockSale, secondMockSale],
   hasSyncedContacts: true,
 };
 export const MockedSalesInfoContext: React.FC<

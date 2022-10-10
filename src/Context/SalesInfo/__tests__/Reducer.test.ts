@@ -6,6 +6,7 @@ import {
   initialMockClient,
   initialMockSale,
   mockedSalesInfoContextInitialState,
+  secondMockSale,
 } from "../../../TestCommons";
 import { ActionsTypes, INITIAL_STATE, reducer } from "../Reducer";
 
@@ -88,6 +89,35 @@ describe("SalesInfo Reducer hook", () => {
     expect(state.clients).not.toContain(clientWithNoSales);
   });
 
+  it("should delete a sale", async () => {
+    const { result } = useSalesReducer(mockedSalesInfoContextInitialState);
+    const dispatch = result.current[1];
+    await waitFor(() =>
+      dispatch({
+        type: ActionsTypes.DELETE_SALES,
+        payload: initialMockSale.id,
+      })
+    );
+    const state = result.current[0];
+    expect(asyncStorageSetItemMockFn).toBeCalled();
+    expect(state.sales).not.toContain(initialMockSale);
+  });
+
+  it("should delete many sales", async () => {
+    const { result } = useSalesReducer(mockedSalesInfoContextInitialState);
+    const dispatch = result.current[1];
+    await waitFor(() =>
+      dispatch({
+        type: ActionsTypes.DELETE_MANY_SALES,
+        payload: [initialMockSale.id, secondMockSale.id],
+      })
+    );
+    const state = result.current[0];
+    expect(asyncStorageSetItemMockFn).toBeCalled();
+    expect(state.sales).not.toContain(initialMockSale);
+    expect(state.sales).not.toContain(secondMockSale);
+  });
+
   it("should add client to state", async () => {
     const { result } = useSalesReducer();
     const dispatch = result.current[1];
@@ -124,6 +154,26 @@ describe("SalesInfo Reducer hook", () => {
       "[0].clientId",
       initialMockSale.clientId
     );
+  });
+
+  it("should edit client", async () => {
+    const { result } = useSalesReducer(mockedSalesInfoContextInitialState);
+    const dispatch = result.current[1];
+    const NAME = "TEST_EDIT";
+    const payload = { ...initialMockSale, name: NAME };
+    await waitFor(() =>
+      dispatch({
+        type: ActionsTypes.EDIT_CLIENT,
+        payload: payload,
+      })
+    );
+    const state = result.current[0];
+
+    expect(asyncStorageSetItemMockFn).toBeCalled();
+    const client = state.clients.find(({ id }) => id === initialMockClient.id);
+    expect(client).toBeDefined();
+    expect(client).toBe(payload);
+    expect(client?.name).toBe(NAME);
   });
 
   it("should edit client", async () => {
