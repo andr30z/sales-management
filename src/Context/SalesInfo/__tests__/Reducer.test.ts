@@ -195,4 +195,21 @@ describe("SalesInfo Reducer hook", () => {
     expect(sale).toBe(payload);
     expect(sale?.name).toBe(NAME);
   });
+
+  it("should reset the app state", async () => {
+    const { result } = useSalesReducer(mockedSalesInfoContextInitialState);
+    const dispatch = result.current[1];
+    await waitFor(() =>
+      dispatch({
+        type: ActionsTypes.RESET_APP,
+      })
+    );
+    const state = result.current[0];
+
+    expect(asyncStorageSetItemMockFn).toBeCalled();
+
+    expect(state.clients).toHaveLength(0);
+    expect(state.sales).toHaveLength(0);
+    expect(state.hasSyncedContacts).toBe(false);
+  });
 });
