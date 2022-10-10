@@ -2,18 +2,17 @@ import { renderHook, waitFor } from "@testing-library/react-native";
 import { useReducer } from "react";
 import { asyncStorageSetItemMockFn } from "../../../../__mocks__/@react-native-async-storage/async-storage";
 import {
-  clientWithNoSales,
-  initialMockClient,
-  initialMockSale,
-  mockedSalesInfoContextInitialState,
-  saleWithInstallment,
-  secondMockSale,
+    clientWithNoSales,
+    initialMockClient,
+    initialMockSale, mockedSalesInfoContextInitialState,
+    saleWithInstallment,
+    secondMockSale
 } from "../../../TestCommons";
 import {
-  ActionsTypes,
-  INITIAL_STATE,
-  InstallmentItem,
-  reducer,
+    ActionsTypes,
+    INITIAL_STATE,
+    InstallmentItem,
+    reducer
 } from "../Reducer";
 
 describe("SalesInfo Reducer hook", () => {
@@ -34,7 +33,7 @@ describe("SalesInfo Reducer hook", () => {
     expect(state).toBe(mockedSalesInfoContextInitialState);
   });
 
-  it("should save imported data to AsyncStorage", async () => {
+  it("should save imported data to AsyncStorage and reducer state", async () => {
     const { result } = useSalesReducer();
     const dispatch = result.current[1];
     await waitFor(() =>
@@ -68,7 +67,6 @@ describe("SalesInfo Reducer hook", () => {
     const state = result.current[0];
     expect(onError).toBeCalled();
     expect(onSuccess).not.toBeCalled();
-    expect(asyncStorageSetItemMockFn).not.toBeCalled();
     //this ensures that the reducer state has not been modified
     expect(state).toBe(mockedSalesInfoContextInitialState);
   });
@@ -268,5 +266,23 @@ describe("SalesInfo Reducer hook", () => {
     );
     expect(asyncStorageSetItemMockFn).toBeCalled();
     expect(installment).toBeUndefined();
+  });
+
+  it("should sync clients with contacts", async () => {
+    const { result } = useSalesReducer();
+    const dispatch = result.current[1];
+    const newClients = [clientWithNoSales, initialMockClient];
+    await waitFor(() =>
+      dispatch({
+        type: ActionsTypes.SYNC_CLIENTS_WITH_CONTACTS,
+        payload: newClients,
+      })
+    );
+    const state = result.current[0];
+
+    expect(asyncStorageSetItemMockFn).toBeCalled();
+    expect(state.clients).toContain(initialMockClient);
+    expect(state.clients).toContain(clientWithNoSales);
+    expect(state.hasSyncedContacts).toBe(true);
   });
 });

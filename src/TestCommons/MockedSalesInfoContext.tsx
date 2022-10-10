@@ -28,6 +28,14 @@ export const initialSecondClientMock: Client = {
   phoneNumber: "619524444723",
 };
 
+export const clientWithNoSales: Client = {
+  createdAt: "2022-10-05T12:58:49.736Z",
+  id: "213aslkdxx234-29398123",
+  name: "Test Client With No Sales",
+  observation: "I have no sales",
+  phoneNumber: "512327744799",
+};
+
 export const initialMockSale: Sale = {
   clientId: initialMockClient.id,
   createdAt: "2022-10-05T12:58:49.736Z",
@@ -72,14 +80,6 @@ export const saleWithInstallment: Sale = {
     },
   ],
   value: "90",
-};
-
-export const clientWithNoSales: Client = {
-  createdAt: "2022-10-05T12:58:49.736Z",
-  id: "213aslkdxx234-29398123",
-  name: "Test Client With No Sales",
-  observation: "I have no sales",
-  phoneNumber: "519327744799",
 };
 
 export const mockedSalesInfoContextInitialState: SalesManagementState = {
