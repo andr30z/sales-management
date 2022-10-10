@@ -8,7 +8,12 @@ import {
   mockedSalesInfoContextInitialState,
   secondMockSale,
 } from "../../../TestCommons";
-import { ActionsTypes, INITIAL_STATE, reducer } from "../Reducer";
+import {
+  ActionsTypes,
+  INITIAL_STATE,
+  InstallmentItem,
+  reducer,
+} from "../Reducer";
 
 describe("SalesInfo Reducer hook", () => {
   const useSalesReducer = (initialState = INITIAL_STATE) => {
@@ -196,6 +201,36 @@ describe("SalesInfo Reducer hook", () => {
     expect(sale?.name).toBe(NAME);
   });
 
+  it("should add payment to sale", async () => {
+    const { result } = useSalesReducer(mockedSalesInfoContextInitialState);
+    const dispatch = result.current[1];
+    const installment: Omit<InstallmentItem, "id"> = {
+      paymentDate: new Date().toISOString(),
+      value: 15,
+    };
+    const paymentPayload = {
+      saleId: initialMockSale.id,
+      installment: installment,
+    };
+    await waitFor(() =>
+      dispatch({
+        type: ActionsTypes.ADD_SALES_PAYMENT,
+        payload: paymentPayload,
+      })
+    );
+    const state = result.current[0];
+
+    const sale = state.sales.find(({ id }) => id === initialMockSale.id);
+    expect(asyncStorageSetItemMockFn).toBeCalled();
+    expect(sale).toBeDefined();
+    expect(sale?.installments).toBeDefined();
+    expect(sale?.installments).toHaveProperty(
+      "[0].paymentDate",
+      installment.paymentDate
+    );
+    expect(sale?.installments).toHaveProperty("[0].value", installment.value);
+  });
+
   it("should reset the app state", async () => {
     const { result } = useSalesReducer(mockedSalesInfoContextInitialState);
     const dispatch = result.current[1];
@@ -207,7 +242,6 @@ describe("SalesInfo Reducer hook", () => {
     const state = result.current[0];
 
     expect(asyncStorageSetItemMockFn).toBeCalled();
-
     expect(state.clients).toHaveLength(0);
     expect(state.sales).toHaveLength(0);
     expect(state.hasSyncedContacts).toBe(false);
