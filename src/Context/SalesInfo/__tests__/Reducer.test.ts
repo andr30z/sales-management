@@ -6,6 +6,7 @@ import {
   initialMockClient,
   initialMockSale,
   mockedSalesInfoContextInitialState,
+  saleWithInstallment,
   secondMockSale,
 } from "../../../TestCommons";
 import {
@@ -245,5 +246,27 @@ describe("SalesInfo Reducer hook", () => {
     expect(state.clients).toHaveLength(0);
     expect(state.sales).toHaveLength(0);
     expect(state.hasSyncedContacts).toBe(false);
+  });
+
+  it("should delete a sales payment", async () => {
+    const { result } = useSalesReducer(mockedSalesInfoContextInitialState);
+    const dispatch = result.current[1];
+    const installmentId = saleWithInstallment.installments![0].id;
+    await waitFor(() =>
+      dispatch({
+        type: ActionsTypes.DELETE_SALES_PAYMENT,
+        payload: {
+          saleId: saleWithInstallment.id,
+          installmentId: installmentId,
+        },
+      })
+    );
+    const state = result.current[0];
+    const sale = state.sales.find(({ id }) => id === saleWithInstallment.id);
+    const installment = sale?.installments?.find(
+      ({ id }) => id === installmentId
+    );
+    expect(asyncStorageSetItemMockFn).toBeCalled();
+    expect(installment).toBeUndefined();
   });
 });
