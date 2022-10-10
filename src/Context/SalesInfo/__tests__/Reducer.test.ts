@@ -160,7 +160,7 @@ describe("SalesInfo Reducer hook", () => {
     const { result } = useSalesReducer(mockedSalesInfoContextInitialState);
     const dispatch = result.current[1];
     const NAME = "TEST_EDIT";
-    const payload = { ...initialMockSale, name: NAME };
+    const payload = { ...initialMockClient, name: NAME };
     await waitFor(() =>
       dispatch({
         type: ActionsTypes.EDIT_CLIENT,
@@ -176,23 +176,23 @@ describe("SalesInfo Reducer hook", () => {
     expect(client?.name).toBe(NAME);
   });
 
-  it("should edit client", async () => {
+  it("should edit sale", async () => {
     const { result } = useSalesReducer(mockedSalesInfoContextInitialState);
     const dispatch = result.current[1];
     const NAME = "TEST_EDIT";
     const payload = { ...initialMockSale, name: NAME };
     await waitFor(() =>
       dispatch({
-        type: ActionsTypes.EDIT_CLIENT,
+        type: ActionsTypes.EDIT_SALE,
         payload: payload,
       })
     );
     const state = result.current[0];
 
     expect(asyncStorageSetItemMockFn).toBeCalled();
-    const client = state.clients.find(({ id }) => id === initialMockClient.id);
-    expect(client).toBeDefined();
-    expect(client).toBe(payload);
-    expect(client?.name).toBe(NAME);
+    const sale = state.sales.find(({ id }) => id === initialMockSale.id);
+    expect(sale).toBeDefined();
+    expect(sale).toBe(payload);
+    expect(sale?.name).toBe(NAME);
   });
 });
