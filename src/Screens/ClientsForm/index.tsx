@@ -1,5 +1,5 @@
-import { useTheme } from "@react-navigation/native";
-import { StackScreenProps } from "@react-navigation/stack";
+import { useNavigation, useTheme } from "@react-navigation/native";
+import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack";
 import { Button, Input } from "@ui-kitten/components";
 import { StatusBar } from "expo-status-bar";
 import { Formik } from "formik";
@@ -20,6 +20,11 @@ import {
 } from "../../Routes/MainStack/Types";
 import { styles } from "./Styles";
 
+export const CLIENT_FORM_CONTAINER_TEST_ID = "CONTAINER_TEST_ID";
+export const CLIENT_FORM_SUBMIT_BTN = "SUBMIT_BTN_FORM";
+export const CLIENT_FORM_NAME_INPUT = "NAME_INPUT_CLIENT";
+export const CLIENT_FORM_PHONE_INPUT = "PHONE_INPUT_CLIENT";
+
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("O nome da venda é requerido."),
   phoneNumber: Yup.string().test(
@@ -37,14 +42,15 @@ const validationSchema = Yup.object().shape({
 export const ClientsFormNoMemo: React.FC<
   StackScreenProps<MainStackRoutesTypes, MAIN_STACK_ROUTES.CLIENTS_FORM>
 > = ({
-  navigation,
   route: {
     params: { routeOnSubmit, id },
   },
 }) => {
+  const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
   const { dispatcher } = useSalesInfoContext();
   const { primaryColor } = useCommonThemeColors();
-  const { client } = useClient(id as string);
+  const { client } = useClient(id);
+
   const toast = useToast();
   return (
     <KeyboardAvoidingView
@@ -58,6 +64,7 @@ export const ClientsFormNoMemo: React.FC<
       >
         <Formik<Omit<Client, "id" | "createdAt">>
           onSubmit={(values) => {
+            console.log("ASKJDHJKASHDKJA");
             dispatcher({
               type: client ? ActionsTypes.EDIT_CLIENT : ActionsTypes.ADD_CLIENT,
               payload: values,
@@ -65,6 +72,7 @@ export const ClientsFormNoMemo: React.FC<
             toast.show("Cliente salvo com sucesso", {
               type: "success",
             });
+            console.log(routeOnSubmit);
             if (routeOnSubmit)
               navigation.navigate(routeOnSubmit as any, {
                 selectCreatedClient: values,
@@ -88,6 +96,7 @@ export const ClientsFormNoMemo: React.FC<
             setFieldValue,
           }) => (
             <Container
+              testID={CLIENT_FORM_CONTAINER_TEST_ID}
               backgroundColor="#fff"
               width="100%"
               paddingHorizontal={15}
@@ -108,6 +117,7 @@ export const ClientsFormNoMemo: React.FC<
               <Input
                 style={[globalStyles.input, styles.marginY]}
                 value={name}
+                testID={CLIENT_FORM_NAME_INPUT}
                 caption={<FormErrorDisplayer text={errors["name"]} />}
                 label="Nome do cliente"
                 placeholder="Ex: Zezinho 123"
@@ -115,18 +125,19 @@ export const ClientsFormNoMemo: React.FC<
               />
               <Input
                 label="Telefone"
+                testID={CLIENT_FORM_PHONE_INPUT}
                 style={[globalStyles.input, styles.marginY]}
                 value={phoneNumber}
                 keyboardType="number-pad"
                 placeholder="5561999999999"
                 maxLength={14}
                 caption={<FormErrorDisplayer text={errors["phoneNumber"]} />}
-                onChangeText={(text) =>
+                onChangeText={(text) => {
                   setFieldValue(
                     "phoneNumber",
                     text.startsWith("55") ? text : "55" + text
-                  )
-                }
+                  );
+                }}
               />
               <Input
                 label="Observação"
@@ -139,7 +150,10 @@ export const ClientsFormNoMemo: React.FC<
                 onChangeText={handleChange("observation")}
               />
 
-              <Button onPress={() => handleSubmit()}>
+              <Button
+                testID={CLIENT_FORM_SUBMIT_BTN}
+                onPress={() => handleSubmit()}
+              >
                 {client ? "Editar" : "Cadastrar"}
               </Button>
             </Container>

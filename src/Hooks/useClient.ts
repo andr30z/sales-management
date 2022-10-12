@@ -7,11 +7,11 @@ export const getClient = (clients: Array<Client>, clientId: string) =>
  *
  * @author andr30z
  **/
-export function useClient(clientId: string) {
+export function useClient(clientId?: string) {
   const { salesInfo } = useSalesInfoContext();
   const allSales = salesInfo.sales;
   const client = useMemo(
-    () => getClient(salesInfo.clients, clientId),
+    () => (clientId ? getClient(salesInfo.clients, clientId) : undefined),
     [salesInfo.clients, clientId]
   );
   const clientSales = useMemo(
