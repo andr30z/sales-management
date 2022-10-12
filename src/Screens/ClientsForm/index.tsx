@@ -25,11 +25,16 @@ export const CLIENT_FORM_SUBMIT_BTN = "SUBMIT_BTN_FORM";
 export const CLIENT_FORM_NAME_INPUT = "NAME_INPUT_CLIENT";
 export const CLIENT_FORM_PHONE_INPUT = "PHONE_INPUT_CLIENT";
 
+export const CLIENT_FORM_PHONE_NUMBER_ERROR_MSG =
+  "O número de telefone deve ter mais de 12 dígitos.";
+
+export const CLIENT_FORM_NAME_REQUIRED_MESSAGE = "O nome da venda é requerido.";
+
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required("O nome da venda é requerido."),
+  name: Yup.string().required(CLIENT_FORM_NAME_REQUIRED_MESSAGE),
   phoneNumber: Yup.string().test(
     "len",
-    "O número de telefone deve ter mais de 12 dígitos.",
+    CLIENT_FORM_PHONE_NUMBER_ERROR_MSG,
     (val) => (val ? val.length >= 13 : false)
   ),
   observation: Yup.string(),
@@ -64,7 +69,6 @@ export const ClientsFormNoMemo: React.FC<
       >
         <Formik<Omit<Client, "id" | "createdAt">>
           onSubmit={(values) => {
-            console.log("ASKJDHJKASHDKJA");
             dispatcher({
               type: client ? ActionsTypes.EDIT_CLIENT : ActionsTypes.ADD_CLIENT,
               payload: values,
@@ -72,7 +76,6 @@ export const ClientsFormNoMemo: React.FC<
             toast.show("Cliente salvo com sucesso", {
               type: "success",
             });
-            console.log(routeOnSubmit);
             if (routeOnSubmit)
               navigation.navigate(routeOnSubmit as any, {
                 selectCreatedClient: values,

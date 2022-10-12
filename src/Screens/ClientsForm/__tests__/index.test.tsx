@@ -1,4 +1,9 @@
-import { fireEvent, render, waitFor } from "@testing-library/react-native";
+import {
+  fireEvent,
+  render,
+  RenderAPI,
+  waitFor,
+} from "@testing-library/react-native";
 import React from "react";
 import { act } from "react-test-renderer";
 import {
@@ -11,7 +16,9 @@ import {
 import {
   ClientsForm,
   CLIENT_FORM_CONTAINER_TEST_ID,
+  CLIENT_FORM_NAME_REQUIRED_MESSAGE,
   CLIENT_FORM_PHONE_INPUT,
+  CLIENT_FORM_PHONE_NUMBER_ERROR_MSG,
   CLIENT_FORM_SUBMIT_BTN,
 } from "../index";
 
@@ -45,6 +52,19 @@ describe("<ClientsForm />", () => {
     );
   }
 
+  const validatePhoneField = async ({
+    getByTestId,
+    queryByText,
+  }: RenderAPI) => {
+    const submitBtn = getByTestId(CLIENT_FORM_SUBMIT_BTN);
+    await waitFor(async () => {
+      //trigger submit form to validate all fields and since they are empty the error messages should appear on screen.
+      await fireEvent.press(submitBtn);
+    });
+    const phoneMsg = queryByText(CLIENT_FORM_PHONE_NUMBER_ERROR_MSG);
+    expect(phoneMsg).toBeTruthy();
+  };
+
   it("should render correctly", () => {
     const { toJSON, getByTestId } = render(<TestClientForm />);
 
@@ -65,5 +85,26 @@ describe("<ClientsForm />", () => {
     await waitFor(() => {
       expect(mockedGoBack).toBeCalledTimes(1);
     });
+  });
+
+  it("should show input errors", async () => {
+    const renderApi = render(<TestClientForm />);
+    const { queryByText } = renderApi;
+    await validatePhoneField(renderApi);
+
+    const nameRequiredMsg = queryByText(CLIENT_FORM_NAME_REQUIRED_MESSAGE);
+    expect(nameRequiredMsg).toBeTruthy();
+  });
+
+  it("should validate phone input size", async () => {
+    const renderApi = render(<TestClientForm />);
+    const { queryByText, getByTestId } = renderApi;
+    await validatePhoneField(renderApi);
+    const phoneInput = getByTestId(CLIENT_FORM_PHONE_INPUT);
+    await act(() => {
+      fireEvent.changeText(phoneInput, "5561992999156806");
+    });
+    const phoneMsgAfterChange = queryByText(CLIENT_FORM_PHONE_NUMBER_ERROR_MSG);
+    expect(phoneMsgAfterChange).toBeFalsy();
   });
 });
