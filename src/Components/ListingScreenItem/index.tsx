@@ -74,10 +74,10 @@ export const ListingScreenItem = <I extends { id: string }>({
             {name}
           </Text>
           <Container
-            flex={null as any}
+            flex={null}
             width="100%"
             flexDirection="row"
-            alignItems="baseline"
+            flexWrap="wrap"
           >
             <Text
               status={resolveTextColor()}
