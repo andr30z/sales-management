@@ -14,6 +14,8 @@ import { Container } from "../Container";
 import { Text } from "../Text";
 import { styles } from "./Styles";
 
+export const DELETE_CONFIRM_MESSAGE = "Deseja realmente deletar o item?";
+export const PRESSABLE_DELETE_ICON_TEST_ID = "delete_entity_pressable_id";
 interface ItemTitleDetailsHeaderProps {
   backgroundColor: string;
   onConfirmDelete: () => void;
@@ -25,7 +27,6 @@ interface ItemTitleDetailsHeaderProps {
   headerMainContainerFirstChild?: React.ReactNode;
   headerMiddleItem?: React.ReactNode;
 }
-
 /**
  *
  * @author andr30z
@@ -84,7 +85,9 @@ export const ItemTitleDetailsHeader: React.FC<ItemTitleDetailsHeaderProps> = ({
           <Ionicons name="chevron-back-circle" size={38} color={"#fff"} />
         </Pressable>
         {headerMiddleItem}
-        <Entypo onPress={setTrue} name="trash" size={34} color={"#fff"} />
+        <Pressable testID={PRESSABLE_DELETE_ICON_TEST_ID} onPress={setTrue}>
+          <Entypo name="trash" size={34} color={"#fff"} />
+        </Pressable>
       </LinearGradient>
     </View>
   );
@@ -92,6 +95,7 @@ export const ItemTitleDetailsHeader: React.FC<ItemTitleDetailsHeaderProps> = ({
     <Container
       flex={typeof height !== "number" ? 2 : null}
       height={height}
+      testID="HEADER_ID"
       width="100%"
       flexDirection="row"
       alignItems="center"
@@ -104,7 +108,7 @@ export const ItemTitleDetailsHeader: React.FC<ItemTitleDetailsHeaderProps> = ({
           onConfirmDelete();
           setFalse();
         }}
-        confirmText="Deseja realmente deletar o item?"
+        confirmText={DELETE_CONFIRM_MESSAGE}
         open={showConfirmDelete}
         setOpen={setShowConfirmDelete}
       />

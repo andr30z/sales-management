@@ -16,6 +16,6 @@ export const styles = StyleSheet.create({
   },
   textItem: {
     marginRight: 15,
-    maxWidth:"33%"
+    maxWidth:"33%",
   },
 });

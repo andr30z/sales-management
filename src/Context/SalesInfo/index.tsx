@@ -18,13 +18,13 @@ import {
   uuidv4,
 } from "./Reducer";
 import { PropsWithChildren } from "react";
-interface SalesInfoContextInterface {
+export interface SalesInfoContextInterface {
   salesInfo: SalesManagementState;
   dispatcher: React.Dispatch<Action>;
   syncContacts: (asyncStorageData: any) => Promise<void>;
 }
 
-const SalesInfoContext = createContext<SalesInfoContextInterface>(
+export const SalesInfoContext = createContext<SalesInfoContextInterface>(
   {} as SalesInfoContextInterface
 );
 

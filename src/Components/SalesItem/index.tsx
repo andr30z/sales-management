@@ -37,7 +37,7 @@ export const SalesItem: React.FC<
 
           <Text
             numberOfLines={1}
-            style={styles.textItem}
+            style={[styles.textItem]}
             category="c1"
             status={resolveTextColor("primary")}
           >

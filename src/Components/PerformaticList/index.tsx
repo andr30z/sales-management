@@ -25,6 +25,7 @@ interface PerfomaticListProps<D = {}>
   itemWidth?: number;
   itemHeight?: number;
   data: Array<D>;
+  testID?: string;
   style?: object | number;
   emptyComponent?: JSX.Element;
   children: RenderPerformaticItem<D>;

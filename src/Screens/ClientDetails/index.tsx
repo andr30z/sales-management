@@ -21,6 +21,9 @@ import {
 } from "../../Routes/MainStack/Types";
 import { styles } from "./Styles";
 
+export const CLIENT_DETAILS_CONTAINER = "clientDetailsContainerID";
+export const CLIENT_DETAILS_SALE_TOUCHABLE_ID_PREFIX =
+  "clientDetailsTouchableId-";
 /**
  *
  * @author andr30z
@@ -42,13 +45,20 @@ export const ClientDetails = WithDirectFather(
       });
     };
     const { filteredData } = useClientSalesListingContext();
+    console.log(client, id, filteredData);
     if (!client) return null;
 
     const emptyFilter = [{ id: "empty-data" }] as Array<Sale>;
     const data = filteredData.length === 0 ? emptyFilter : filteredData;
     return (
-      <Container center flex={1} width={width}>
+      <Container
+        testID={CLIENT_DETAILS_CONTAINER}
+        center
+        flex={1}
+        width={width}
+      >
         <PerformaticList<Sale>
+          testID="clientSalesID"
           data={data}
           externalScrollView={ClientScrollViewWrapper}
           widthOrHeight={120}
@@ -66,6 +76,7 @@ export const ClientDetails = WithDirectFather(
             ) : (
               <Container
                 flex={null}
+                testID={`sale-${item.id}`}
                 center
                 padding={7}
                 width="100%"
@@ -82,6 +93,7 @@ export const ClientDetails = WithDirectFather(
                 >
                   <TouchableOpacity
                     style={styles.touchableSaleItem}
+                    testID={`${CLIENT_DETAILS_SALE_TOUCHABLE_ID_PREFIX}${item.id}`}
                     containerStyle={styles.touchableContainerSaleItem}
                     onPress={goToSaleDetails(item.id)}
                   >
@@ -89,6 +101,7 @@ export const ClientDetails = WithDirectFather(
                       status="warning"
                       category="p2"
                       ellipsizeMode="tail"
+                      testID={`sale-name-${item.id}`}
                       numberOfLines={1}
                       center
                       style={styles.saleName}
