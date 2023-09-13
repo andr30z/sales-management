@@ -40,7 +40,7 @@ interface InstallmentModalProps {
 export const InstallmentModal = React.memo(
   WithDirectFather<ModalProps, InstallmentModalProps>(
     Modal as unknown as React.FC<ModalProps>,
-    ({ sale, closeModal }) => {
+    function Installment({ sale, closeModal }) {
       const { primaryColor } = useCommonThemeColors();
       const { dispatcher } = useSalesInfoContext();
       const installmentData = sale?.installments ?? [];
