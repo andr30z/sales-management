@@ -36,9 +36,9 @@ export const SalesListingFiltersNoMemo: React.FC<
         height: 300,
         zIndex: 10000,
       }}
-      onCloseStyle={{ height: 42 }}
+      onCloseStyle={{ height: 42, flexShrink: 0 }}
     >
-      {(_, onToggle) => {
+      {(_, onToggle, isOpen) => {
         const onChange = (key: string) => (value: string) =>
           setFilterFields((past) => ({ ...past, [key]: value }));
         const onBtnAction = (action: () => void) => () => {
@@ -46,6 +46,7 @@ export const SalesListingFiltersNoMemo: React.FC<
           onToggle();
           action();
         };
+
         return (
           <>
             <Container
@@ -71,89 +72,93 @@ export const SalesListingFiltersNoMemo: React.FC<
                 />
               </Pressable>
             </Container>
-            <Input
-              style={styles.input}
-              placeholder="Nome da venda"
-              value={saleName}
-              status={mainColor}
-              onChangeText={onChange("saleName")}
-            />
-            {useClientNameInput && (
-              <Input
-                style={styles.input}
-                placeholder="Nome do cliente"
-                value={clientName}
-                status={mainColor}
-                onChangeText={onChange("clientName")}
-              />
-            )}
-            <KittenSelect
-              multiSelect={false}
-              selectStyle={styles.input}
-              value={saleStatus}
-              status={mainColor}
-              placeholder="Status da venda"
-              options={[
-                "Todos",
-                "Paga",
-                "Não paga",
-                "Em atraso",
-                "Cancelada",
-                "Reembolsada",
-              ]}
-              onChange={(index) => {
-                if (Array.isArray(index)) return;
-                setFilterFields((past) => ({
-                  ...past,
-                  saleStatus: index.row,
-                }));
-              }}
-            />
-            <Container
-              width="100%"
-              flexDirection="row"
-              marginTop={8}
-              justifyContent="space-between"
-            >
-              <Datepicker
-                style={styles.calendarInput}
-                dateService={brazilianDateService as any}
-                min={minDate as any}
-                date={initialDate}
-                status={mainColor}
-                placeholder="Data inicial"
-                onSelect={onChange("initialDate")}
-              />
-              <Datepicker
-                style={styles.calendarInput}
-                dateService={brazilianDateService as any}
-                date={finalDate}
-                status={mainColor}
-                placeholder="Data final"
-                min={minDate as any}
-                onSelect={onChange("finalDate")}
-              />
-            </Container>
+            {isOpen && (
+              <>
+                <Input
+                  style={styles.input}
+                  placeholder="Nome da venda"
+                  value={saleName}
+                  status={mainColor}
+                  onChangeText={onChange("saleName")}
+                />
+                {useClientNameInput && (
+                  <Input
+                    style={styles.input}
+                    placeholder="Nome do cliente"
+                    value={clientName}
+                    status={mainColor}
+                    onChangeText={onChange("clientName")}
+                  />
+                )}
+                <KittenSelect
+                  multiSelect={false}
+                  selectStyle={styles.input}
+                  value={saleStatus}
+                  status={mainColor}
+                  placeholder="Status da venda"
+                  options={[
+                    "Todos",
+                    "Paga",
+                    "Não paga",
+                    "Em atraso",
+                    "Cancelada",
+                    "Reembolsada",
+                  ]}
+                  onChange={(index) => {
+                    if (Array.isArray(index)) return;
+                    setFilterFields((past) => ({
+                      ...past,
+                      saleStatus: index.row,
+                    }));
+                  }}
+                />
+                <Container
+                  width="100%"
+                  flexDirection="row"
+                  marginTop={8}
+                  justifyContent="space-between"
+                >
+                  <Datepicker
+                    style={styles.calendarInput}
+                    dateService={brazilianDateService as any}
+                    min={minDate as any}
+                    date={initialDate}
+                    status={mainColor}
+                    placeholder="Data inicial"
+                    onSelect={onChange("initialDate")}
+                  />
+                  <Datepicker
+                    style={styles.calendarInput}
+                    dateService={brazilianDateService as any}
+                    date={finalDate}
+                    status={mainColor}
+                    placeholder="Data final"
+                    min={minDate as any}
+                    onSelect={onChange("finalDate")}
+                  />
+                </Container>
 
-            <Container flexDirection="row" justifyContent="space-between">
-              <Button
-                size="small"
-                style={styles.btns}
-                status={mainColor}
-                onPress={onBtnAction(onFilter)}
-              >
-                Filtrar
-              </Button>
-              <Button
-                onPress={onBtnAction(onReset)}
-                size="small"
-                appearance="outline"
-                status={mainColor}
-                style={styles.btns}
-              >
-                Resetar
-              </Button>
-            </Container>
+                <Container flexDirection="row" justifyContent="space-between">
+                  <Button
+                    size="small"
+                    style={styles.btns}
+                    status={mainColor}
+                    onPress={onBtnAction(onFilter)}
+                  >
+                    Filtrar
+                  </Button>
+                  <Button
+                    onPress={onBtnAction(onReset)}
+                    size="small"
+                    appearance="outline"
+                    status={mainColor}
+                    style={styles.btns}
+                  >
+                    Resetar
+                  </Button>
+                </Container>
+              </>
+            )}
             <Divider />
           </>
         );
