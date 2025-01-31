@@ -6,8 +6,9 @@ import { ClientsListing } from "../../Screens/ClientsListing";
 import { SalesListing } from "../../Screens/SalesListing";
 import { Settings } from "../../Screens/Settings";
 import { MainBottomRoutesTypes, MAIN_BOTTOM_ROUTES } from "./Types";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-const Bottom = AnimatedTabBarNavigator<MainBottomRoutesTypes>();
+const Bottom = createBottomTabNavigator<MainBottomRoutesTypes>();
 export const MainBottom: React.FC = () => {
   const theme = useTheme();
   const primaryTheme = theme["color-primary-default"];
@@ -15,22 +16,16 @@ export const MainBottom: React.FC = () => {
     <Bottom.Navigator
       screenOptions={{
         headerShown: false,
+        tabBarItemStyle: { paddingVertical: 1 },
+        tabBarActiveTintColor: "#fff",
+        tabBarActiveBackgroundColor: primaryTheme,
+        tabBarInactiveTintColor: "#fff",
       }}
-      tabBarOptions={{
-        activeTintColor: "#fff",
-        activeBackgroundColor: primaryTheme,
-        inactiveTintColor: "#fff",
-      }}
-      appearance={undefined as any}
     >
       <Bottom.Screen
         name={MAIN_BOTTOM_ROUTES.SALES_LISTING}
         options={{
-          tabBarLabel: ({ focused, color }: any) => (
-            <Text category={focused ? "p1" : "p2"} style={{ color }}>
-              Vendas
-            </Text>
-          ),
+          tabBarLabel: () => null,
           tabBarIcon: ({ focused, color, size }: any) => (
             <MaterialCommunityIcons
               name="point-of-sale"
@@ -45,11 +40,7 @@ export const MainBottom: React.FC = () => {
       <Bottom.Screen
         name={MAIN_BOTTOM_ROUTES.CLIENTS_LISTING}
         options={{
-          tabBarLabel: ({ focused, color }: any) => (
-            <Text category={focused ? "p1" : "p2"} style={{ color }}>
-              Clientes
-            </Text>
-          ),
+          tabBarLabel: () => null,
           tabBarIcon: ({ focused, color, size }: any) => (
             <Ionicons
               name="person-circle"
@@ -61,14 +52,10 @@ export const MainBottom: React.FC = () => {
         }}
         component={ClientsListing}
       />
-       <Bottom.Screen
+      <Bottom.Screen
         name={MAIN_BOTTOM_ROUTES.SETTINGS}
         options={{
-          tabBarLabel: ({ focused, color }: any) => (
-            <Text category={focused ? "p1" : "p2"} style={{ color }}>
-              Configurações
-            </Text>
-          ),
+          tabBarLabel: () => null,
           tabBarIcon: ({ focused, color, size }: any) => (
             <Ionicons
               name="settings"

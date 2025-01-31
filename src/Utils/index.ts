@@ -15,8 +15,8 @@ export const initialSalesFilterState = {
 export const filterSalesArrays = (
   sales: Array<Sale>,
   filters: SalesFilterFields
-) =>
-  sales.filter(({ name, date, status }) => {
+) => {
+  return [...sales].filter(({ name, date, status }) => {
     const { finalDate, initialDate, saleName, saleStatus } = filters;
     let checkDate =
       finalDate && initialDate
@@ -27,7 +27,10 @@ export const filterSalesArrays = (
         ? true
         : status === saleStatus - 1;
     return filterByName(name, saleName) && checkDate && currentStatus;
-  });
+  })
+  .sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+}
+
 
 export function isDateInRange(from: string, to: string, check: string) {
   let fDate, lDate, cDate;
@@ -86,7 +89,7 @@ export const brazilianDateService = new DateFnsService("pt-BR", {
   },
 });
 
-export const minDate = new Date("01/01/1969");
+export const minDate = new Date("1969-01-1");
 
 export function isTypeOf<T>(data: any, key: keyof T): data is T {
   return (data as T)[key] !== undefined;

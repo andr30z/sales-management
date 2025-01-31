@@ -1,21 +1,22 @@
 import { MotiView, UseAnimationState, useAnimationState, Variants } from "moti";
 import React from "react";
-import { ViewStyle } from "react-native";
+import type { ViewStyle } from "react-native";
 import { useBoolean } from "../../Hooks";
-type ToggleStyle = { [x: string]: any };
 export interface ToggleContainer {
   children: (
-    animationState: UseAnimationState<{
-      closed: ToggleStyle;
-      open: ToggleStyle;
-      from: ToggleStyle;
-    }>,
+    animationState: UseAnimationState<
+      Variants<{
+        closed: ViewStyle;
+        open: ViewStyle;
+        from: ViewStyle;
+      }>
+    >,
     toggle: () => void,
     isOpen: boolean
   ) => React.ReactNode;
   containerStyle: ViewStyle;
-  onOpenStyle?: ToggleStyle;
-  onCloseStyle?: ToggleStyle;
+  onOpenStyle?: ViewStyle;
+  onCloseStyle?: ViewStyle;
 }
 
 /**
@@ -32,21 +33,27 @@ export const ToggleContainer: React.FC<ToggleContainer> = ({
     zIndex: 10000,
   },
 }) => {
-  const toggleAnimationState = useAnimationState({
-    closed: onCloseStyle,
-    open: onOpenStyle,
-    from: onCloseStyle,
-  });
+  const toggleAnimationState = useAnimationState(
+    {
+      closed: onCloseStyle as any,
+      open: onOpenStyle as any,
+      from: onCloseStyle as any,
+    },
+    { from: "from" }
+  );
   const { value, toggle } = useBoolean();
   const onToggle = () => {
-    toggleAnimationState.transitionTo((prevState) => {
-      return prevState === "open" ? "closed" : "open";
-    });
+    const map = {
+      true: "closed",
+      false: "open",
+      from: "open",
+    } as const;
+    toggleAnimationState.transitionTo(map[String(value) as keyof typeof map]);
     toggle();
   };
   return (
     <MotiView style={containerStyle} state={toggleAnimationState}>
-      {children(toggleAnimationState, onToggle, value)}
+      {children(toggleAnimationState as any, onToggle, value)}
     </MotiView>
   );
 };

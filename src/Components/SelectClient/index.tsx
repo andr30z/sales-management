@@ -3,11 +3,21 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Button, Input, ListItem, Modal } from "@ui-kitten/components";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { KeyboardAvoidingView, useWindowDimensions } from "react-native";
+import {
+  DimensionValue,
+  KeyboardAvoidingView,
+  Pressable,
+  useWindowDimensions,
+} from "react-native";
 import { useSalesInfoContext } from "../../Context/SalesInfo";
 import { Client } from "../../Context/SalesInfo/Reducer";
 import { globalStyles } from "../../GlobalStyles";
-import { useBoolean, useClient, useKeyboardVisibility } from "../../Hooks";
+import {
+  useBoolean,
+  useClient,
+  useCommonThemeColors,
+  useKeyboardVisibility,
+} from "../../Hooks";
 import {
   MainStackRoutesTypes,
   MAIN_STACK_ROUTES,
@@ -22,7 +32,7 @@ import { styles } from "./Styles";
 interface SelectClientProps {
   value: string;
   onChange: (value: string) => void;
-  marginY?: string | number;
+  marginY?: DimensionValue;
   error?: string;
 }
 
@@ -63,6 +73,7 @@ export const SelectClientNoMemo: React.FC<SelectClientProps> = ({
 
   const navigation = useNavigation<StackNavigationProp<MainStackRoutesTypes>>();
   const { height } = useWindowDimensions();
+  const { primaryColor } = useCommonThemeColors();
   const renderListItem: RenderPerformaticItem<Client> = useCallback(
     (_type, data, _index, _extendedState) => (
       <ListItem
@@ -106,13 +117,16 @@ export const SelectClientNoMemo: React.FC<SelectClientProps> = ({
         textStyle={{ color: "black" }}
         size="small"
         placeholder="Selecione o cliente"
-        accessoryRight={
-          <Button
-            onPress={setTrue}
-            accessoryRight={() => (
-              <AntDesign size={15} name="search1" color="#fff" />
-            )}
-          />
+        accessoryRight={(props)=>
+          <Pressable onPress={setTrue}>
+            <AntDesign
+              style={styles.inputIcon}
+              size={25}
+              name="user"
+              color={primaryColor}
+              {...props} 
+            />
+          </Pressable>
         }
         caption={<FormErrorDisplayer text={error} />}
       />
